@@ -2,12 +2,11 @@ import { Component } from '@angular/core';
 import { StoreService } from "src/app/services/StoreService";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: 'app-doing-page',
+  templateUrl: './doing-page.html'
 })
-export class AppComponent {
-  title = 'todo-app';
+export class DoingPageComponent {
+  title = 'Doing';
 
   todoList = [];
   textInput = '';
@@ -15,17 +14,8 @@ export class AppComponent {
   percentage: number;
 
   constructor() {
-    this.todoList =  StoreService.load();
+    this.todoList = StoreService.load();
     this.updatePercentage();
-  }
-
-  add() {
-    if (!this.textInput.trim())
-      return;
-
-    this.todoList.push({ name: this.textInput.trim() });
-    this.textInput = '';
-    StoreService.save(this.todoList);
   }
 
   todoClicked() {

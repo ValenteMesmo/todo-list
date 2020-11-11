@@ -34,9 +34,11 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';
-import { CheckButtonComponent } from './check-button/check-button';
-import { AchievementAnimationComponent } from './achievement-animation/achievement.animation';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CheckButtonComponent } from './shared/check-button/check-button';
+import { AchievementAnimationComponent } from './shared/achievement-animation/achievement.animation';
+import { DoingPageComponent } from './pages/doing-page/doing-page';
+import { TodoPageComponent } from './pages/todo-page/todo-page';
 
 const materialModules = [
   MatAutocompleteModule,
@@ -76,6 +78,8 @@ const materialModules = [
     AppComponent
     , CheckButtonComponent
     , AchievementAnimationComponent
+    , DoingPageComponent
+    , TodoPageComponent
   ],
   imports: [
     BrowserModule,
