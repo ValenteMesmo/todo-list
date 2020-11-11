@@ -1,7 +1,18 @@
 export class SoundService {
-
+  
   private static audio;
   private static audio2;
+
+  static preLoad() {
+    SoundService.audio = new Audio();
+    SoundService.audio.src = '../assets/completetask_0.mp3';
+    SoundService.audio.load();
+
+    SoundService.audio2 = new Audio();
+    SoundService.audio2.src = '../assets/gmae.wav';
+    SoundService.audio2.load();
+  }
+
 
   static play() {
     if (!SoundService.audio) {

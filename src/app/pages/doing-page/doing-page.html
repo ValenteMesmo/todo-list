@@ -1,19 +1,12 @@
+<check-button [routerLink]="['/todo']"><span class="mdi mdi-clipboard-arrow-left-outline"></span> Replan</check-button>
 <div style="margin-top: 21px;">
-
   
-  <div>
+  <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 100vh;">
     <div *ngFor="let todo of todoList" style="padding: 10px 0px 0px 10px;float: left;">
       <check-button [(pressed)]="todo.done" (pressedChange)="todoClicked()">{{todo.name}}</check-button>
-      <!-- <mat-card>
-        <a mat-list-item>
-          <mat-icon>dashboard</mat-icon> {{todo.name}}
-        </a>
-      </mat-card> -->
     </div>
     
   </div>
 </div>
 
 <achievement-animation [(achieved)]="achieved"></achievement-animation>
-
-<mat-progress-bar mode="determinate" [value]="percentage" style="position: fixed; left: 0; top: 0;"></mat-progress-bar>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { StoreService } from "src/app/services/StoreService";
+import { SoundService } from './services/sound-service';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,8 @@ export class AppComponent {
   percentage: number;
 
   constructor() {
+    SoundService.preLoad();
+
     this.todoList =  StoreService.load();
     this.updatePercentage();
   }
