@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SoundService } from 'src/app/services/sound-service';
+
 @Component({
     selector: 'check-button',
     templateUrl: './check-button.html',
@@ -8,9 +9,7 @@ import { SoundService } from 'src/app/services/sound-service';
 export class CheckButtonComponent {
     @Input() pressed: boolean;
     @Output() pressedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-    
-
+  
     onClick() {
         if (!this.pressed)
             SoundService.play();
@@ -18,7 +17,5 @@ export class CheckButtonComponent {
         this.pressed = !this.pressed;
         this.pressedChange.emit(this.pressed);
     }
-
-
 }
 

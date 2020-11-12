@@ -17,13 +17,13 @@ export class AchievementAnimationComponent {
 
   @Input() set achieved(value: AchievementState) {
     this._achieved = value;
-    if (this._achieved) {
+    if (this._achieved === AchievementState.unlocking) {
       setTimeout(() => {
         SoundService.play2();
         setTimeout(() => {
           this._achieved = AchievementState.unlocked;
           this.achievedChange.emit(this._achieved);
-        }, 9000);        
+        }, 4200);
       }, 900);
     }
   }

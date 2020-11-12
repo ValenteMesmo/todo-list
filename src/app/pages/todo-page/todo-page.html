@@ -21,7 +21,7 @@
     </mat-card>
   </div>
 
-  <hr />
+  <hr *ngIf="todoList.secondTier.length"/>
 
   <div *ngFor="let todo of todoList.secondTier" style="padding-left:10px;padding-bottom:10px;padding-right:10px;">
     <mat-card>
@@ -36,7 +36,7 @@
     </mat-card>
   </div>
 
-  <hr />
+  <hr *ngIf="todoList.thirdTier.length"/>
 
   <div *ngFor="let todo of todoList.thirdTier" style="padding-left:10px;padding-bottom:10px;padding-right:10px;">
     <mat-card>
@@ -51,7 +51,7 @@
     </mat-card>
   </div>
 
-   <hr />
+    <hr *ngIf="todoList.extraTier.length"/>
 
   <div *ngFor="let todo of todoList.extraTier" style="padding-left:10px;padding-bottom:10px;padding-right:10px;">
     <mat-card>

@@ -64,7 +64,7 @@ export class Todo {
 }
 
 export class StoreService {
-  static readonly key = 'todo list id v0.0.2';
+  static readonly key = 'todo list id v0.0.4';
 
 
   static save(data) {
