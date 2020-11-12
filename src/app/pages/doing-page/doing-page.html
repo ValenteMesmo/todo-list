@@ -1,33 +1,34 @@
 <check-button [routerLink]="['/todo']"><span class="mdi mdi-clipboard-arrow-left-outline"></span> Replan</check-button>
+
 <div style="margin-top: 21px;">
 
 
-
-
-  <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
-
-
-    <ng-template [ngIf]="todoList.percentage2 == 100">
-      <div *ngFor="let todo of todoList.thirdTier" style="padding: 10px 0px 0px 10px;float: left;">
-        <check-button [(pressed)]="todo.done" (pressedChange)="todoClicked()">{{todo.name}}</check-button>
-      </div>
-    </ng-template>
-
-    <ng-template [ngIf]="todoList.percentage1 == 100">
-      <div *ngFor="let todo of todoList.secondTier" style="padding: 10px 0px 0px 10px;float: left;">
-        <check-button [(pressed)]="todo.done" (pressedChange)="todoClicked()">{{todo.name}}</check-button>
-      </div>
-    </ng-template>
-
-    <div *ngFor="let todo of todoList.firstTier" style="padding: 10px 0px 0px 10px;float: left;">
+  <div *ngIf="todoList.percentage1 == 100 && todoList.percentage2 == 100" style="width:100%;">
+    <div *ngFor="let todo of todoList.thirdTier" style="padding: 10px 0px 0px 10px;">
       <check-button [(pressed)]="todo.done" (pressedChange)="todoClicked()">{{todo.name}}</check-button>
     </div>
-
   </div>
+
+  <hr *ngIf="todoList.percentage2 == 100" style="margin-top: 27px;"/>
+
+  <div *ngIf="todoList.percentage1 == 100" style="width:100%">
+    <div *ngFor="let todo of todoList.secondTier" style="padding: 10px 0px 0px 10px;">
+      <check-button [(pressed)]="todo.done" (pressedChange)="todoClicked()">{{todo.name}}</check-button>
+    </div>
+  </div>
+
+  <hr *ngIf="todoList.percentage1 == 100" style="margin-top: 27px;"/>
+
+  <div style="width:100%">
+    <div *ngFor="let todo of todoList.firstTier" style="padding: 10px 0px 0px 10px;">
+      <check-button [(pressed)]="todo.done" (pressedChange)="todoClicked()">{{todo.name}}</check-button>
+    </div>
+  </div>
+
 </div>
 
 
 
-<achievement-animation [achieved]="todoList.percentage1 == 100"></achievement-animation>
-<achievement-animation [achieved]="todoList.percentage2 == 100"></achievement-animation>
-<achievement-animation [achieved]="todoList.percentage3 == 100"></achievement-animation>
+<achievement-animation [(achieved)]="todoList.achieved1"></achievement-animation>
+<achievement-animation [(achieved)]="todoList.achieved2"></achievement-animation>
+<achievement-animation [(achieved)]="todoList.achieved3"></achievement-animation>

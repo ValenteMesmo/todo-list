@@ -1,4 +1,10 @@
 
+export enum AchievementState {
+  locked,
+  unlocking,
+  unlocked
+}
+
 export class TodoCollection {
   firstTier: Todo[] = [];
   secondTier: Todo[] = [];
@@ -8,6 +14,10 @@ export class TodoCollection {
   percentage1: number;
   percentage2: number;
   percentage3: number;
+
+  achieved1 = AchievementState.locked;
+  achieved2 = AchievementState.locked;
+  achieved3 = AchievementState.locked;
 
   push(todo: Todo) {
     if (this.firstTier.length <= 3)
@@ -38,6 +48,13 @@ export class TodoCollection {
     this.percentage1 = (doneTasks1 * 100 / allTasks1);
     this.percentage2 = (doneTasks2 * 100 / allTasks2);
     this.percentage3 = (doneTasks3 * 100 / allTasks3);
+
+    if (this.percentage1 === 100 && this.achieved1 === AchievementState.locked)
+      this.achieved1 = AchievementState.unlocking;
+    if (this.percentage2 === 100 && this.achieved2 === AchievementState.locked)
+      this.achieved2 = AchievementState.unlocking;
+    if (this.percentage3 === 100 && this.achieved3 === AchievementState.locked)
+      this.achieved3 = AchievementState.unlocking;
   }
 }
 
