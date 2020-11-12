@@ -8,7 +8,7 @@
     <mat-hint align="end">{{input.value?.length || 0}}/30</mat-hint>
   </mat-form-field>
 
-  <div *ngFor="let todo of todoList" style="padding-left:10px;padding-bottom:10px;padding-right:10px;">
+  <div *ngFor="let todo of todoList.firstTier" style="padding-left:10px;padding-bottom:10px;padding-right:10px;">
     <mat-card>
       <button type="button" mat-icon-button style="float:right" (click)="remove(todo)">
         <span class="mdi mdi-24px mdi-delete"></span>
@@ -20,6 +20,50 @@
       </mat-card-content>
     </mat-card>
   </div>
-</div>
 
-<achievement-animation [(achieved)]="achieved"></achievement-animation>
+  <hr />
+
+  <div *ngFor="let todo of todoList.secondTier" style="padding-left:10px;padding-bottom:10px;padding-right:10px;">
+    <mat-card>
+      <button type="button" mat-icon-button style="float:right" (click)="remove(todo)">
+        <span class="mdi mdi-24px mdi-delete"></span>
+      </button>
+      <mat-card-content>
+        <p>
+          {{todo.name}}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <hr />
+
+  <div *ngFor="let todo of todoList.thirdTier" style="padding-left:10px;padding-bottom:10px;padding-right:10px;">
+    <mat-card>
+      <button type="button" mat-icon-button style="float:right" (click)="remove(todo)">
+        <span class="mdi mdi-24px mdi-delete"></span>
+      </button>
+      <mat-card-content>
+        <p>
+          {{todo.name}}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+   <hr />
+
+  <div *ngFor="let todo of todoList.extraTier" style="padding-left:10px;padding-bottom:10px;padding-right:10px;">
+    <mat-card>
+      <button type="button" mat-icon-button style="float:right" (click)="remove(todo)">
+        <span class="mdi mdi-24px mdi-delete"></span>
+      </button>
+      <mat-card-content>
+        <p>
+          {{todo.name}}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+</div>
