@@ -1,12 +1,23 @@
 <div style="margin-top: 21px;">
+  <table style="width:100%">
+    <tr>
+      <td>
+        <mat-form-field hintLabel="Até 30 caracteres" appearance="fill">
+          <mat-label>Criar nova tarefa</mat-label>
+          <input matInput #input maxlength="30" [(ngModel)]="textInput" (keyup.enter)="add()" autocomplete="off" autofocus>
+          <mat-hint align="end">{{input.value?.length || 0}}/30</mat-hint>
+        </mat-form-field>
+      </td>
+      <td>
+        <div>teste</div>
+      </td>
+      <td>
+        <check-button style="float:right" [routerLink]="['/doing']"><span class="mdi mdi-clipboard-text-play-outline"></span> Start</check-button>
+      </td>
+    </tr>
+  </table>
 
-<check-button style="float:right" [routerLink]="['/doing']"><span class="mdi mdi-clipboard-text-play-outline"></span> Let's go!</check-button>
- <br />
-  <mat-form-field hintLabel="Até 30 caracteres" appearance="fill">
-    <mat-label>Criar nova tarefa</mat-label>
-    <input matInput #input maxlength="30" [(ngModel)]="textInput" (keyup.enter)="add()" autocomplete="off" autofocus>
-    <mat-hint align="end">{{input.value?.length || 0}}/30</mat-hint>
-  </mat-form-field>
+  <br />
 
   <div *ngFor="let todo of todoList.firstTier" style="padding-left:10px;padding-bottom:10px;padding-right:10px;">
     <mat-card>
@@ -21,7 +32,7 @@
     </mat-card>
   </div>
 
-  <hr *ngIf="todoList.secondTier.length"/>
+  <hr *ngIf="todoList.secondTier.length" />
 
   <div *ngFor="let todo of todoList.secondTier" style="padding-left:10px;padding-bottom:10px;padding-right:10px;">
     <mat-card>
@@ -36,7 +47,7 @@
     </mat-card>
   </div>
 
-  <hr *ngIf="todoList.thirdTier.length"/>
+  <hr *ngIf="todoList.thirdTier.length" />
 
   <div *ngFor="let todo of todoList.thirdTier" style="padding-left:10px;padding-bottom:10px;padding-right:10px;">
     <mat-card>
@@ -51,7 +62,7 @@
     </mat-card>
   </div>
 
-    <hr *ngIf="todoList.extraTier.length"/>
+  <hr *ngIf="todoList.extraTier.length" />
 
   <div *ngFor="let todo of todoList.extraTier" style="padding-left:10px;padding-bottom:10px;padding-right:10px;">
     <mat-card>

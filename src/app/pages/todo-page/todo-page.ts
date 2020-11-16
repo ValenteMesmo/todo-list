@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { StoreService, TodoCollection } from "src/app/services/StoreService";
 
-
-
 @Component({
   selector: 'app-todo-page',
   templateUrl: './todo-page.html'
@@ -14,9 +12,8 @@ export class TodoPageComponent {
   textInput = '';
   achieved = false;
 
-
   constructor() {
-    this.todoList = StoreService.load();
+    this.todoList = StoreService.load(new Date());
     this.todoList.updatePercentage();
   }
 

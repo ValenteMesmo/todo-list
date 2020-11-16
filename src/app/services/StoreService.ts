@@ -1,3 +1,24 @@
+export class StoreService {
+  static readonly key = 'todo list id v0.0.4';
+
+
+  static save(data: TodoCollection) {
+    window.localStorage.setItem(`${this.key}${data.date.toLocaleDateString()}`, JSON.stringify(data));
+  }
+
+
+  static load(date: Date): TodoCollection {
+    const value = window.localStorage.getItem(`${this.key}${date.toLocaleDateString()}`);
+    if (!value)
+      return new TodoCollection();
+
+    let parsed = JSON.parse(value);
+    parsed = Object.assign(new TodoCollection, parsed);
+    parsed = Object.setPrototypeOf(parsed, TodoCollection.prototype);
+    parsed.date = new Date(parsed.date);
+    return parsed;
+  }
+}
 
 export enum AchievementState {
   locked,
@@ -10,6 +31,8 @@ export class TodoCollection {
   secondTier: Todo[] = [];
   thirdTier: Todo[] = [];
   extraTier: Todo[] = [];
+
+  date: Date = new Date();
 
   percentage1: number;
   percentage2: number;
@@ -58,28 +81,8 @@ export class TodoCollection {
   }
 }
 
+
 export class Todo {
   name: string;
   done: boolean;
-}
-
-export class StoreService {
-  static readonly key = 'todo list id v0.0.4';
-
-
-  static save(data) {
-    window.localStorage.setItem(this.key, JSON.stringify(data));
-  }
-
-
-  static load(): TodoCollection {
-    const value = window.localStorage.getItem(this.key);
-    if (!value)
-      return new TodoCollection();
-
-    let parsed = JSON.parse(value);
-    parsed = Object.assign(new TodoCollection, parsed)
-    parsed = Object.setPrototypeOf(parsed, TodoCollection.prototype)
-    return parsed;
-  }
 }

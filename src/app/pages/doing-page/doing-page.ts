@@ -10,26 +10,19 @@ export class DoingPageComponent {
 
   todoList: TodoCollection;
   textInput = '';
-  achieved = false;
-  percentage: number;
 
   constructor() {
-    this.todoList = StoreService.load();
+    this.todoList = StoreService.load(new Date());
     this.todoList.updatePercentage();
   }
 
   todoClicked() {
-    setTimeout(() => {
       StoreService.save(this.todoList);
-
       this.todoList.updatePercentage();
+  }
 
-      if (this.percentage < 100)
-        return;
-
-      this.achieved = true;
-
-    }, 0);
+  onAchievedChange() {
+    StoreService.save(this.todoList);
 
   }
 }
