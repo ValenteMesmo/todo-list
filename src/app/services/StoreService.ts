@@ -1,16 +1,37 @@
 export class StoreService {
-  static readonly key = 'todo list id v0.0.4';
-
+  static readonly key = 'todo-list-id-000';
 
   static save(data: TodoCollection) {
-    window.localStorage.setItem(`${this.key}${data.date.toLocaleDateString()}`, JSON.stringify(data));
+    window.localStorage.setItem(`${this.key}-${data.date.toLocaleDateString()}`, JSON.stringify(data));
+    window.localStorage.setItem(`${this.key}-lastdate`, JSON.stringify(data.date.toLocaleDateString()));
   }
 
-
   static load(date: Date): TodoCollection {
-    const value = window.localStorage.getItem(`${this.key}${date.toLocaleDateString()}`);
-    if (!value)
-      return new TodoCollection();
+    const value = window.localStorage.getItem(`${this.key}-${date.toLocaleDateString()}`);
+    if (!value) {
+      const newValue = new TodoCollection();
+
+      const lastDateString = window.localStorage.getItem(`${this.key}-lastdate`);
+      if (!lastDateString)
+        return newValue;
+
+      const previousCollectionString = window.localStorage.getItem(`${this.key}-${lastDateString}`);
+      if (!previousCollectionString)
+        return newValue;
+
+      const previousCollectionParsed = JSON.parse(previousCollectionString) as TodoCollection;
+      const previousTodos = [
+        ...previousCollectionParsed.firstTier
+        , ...previousCollectionParsed.secondTier
+        , ...previousCollectionParsed.thirdTier
+        , ...previousCollectionParsed.extraTier
+      ].filter(f => !f.done);
+
+      for (let i = 0; i < previousTodos.length; i++)
+        newValue.push(previousTodos[i]);
+
+      return newValue;
+    }
 
     let parsed = JSON.parse(value);
     parsed = Object.assign(new TodoCollection, parsed);
