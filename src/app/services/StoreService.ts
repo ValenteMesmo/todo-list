@@ -3,7 +3,7 @@ export class StoreService {
 
   static save(data: TodoCollection) {
     window.localStorage.setItem(`${this.key}-${data.date.toLocaleDateString()}`, JSON.stringify(data));
-    window.localStorage.setItem(`${this.key}-lastdate`, JSON.stringify(data.date.toLocaleDateString()));
+    window.localStorage.setItem(`${this.key}-lastdate`, data.date.toLocaleDateString());
   }
 
   static load(date: Date): TodoCollection {
