@@ -5,11 +5,11 @@ export class SoundService {
 
   static preLoad() {
     SoundService.audio = new Audio();
-    SoundService.audio.src = '../assets/completetask_0.mp3';
+    SoundService.audio.src = './assets/completetask_0.mp3';
     SoundService.audio.load();
 
     SoundService.audio2 = new Audio();
-    SoundService.audio2.src = '../assets/gmae.wav';
+    SoundService.audio2.src = './assets/gmae.wav';
     SoundService.audio2.load();
   }
 
@@ -17,7 +17,7 @@ export class SoundService {
   static play() {
     if (!SoundService.audio) {
       SoundService.audio = new Audio();
-      SoundService.audio.src = '../assets/completetask_0.mp3';
+      SoundService.audio.src = './assets/completetask_0.mp3';
 
       SoundService.audio.load();
     }
@@ -29,7 +29,7 @@ export class SoundService {
   static play2() {
     if (!SoundService.audio2) {
       SoundService.audio2 = new Audio();
-      SoundService.audio2.src = '../assets/gmae.wav';
+      SoundService.audio2.src = './assets/gmae.wav';
 
       SoundService.audio2.load();
     }
