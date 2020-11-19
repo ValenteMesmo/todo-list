@@ -1,5 +1,5 @@
 import { isDevMode } from '@angular/core';
-import { REPOSITORY_NAME } from '../shared/route-constants';
+import { REPOSITORY_NAME } from './Navigation';
 
 export class SoundService {
   

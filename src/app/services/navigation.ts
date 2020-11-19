@@ -4,6 +4,7 @@ enum Routes {
   Planning,
   Doing
 }
+
 export class Navigation {
 
   public static isPlanning() {

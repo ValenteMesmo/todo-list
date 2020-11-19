@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { StoreService, TodoCollection } from "src/app/services/StoreService";
-import { Navigation } from '../../shared/route-constants';
+import { Navigation } from '../../services/Navigation';
 
 @Component({
   selector: 'app-todo-page',

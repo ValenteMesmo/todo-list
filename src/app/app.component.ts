@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Navigation } from './shared/route-constants';
+import { Navigation } from './services/Navigation';
 
 @Component({
   selector: 'app-root',

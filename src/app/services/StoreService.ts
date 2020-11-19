@@ -46,6 +46,9 @@ export enum AchievementState {
   unlocking,
   unlocked
 }
+const TIER1_LENGTH = 4;
+const TIER2_LENGTH = 6;
+const TIER3_LENGTH = 8;
 
 export class TodoCollection {
   firstTier: Todo[] = [];
@@ -61,14 +64,14 @@ export class TodoCollection {
 
   achieved1 = AchievementState.locked;
   achieved2 = AchievementState.locked;
-  achieved3 = AchievementState.locked;
+  achieved3 = AchievementState.locked;  
 
   push(todo: Todo) {
-    if (this.firstTier.length <= 3)
+    if (this.firstTier.length < TIER1_LENGTH)
       this.firstTier.push(todo);
-    else if (this.secondTier.length <= 5)
+    else if (this.secondTier.length < TIER2_LENGTH)
       this.secondTier.push(todo);
-    else if (this.thirdTier.length <= 7)
+    else if (this.thirdTier.length < TIER3_LENGTH)
       this.thirdTier.push(todo);
     else
       this.extraTier.push(todo);
@@ -85,13 +88,10 @@ export class TodoCollection {
     const doneTasks1 = this.firstTier.filter(f => f.done).length;
     const doneTasks2 = this.secondTier.filter(f => f.done).length;
     const doneTasks3 = this.thirdTier.filter(f => f.done).length;
-    const allTasks1 = this.firstTier.length;
-    const allTasks2 = this.secondTier.length;
-    const allTasks3 = this.thirdTier.length;
 
-    this.percentage1 = (doneTasks1 * 100 / allTasks1);
-    this.percentage2 = (doneTasks2 * 100 / allTasks2);
-    this.percentage3 = (doneTasks3 * 100 / allTasks3);
+    this.percentage1 = (doneTasks1 * 100 / TIER1_LENGTH);
+    this.percentage2 = (doneTasks2 * 100 / TIER2_LENGTH);
+    this.percentage3 = (doneTasks3 * 100 / TIER3_LENGTH);
 
     if (this.percentage1 === 100 && this.achieved1 === AchievementState.locked)
       this.achieved1 = AchievementState.unlocking;
