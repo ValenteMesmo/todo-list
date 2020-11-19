@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { StoreService, TodoCollection } from "src/app/services/StoreService";
-import { PLANNING_ROUTE } from '../../shared/route-constants';
+import { Navigation } from '../../shared/route-constants';
 
 @Component({
   selector: 'app-doing-page',
@@ -9,7 +9,7 @@ import { PLANNING_ROUTE } from '../../shared/route-constants';
 export class DoingPageComponent {
   title = 'Doing';
 
-  PLANNING_ROUTE = PLANNING_ROUTE;
+  Navigation = Navigation;
   
   todoList: TodoCollection;
   textInput = '';

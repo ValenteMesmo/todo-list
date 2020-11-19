@@ -1,1 +1,2 @@
-<router-outlet></router-outlet>
+<app-todo-page *ngIf="Navigation.isPlanning()"></app-todo-page>
+<app-doing-page *ngIf="Navigation.isDoing()"></app-doing-page>

@@ -1,5 +1,26 @@
 export const REPOSITORY_NAME = 'todo-list';
-export const PLANNING_ROUTE_NAME = `${REPOSITORY_NAME}/planning`;
-export const DOING_ROUTE_NAME = `${REPOSITORY_NAME}/doing`;
-export const PLANNING_ROUTE = `/${PLANNING_ROUTE_NAME}`;
-export const DOING_ROUTE = `/${DOING_ROUTE_NAME}`;
+
+enum Routes {
+  Planning,
+  Doing
+}
+export class Navigation {
+
+  public static isPlanning() {
+    return Navigation.currentRoute === Routes.Planning;
+  }
+
+  public static isDoing() {
+    return Navigation.currentRoute === Routes.Doing;
+  }
+
+  public static goToPlanning() {
+    Navigation.currentRoute = Routes.Planning;
+  }
+
+  public static goToDoing() {
+    Navigation.currentRoute = Routes.Doing;
+  }
+
+  private static currentRoute = Routes.Planning;
+}

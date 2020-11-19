@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Navigation } from './shared/route-constants';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'todo-app';
-
+  Navigation = Navigation;
 }
