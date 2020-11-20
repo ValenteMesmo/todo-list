@@ -89,6 +89,7 @@ export class TodoCollection {
     this.secondTier = [];
     this.thirdTier = [];
     this.extraTier = [];
+
     completeList.forEach(f => this.push(f));
   }
 

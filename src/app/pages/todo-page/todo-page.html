@@ -21,7 +21,7 @@
 
   <div *ngFor="let todo of todoList.firstTier" style="padding-left:10px;padding-bottom:10px;padding-right:10px;">
     <mat-card>
-      <button type="button" mat-icon-button style="float:right" (click)="remove(todo)">
+      <button type="button" mat-icon-button style="float:right" (click)="remove(todo)" [disabled]="todo.done">
         <span class="mdi mdi-24px mdi-delete"></span>
       </button>
       <mat-card-content>
