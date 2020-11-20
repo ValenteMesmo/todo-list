@@ -64,7 +64,7 @@ export class TodoCollection {
 
   achieved1 = AchievementState.locked;
   achieved2 = AchievementState.locked;
-  achieved3 = AchievementState.locked;  
+  achieved3 = AchievementState.locked;
 
   push(todo: Todo) {
     if (this.firstTier.length < TIER1_LENGTH)
@@ -78,10 +78,18 @@ export class TodoCollection {
   }
 
   remove(todo: Todo) {
-    this.firstTier = this.firstTier.filter(f => f !== todo);
-    this.secondTier = this.secondTier.filter(f => f !== todo);
-    this.thirdTier = this.thirdTier.filter(f => f !== todo);
-    this.extraTier = this.extraTier.filter(f => f !== todo);
+    const completeList = [
+      ...this.firstTier.filter(f => f !== todo)
+      , ...this.secondTier.filter(f => f !== todo)
+      , ...this.thirdTier.filter(f => f !== todo)
+      , ...this.extraTier.filter(f => f !== todo)
+    ];
+
+    this.firstTier = [];
+    this.secondTier = [];
+    this.thirdTier = [];
+    this.extraTier = [];
+    completeList.forEach(f => this.push(f));
   }
 
   updatePercentage() {
