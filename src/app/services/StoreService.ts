@@ -1,5 +1,5 @@
 export class StoreService {
-  static readonly key = 'todo-list-id-002';
+  static readonly key = 'todo-list-id-003';
 
   static save(data: TodoCollection) {
     window.localStorage.setItem(`${this.key}-${data.date.toLocaleDateString()}`, JSON.stringify(data));
