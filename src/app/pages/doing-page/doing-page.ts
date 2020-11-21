@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { StoreService, TodoCollection } from "src/app/services/StoreService";
+import { StoreService, TodoCollection, TIER1_LENGTH, TIER2_LENGTH, TIER3_LENGTH } from "src/app/services/StoreService";
 import { Navigation } from '../../services/Navigation';
 
 @Component({
@@ -8,6 +8,10 @@ import { Navigation } from '../../services/Navigation';
 })
 export class DoingPageComponent {
   title = 'Doing';
+
+  TIER1_LENGTH = TIER1_LENGTH;
+  TIER2_LENGTH = TIER2_LENGTH;
+  TIER3_LENGTH = TIER3_LENGTH;
 
   Navigation = Navigation;
   

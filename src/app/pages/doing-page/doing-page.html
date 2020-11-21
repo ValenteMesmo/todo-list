@@ -3,27 +3,18 @@
 <div style="margin-top: 21px;">
 
 
-  <div *ngIf="todoList.percentage1 == 100 && todoList.percentage2 == 100" style="width:100%;">
-    <div *ngFor="let todo of todoList.thirdTier" style="padding: 10px 0px 0px 10px;">
-      <check-button [(pressed)]="todo.done" (pressedChange)="todoClicked()">{{todo.name}}</check-button>
+  <div style="width:100%;">
+    <div *ngFor="let todo of todoList.tasks; index as i" style="padding: 10px 0px 0px 10px;">
+
+
+      <div *ngIf="i < TIER1_LENGTH || (i < TIER2_LENGTH && todoList.achieved1) || (i < TIER3_LENGTH && todoList.achieved2)">
+        <hr *ngIf="i == TIER1_LENGTH || i == TIER2_LENGTH || i == TIER3_LENGTH" />
+        <check-button [(pressed)]="todo.done" (pressedChange)="todoClicked()">{{todo.name}}</check-button>
+      </div>
+
     </div>
   </div>
 
-  <hr *ngIf="todoList.percentage2 == 100" style="margin-top: 27px;"/>
-
-  <div *ngIf="todoList.percentage1 == 100" style="width:100%">
-    <div *ngFor="let todo of todoList.secondTier" style="padding: 10px 0px 0px 10px;">
-      <check-button [(pressed)]="todo.done" (pressedChange)="todoClicked()">{{todo.name}}</check-button>
-    </div>
-  </div>
-
-  <hr *ngIf="todoList.percentage1 == 100" style="margin-top: 27px;"/>
-
-  <div style="width:100%">
-    <div *ngFor="let todo of todoList.firstTier" style="padding: 10px 0px 0px 10px;">
-      <check-button [(pressed)]="todo.done" (pressedChange)="todoClicked()">{{todo.name}}</check-button>
-    </div>
-  </div>
 
 </div>
 

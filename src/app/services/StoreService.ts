@@ -1,5 +1,5 @@
 export class StoreService {
-  static readonly key = 'todo-list-id-000';
+  static readonly key = 'todo-list-id-002';
 
   static save(data: TodoCollection) {
     window.localStorage.setItem(`${this.key}-${data.date.toLocaleDateString()}`, JSON.stringify(data));
@@ -20,15 +20,14 @@ export class StoreService {
         return newValue;
 
       const previousCollectionParsed = JSON.parse(previousCollectionString) as TodoCollection;
-      const previousTodos = [
-        ...previousCollectionParsed.firstTier
-        , ...previousCollectionParsed.secondTier
-        , ...previousCollectionParsed.thirdTier
-        , ...previousCollectionParsed.extraTier
-      ].filter(f => !f.done);
+      if (previousCollectionParsed && previousCollectionParsed.tasks) {
+     const previousTodos = [
+          ...previousCollectionParsed.tasks
+        ].filter(f => !f.done);
 
-      for (let i = 0; i < previousTodos.length; i++)
-        newValue.push(previousTodos[i]);
+        for (let i = 0; i < previousTodos.length; i++)
+          newValue.push(previousTodos[i]);
+      }
 
       return newValue;
     }
@@ -46,15 +45,13 @@ export enum AchievementState {
   unlocking,
   unlocked
 }
-const TIER1_LENGTH = 4;
-const TIER2_LENGTH = 6;
-const TIER3_LENGTH = 8;
+
+export const TIER1_LENGTH = 4;
+export const TIER2_LENGTH = TIER1_LENGTH + 6;
+export const TIER3_LENGTH = TIER2_LENGTH + 8;
 
 export class TodoCollection {
-  firstTier: Todo[] = [];
-  secondTier: Todo[] = [];
-  thirdTier: Todo[] = [];
-  extraTier: Todo[] = [];
+  tasks: Todo[] = [];
 
   date: Date = new Date();
 
@@ -67,40 +64,27 @@ export class TodoCollection {
   achieved3 = AchievementState.locked;
 
   push(todo: Todo) {
-    if (this.firstTier.length < TIER1_LENGTH)
-      this.firstTier.push(todo);
-    else if (this.secondTier.length < TIER2_LENGTH)
-      this.secondTier.push(todo);
-    else if (this.thirdTier.length < TIER3_LENGTH)
-      this.thirdTier.push(todo);
-    else
-      this.extraTier.push(todo);
+    this.tasks.push(todo);
   }
 
   remove(todo: Todo) {
     const completeList = [
-      ...this.firstTier.filter(f => f !== todo)
-      , ...this.secondTier.filter(f => f !== todo)
-      , ...this.thirdTier.filter(f => f !== todo)
-      , ...this.extraTier.filter(f => f !== todo)
+      ...this.tasks.filter(f => f !== todo)
     ];
 
-    this.firstTier = [];
-    this.secondTier = [];
-    this.thirdTier = [];
-    this.extraTier = [];
+    this.tasks = [];
 
     completeList.forEach(f => this.push(f));
   }
 
   updatePercentage() {
-    const doneTasks1 = this.firstTier.filter(f => f.done).length;
-    const doneTasks2 = this.secondTier.filter(f => f.done).length;
-    const doneTasks3 = this.thirdTier.filter(f => f.done).length;
+    const doneTasks1 = this.tasks.slice(0, TIER1_LENGTH).filter(f => f.done).length;
+    const doneTasks2 = this.tasks.slice(0, TIER2_LENGTH).filter(f => f.done).length;
+    const doneTasks3 = this.tasks.slice(0, TIER3_LENGTH).filter(f => f.done).length;
 
-    this.percentage1 = (doneTasks1 * 100 / TIER1_LENGTH);
-    this.percentage2 = (doneTasks2 * 100 / TIER2_LENGTH);
-    this.percentage3 = (doneTasks3 * 100 / TIER3_LENGTH);
+    this.percentage1 = (doneTasks1 * 100 / TIER1_LENGTH );
+    this.percentage2 = (doneTasks2 * 100 / TIER2_LENGTH );
+    this.percentage3 = (doneTasks3 * 100 / TIER3_LENGTH );
 
     if (this.percentage1 === 100 && this.achieved1 === AchievementState.locked)
       this.achieved1 = AchievementState.unlocking;

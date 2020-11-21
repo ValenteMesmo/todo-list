@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { StoreService, TodoCollection } from "src/app/services/StoreService";
+import { StoreService, TodoCollection, TIER1_LENGTH, TIER2_LENGTH, TIER3_LENGTH } from "src/app/services/StoreService";
 import { Navigation } from '../../services/Navigation';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-todo-page',
@@ -9,8 +10,12 @@ import { Navigation } from '../../services/Navigation';
 export class TodoPageComponent {
   title = 'Todo';
 
+  TIER1_LENGTH = TIER1_LENGTH;
+  TIER2_LENGTH = TIER2_LENGTH;
+  TIER3_LENGTH = TIER3_LENGTH;
+
   Navigation = Navigation;
-  
+
   todoList: TodoCollection;
   textInput = '';
   achieved = false;
@@ -40,8 +45,9 @@ export class TodoPageComponent {
 
       this.todoList.updatePercentage();
     }, 0);
-
   }
 
-  
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.todoList.tasks, event.previousIndex, event.currentIndex);
+  }
 }

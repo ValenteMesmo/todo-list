@@ -38,7 +38,7 @@ import { CheckButtonComponent } from './shared/check-button/check-button';
 import { AchievementAnimationComponent } from './shared/achievement-animation/achievement.animation';
 import { DoingPageComponent } from './pages/doing-page/doing-page';
 import { TodoPageComponent } from './pages/todo-page/todo-page';
-
+import { DragDropModule } from '@angular/cdk/drag-drop';
 const materialModules = [
   MatAutocompleteModule,
   MatButtonModule,
@@ -69,7 +69,8 @@ const materialModules = [
   MatGridListModule,
   MatRadioModule,
   MatDatepickerModule,
-  MatTooltipModule
+  MatTooltipModule,
+  DragDropModule
 ];
 
 @NgModule({
