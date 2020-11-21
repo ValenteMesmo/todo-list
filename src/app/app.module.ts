@@ -39,6 +39,9 @@ import { AchievementAnimationComponent } from './shared/achievement-animation/ac
 import { DoingPageComponent } from './pages/doing-page/doing-page';
 import { TodoPageComponent } from './pages/todo-page/todo-page';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ScoreGraphComponent } from './shared/score-graph/score-graph';
+import { ShinyBackgroundDirective } from './shared/shiny-background/shiny-background.directive';
+
 const materialModules = [
   MatAutocompleteModule,
   MatButtonModule,
@@ -80,6 +83,8 @@ const materialModules = [
     , AchievementAnimationComponent
     , DoingPageComponent
     , TodoPageComponent
+    , ScoreGraphComponent
+    , ShinyBackgroundDirective
   ],
   imports: [
     BrowserModule,

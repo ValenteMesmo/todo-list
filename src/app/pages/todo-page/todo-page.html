@@ -1,18 +1,24 @@
+<score-graph></score-graph>
+
 <div style="margin-top: 21px;">
 
   <table style="width:100%">
     <tr>
       <td>
-        <mat-form-field hintLabel="Até 30 caracteres" appearance="fill">
-          <mat-label>Criar nova tarefa</mat-label>
+        
+        <mat-form-field hintLabel="Up to 120 characters" appearance="fill">
+          <mat-label>Create new Task</mat-label>
           <input matInput #input maxlength="120" [(ngModel)]="textInput" (keyup.enter)="add()" autocomplete="off" autofocus>
           <mat-hint align="end">{{input.value?.length || 0}}/120</mat-hint>
         </mat-form-field>
+          
       </td>
       <td>
       </td>
       <td>
+        
         <check-button style="float:right" (click)="Navigation.goToDoing()"><span class="mdi mdi-clipboard-text-play-outline"></span> Start</check-button>
+        
       </td>
     </tr>
   </table>
