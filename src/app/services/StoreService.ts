@@ -1,9 +1,20 @@
-export class StoreService {
-  static readonly key = 'todo-list-id-003';
+import { Observable } from 'rxjs';
+import { EventEmitter } from '@angular/core';
 
-  static save(data: TodoCollection) {
-    window.localStorage.setItem(`${this.key}-${data.date.toLocaleDateString()}`, JSON.stringify(data));
-    window.localStorage.setItem(`${this.key}-lastdate`, data.date.toLocaleDateString());
+export class StoreService {
+  private static readonly key = 'todo-list-id-006';
+
+  static save(current) {
+    window.localStorage.setItem(`${this.key}-${current.date.toLocaleDateString()}`, JSON.stringify(current));
+    window.localStorage.setItem(`${this.key}-lastdate`, current.date.toLocaleDateString());
+    this.todosLoaded.emit(current);
+  }
+
+  private static todosLoaded: EventEmitter<TodoCollection> = new EventEmitter<TodoCollection>();  
+
+  static getCurrent(): Observable<TodoCollection> {
+    setTimeout(() => StoreService.todosLoaded.emit(StoreService.load(new Date())),1);
+    return StoreService.todosLoaded;
   }
 
   static load(date: Date): TodoCollection {
@@ -21,7 +32,7 @@ export class StoreService {
 
       const previousCollectionParsed = JSON.parse(previousCollectionString) as TodoCollection;
       if (previousCollectionParsed && previousCollectionParsed.tasks) {
-     const previousTodos = [
+        const previousTodos = [
           ...previousCollectionParsed.tasks
         ].filter(f => !f.done);
 
@@ -33,9 +44,10 @@ export class StoreService {
     }
 
     let parsed = JSON.parse(value);
-    parsed = Object.assign(new TodoCollection, parsed);
+    parsed = Object.assign(new TodoCollection(), parsed);
     parsed = Object.setPrototypeOf(parsed, TodoCollection.prototype);
     parsed.date = new Date(parsed.date);
+    parsed.updatePercentage();
     return parsed;
   }
 }
@@ -52,6 +64,8 @@ export const TIER3_LENGTH = TIER2_LENGTH + 8;
 
 export class TodoCollection {
   tasks: Todo[] = [];
+
+  times: string[] = [];
 
   date: Date = new Date();
 
@@ -82,9 +96,9 @@ export class TodoCollection {
     const doneTasks2 = this.tasks.slice(0, TIER2_LENGTH).filter(f => f.done).length;
     const doneTasks3 = this.tasks.slice(0, TIER3_LENGTH).filter(f => f.done).length;
 
-    this.percentage1 = (doneTasks1 * 100 / TIER1_LENGTH );
-    this.percentage2 = (doneTasks2 * 100 / TIER2_LENGTH );
-    this.percentage3 = (doneTasks3 * 100 / TIER3_LENGTH );
+    this.percentage1 = (doneTasks1 * 100 / TIER1_LENGTH);
+    this.percentage2 = (doneTasks2 * 100 / TIER2_LENGTH);
+    this.percentage3 = (doneTasks3 * 100 / TIER3_LENGTH);
 
     if (this.percentage1 === 100 && this.achieved1 === AchievementState.locked)
       this.achieved1 = AchievementState.unlocking;

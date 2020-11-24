@@ -14,22 +14,20 @@ export class DoingPageComponent {
   TIER3_LENGTH = TIER3_LENGTH;
 
   Navigation = Navigation;
-  
+
   todoList: TodoCollection;
   textInput = '';
 
   constructor() {
-    this.todoList = StoreService.load(new Date());
-    this.todoList.updatePercentage();
+    StoreService.getCurrent().subscribe(f => this.todoList = f);
   }
 
   todoClicked() {
-      StoreService.save(this.todoList);
-      this.todoList.updatePercentage();
+    StoreService.save(this.todoList);
+    this.todoList.updatePercentage();
   }
 
   onAchievedChange() {
     StoreService.save(this.todoList);
-
   }
 }
