@@ -5,7 +5,7 @@
 <div style="margin-top: 21px;">
 
   <div style="width:100%;">
-    <div *ngFor="let todo of todoList.tasks; index as i" style="padding: 10px 0px 0px 10px;">
+    <div *ngFor="let todo of todoList?.tasks; index as i" style="padding: 10px 0px 0px 10px;">
 
       <div *ngIf="i < TIER1_LENGTH || (i < TIER2_LENGTH && todoList.achieved1) || (i < TIER3_LENGTH && todoList.achieved2)">
         <hr *ngIf="i == TIER1_LENGTH || i == TIER2_LENGTH || i == TIER3_LENGTH" />
@@ -17,6 +17,8 @@
 
 </div>
 
-<achievement-animation [(achieved)]="todoList.achieved1" (achievedChange)="onAchievedChange()"></achievement-animation>
-<achievement-animation [(achieved)]="todoList.achieved2" (achievedChange)="onAchievedChange()"></achievement-animation>
-<achievement-animation [(achieved)]="todoList.achieved3" (achievedChange)="onAchievedChange()"></achievement-animation>
+<div *ngIf="todoList">
+  <achievement-animation [(achieved)]="todoList.achieved1" (achievedChange)="onAchievedChange()"></achievement-animation>
+  <achievement-animation [(achieved)]="todoList.achieved2" (achievedChange)="onAchievedChange()"></achievement-animation>
+  <achievement-animation [(achieved)]="todoList.achieved3" (achievedChange)="onAchievedChange()"></achievement-animation>
+</div>
