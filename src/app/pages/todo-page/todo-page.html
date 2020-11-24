@@ -27,7 +27,7 @@
 
   <div cdkDropList (cdkDropListDropped)="drop($event)">
 
-    <div *ngFor="let todo of todoList.tasks; index as i">
+    <div *ngFor="let todo of todoList?.tasks; index as i">
 
       <hr *ngIf="i == TIER1_LENGTH || i == TIER2_LENGTH || i == TIER3_LENGTH" />
 

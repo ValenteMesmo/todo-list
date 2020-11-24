@@ -13,11 +13,11 @@ export class StoreService {
   private static todosLoaded: EventEmitter<TodoCollection> = new EventEmitter<TodoCollection>();  
 
   static getCurrent(): Observable<TodoCollection> {
-    setTimeout(() => StoreService.todosLoaded.emit(StoreService.load(new Date())),1);
+    setTimeout(() => StoreService.todosLoaded.emit(StoreService.getByDate(new Date())),1);
     return StoreService.todosLoaded;
   }
 
-  static load(date: Date): TodoCollection {
+  static getByDate(date: Date): TodoCollection {
     const value = window.localStorage.getItem(`${this.key}-${date.toLocaleDateString()}`);
     if (!value) {
       const newValue = new TodoCollection();

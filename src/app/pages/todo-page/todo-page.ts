@@ -21,8 +21,7 @@ export class TodoPageComponent {
   achieved = false;
 
   constructor() {
-    this.todoList = StoreService.load(new Date());
-    this.todoList.updatePercentage();
+    StoreService.getCurrent().subscribe(f => this.todoList = f);
   }
 
   add() {
@@ -49,5 +48,6 @@ export class TodoPageComponent {
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.todoList.tasks, event.previousIndex, event.currentIndex);
+    StoreService.save(this.todoList);
   }
 }

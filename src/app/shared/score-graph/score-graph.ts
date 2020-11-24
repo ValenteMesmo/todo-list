@@ -17,7 +17,7 @@ export class ScoreGraphComponent {
     const currentDay = 365 - 7 + today.isoWeekday();
 
     for (let i = 1; i <= currentDay; i++) {
-      const todos = StoreService.load(today.clone().add(i - currentDay, "days").toDate());
+      const todos = StoreService.getByDate(today.clone().add(i - currentDay, "days").toDate());
         (today.clone().add(i - currentDay, "days").toDate());
         const square = {
           //level: this.getFakeLevel(i),
