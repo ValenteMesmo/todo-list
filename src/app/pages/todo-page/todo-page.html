@@ -17,7 +17,7 @@
       </td>
       <td>
         
-        <check-button style="float:right" (click)="Navigation.goToDoing()"><span class="mdi mdi-clipboard-text-play-outline"></span> Start</check-button>
+        <check-button style="position: absolute; right: 14px; top: 14px;" (click)="Navigation.goToDoing()"><span class="mdi mdi-clipboard-text-play-outline"></span> Start</check-button>
         
       </td>
     </tr>
@@ -25,7 +25,7 @@
 
   <br />
 
-  <div cdkDropList (cdkDropListDropped)="drop($event)" style="padding: 0px 21px 0px 21px;">
+  <div cdkDropList (cdkDropListDropped)="drop($event)" style="padding: 0px 21px 54px 0px;">
 
     <div *ngFor="let todo of todoList?.tasks; index as i">
 
