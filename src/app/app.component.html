@@ -16,3 +16,10 @@
   </mat-chip>
 
 </mat-chip-list>
+
+
+<div *ngIf="todos">
+  <achievement-animation [(achieved)]="todos.achieved1" (achievedChange)="onAchievedChange()" title="Bronze medal" detail="4 tasks completed"></achievement-animation>
+  <achievement-animation [(achieved)]="todos.achieved2" (achievedChange)="onAchievedChange()" title="Silver medal" detail="10 tasks completed"></achievement-animation>
+  <achievement-animation [(achieved)]="todos.achieved3" (achievedChange)="onAchievedChange()" title="Gold medal" detail="18 tasks completed"></achievement-animation>
+</div>

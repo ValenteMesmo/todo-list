@@ -16,4 +16,8 @@ export class AppComponent {
   constructor(public readonly cronometer: Cronometer) {
     StoreService.getCurrent().subscribe(f => this.todos  = f);
   }
+
+  onAchievedChange() {
+    StoreService.save(this.todos);
+  }
 }

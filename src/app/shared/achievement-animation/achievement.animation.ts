@@ -15,6 +15,9 @@ export class AchievementAnimationComponent {
     return this._achieved;
   }
 
+  @Input() title: string;
+  @Input() detail: string;
+
   @Input() set achieved(value: AchievementState) {
     this._achieved = value;
     if (this._achieved === AchievementState.unlocking) {
