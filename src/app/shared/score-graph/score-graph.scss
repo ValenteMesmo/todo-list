@@ -94,3 +94,10 @@ ul {
 .squares li[data-level="3"] {
   background-color: #ffcc01;
 }
+
+.squares li:hover {
+  height: 21px;
+  width: 21px;
+  margin-left: -3px;
+  margin-top: -3px;
+}
