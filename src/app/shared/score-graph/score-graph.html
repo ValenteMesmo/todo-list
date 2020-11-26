@@ -23,6 +23,6 @@
     <li>Sat</li>
   </ul>
   <ul class="squares">
-    <li *ngFor="let item of data; index as i" [attr.data-level]="item.level" [shiny-background]="item.color"></li>
+    <li [title]="item.date.toLocal" style="cursor:pointer" *ngFor="let item of data; index as i" [attr.data-level]="item.level" [shiny-background]="item.color"></li>
   </ul>
 </div>
