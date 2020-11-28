@@ -10,18 +10,24 @@ import * as moment from 'moment';
 export class ScoreGraphComponent {
 
   data = [];
+  openModal: boolean;
+  selectedSquare: any;
 
   constructor() {
 
-    const today = moment(new Date());
-    const currentDay = 365 - 7 + today.isoWeekday();
+    StoreService.getCurrent().subscribe(f => {
 
-    for (let i = 1; i <= currentDay; i++) {
-      const squareMoment = today.clone().add(i - currentDay, "days");
-      const todos = StoreService.getByDate(squareMoment.toDate());
+      const today = moment(new Date());
+      const currentDay = 365 - 7 + today.isoWeekday();
+      this.data = [];
+
+      for (let i = 1; i <= currentDay; i++) {
+        const squareMoment = today.clone().add(i - currentDay, "days");
+        const todos = StoreService.getByDate(squareMoment.toDate());
         (today.clone().add(i - currentDay, "days").toDate());
         const square = {
-          //level: this.getFakeLevel(i),
+          ...todos,
+          timesAsString: todos.times.map(f => f.split(":").slice(0, 2).join(":")).join(" - "),
           level: this.getLevel(todos),
           color: '',
           date: squareMoment.format("DD/MM/YYYY")
@@ -32,8 +38,9 @@ export class ScoreGraphComponent {
           square.color = 'white';//'#fff8e7';
         if (square.level === 3)
           square.color = 'white';//'#ffe598';
-       this.data.push(square);
-    }
+        this.data.push(square);
+      }
+    });
   }
 
   getLevel(todos: TodoCollection) {
@@ -45,13 +52,6 @@ export class ScoreGraphComponent {
 
     if (todos.achieved1)
       return 1;
-
-    return 0;
-  }
-
-  getFakeLevel(i) {
-    if (i > 90)
-      return Math.round(Math.random() * 3);
 
     return 0;
   }

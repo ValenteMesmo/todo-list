@@ -1,3 +1,8 @@
+<modal-dialog [(open)]="openModal" [title]="selectedSquare?.date" [subtitle]="selectedSquare?.timesAsString">
+  <div *ngIf="selectedSquare">
+    <p *ngFor="let task of selectedSquare.tasks">[{{task.done ? 'X' : '_'}}] {{task.name}}</p>
+  </div>
+</modal-dialog>
 <div class="graph" style="width:100%">
   <ul class="months">
     <li>Jan</li>
@@ -23,6 +28,6 @@
     <li>Sat</li>
   </ul>
   <ul class="squares">
-    <li [title]="item.date" style="cursor:pointer" *ngFor="let item of data; index as i" [attr.data-level]="item.level" [shiny-background]="item.color"></li>
+    <li (click)="selectedSquare = item;openModal = true;" [title]="item.date" style="cursor:pointer" *ngFor="let item of data; index as i" [attr.data-level]="item.level" [shiny-background]="item.color"></li>
   </ul>
 </div>

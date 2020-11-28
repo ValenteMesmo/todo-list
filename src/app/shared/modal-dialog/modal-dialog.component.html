@@ -1,0 +1,21 @@
+<div id="myModal" class="modal" *ngIf="open" (click)="open = false;$event.stopPropagation()">
+
+  <!-- Modal content -->
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <mat-card>
+
+      <mat-card-title>{{title}}</mat-card-title>
+      <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
+
+      <button type="button" mat-icon-button style="position: absolute; right: 15px;top: 15px;" (click)="open = false;">
+        <span class="mdi mdi-24px mdi-close"></span>
+      </button>
+
+      <mat-card-content style="overflow:auto;max-height:510px;">
+        <ng-content></ng-content>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+</div>
