@@ -4,7 +4,8 @@ import { Navigation } from '../../services/Navigation';
 
 @Component({
   selector: 'app-doing-page',
-  templateUrl: './doing-page.html'
+  templateUrl: './doing-page.html',
+  styleUrls: ['./doing-page.scss']
 })
 export class DoingPageComponent {
   title = 'Doing';

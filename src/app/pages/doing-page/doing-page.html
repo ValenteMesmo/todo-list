@@ -5,14 +5,36 @@
 <div style="margin-top: 21px;">
 
   <div style="width:100%;">
-    <div *ngFor="let todo of todoList?.tasks; index as i" style="padding: 10px 0px 0px 10px;">
 
-      <div *ngIf="i < TIER1_LENGTH || (i < TIER2_LENGTH && todoList.achieved1) || (i < TIER3_LENGTH && todoList.achieved2)">
-        <hr *ngIf="i == TIER1_LENGTH || i == TIER2_LENGTH || i == TIER3_LENGTH" />
+    <ng-template ngFor let-todo [ngForOf]="todoList?.tasks" let-i="index">
+
+      <div *ngIf="i >= TIER2_LENGTH && i < TIER3_LENGTH && todoList?.achieved2"   class="button-wrapper">
         <check-button [(pressed)]="todo.done" (pressedChange)="todoClicked()">{{todo.name}}</check-button>
       </div>
 
-    </div>
+    </ng-template>
+
+    <hr *ngIf="todoList?.achieved1" style="margin-top: 27px;" />
+
+    <ng-template ngFor let-todo [ngForOf]="todoList?.tasks" let-i="index">
+
+      <div *ngIf="i >= TIER1_LENGTH && i < TIER2_LENGTH && todoList?.achieved1"   class="button-wrapper">
+        <check-button [(pressed)]="todo.done" (pressedChange)="todoClicked()">{{todo.name}}</check-button>
+      </div>
+
+    </ng-template>
+
+    <hr *ngIf="todoList?.achieved2" style="margin-top: 27px;" />
+
+    
+    <ng-template ngFor let-todo [ngForOf]="todoList?.tasks" let-i="index">
+
+      <div *ngIf="i < TIER1_LENGTH" class="button-wrapper">
+        <check-button [(pressed)]="todo.done" (pressedChange)="todoClicked()">{{todo.name}}</check-button>
+      </div>
+
+    </ng-template>
+
   </div>
 
 </div>

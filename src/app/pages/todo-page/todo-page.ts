@@ -9,7 +9,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 })
 export class TodoPageComponent {
   title = 'Todo';
-
+  window = window;
   TIER1_LENGTH = TIER1_LENGTH;
   TIER2_LENGTH = TIER2_LENGTH;
   TIER3_LENGTH = TIER3_LENGTH;

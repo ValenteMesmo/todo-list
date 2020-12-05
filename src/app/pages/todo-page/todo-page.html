@@ -1,58 +1,58 @@
-<score-graph></score-graph>
+<score-graph *ngIf="window.innerWidth > 360"></score-graph>
 
 <div style="margin-top: 21px;">
 
   <table style="width:100%">
     <tr>
       <td>
-        
+
         <mat-form-field appearance="fill">
           <mat-label>Create new Task</mat-label>
           <input matInput #input maxlength="120" [(ngModel)]="textInput" (keyup.enter)="add()" autocomplete="off" autofocus>
           <mat-hint align="end">{{input.value?.length || 0}}/120</mat-hint>
         </mat-form-field>
-          
+
       </td>
       <td>
       </td>
       <td>
-        
+
         <check-button style="position: absolute; right: 14px; top: 14px;" (click)="Navigation.goToDoing()"><span class="mdi mdi-clipboard-text-play-outline"></span> Start</check-button>
-        
+
       </td>
     </tr>
   </table>
 
   <br />
+  <div style="padding: 0px 30px 54px 30px;">
+    <div cdkDropList (cdkDropListDropped)="drop($event)" >
 
-  <div cdkDropList (cdkDropListDropped)="drop($event)" style="padding: 0px 21px 54px 0px;">
+      <div *ngFor="let todo of todoList?.tasks; index as i">
 
-    <div *ngFor="let todo of todoList?.tasks; index as i">
+        <hr *ngIf="i == TIER1_LENGTH || i == TIER2_LENGTH || i == TIER3_LENGTH" />
 
-      <hr *ngIf="i == TIER1_LENGTH || i == TIER2_LENGTH || i == TIER3_LENGTH" />
+        <div style="padding-left:10px;padding-bottom:10px;padding-right:10px;" cdkDrag cdkDragLockAxis="y" [cdkDragStartDelay]="60">
 
-      <div style="padding-left:10px;padding-bottom:10px;padding-right:10px;" cdkDrag cdkDragLockAxis="y" [cdkDragStartDelay]="90">
+          <div class="example-custom-placeholder" *cdkDragPlaceholder style="background: rgba(#2c2c2c, 0.04); min-height: 60px; transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);">
+          </div>
 
-        <div class="example-custom-placeholder" *cdkDragPlaceholder style="background: rgba(#2c2c2c, 0.04); min-height: 60px; transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);">
+          <mat-card>
+
+            <button type="button" mat-icon-button style="float:right" (click)="remove(todo)" [disabled]="todo.done">
+              <span class="mdi mdi-24px mdi-delete"></span>
+            </button>
+
+            <mat-card-content>
+              <p>
+                {{todo.name}}
+              </p>
+            </mat-card-content>
+
+          </mat-card>
         </div>
 
-        <mat-card>
-
-          <button type="button" mat-icon-button style="float:right" (click)="remove(todo)" [disabled]="todo.done">
-            <span class="mdi mdi-24px mdi-delete"></span>
-          </button>
-
-          <mat-card-content>
-            <p>
-              {{todo.name}}
-            </p>
-          </mat-card-content>
-
-        </mat-card>
       </div>
 
     </div>
-
   </div>
-
 </div>
