@@ -36,10 +36,14 @@
           <div class="example-custom-placeholder" *cdkDragPlaceholder style="background: rgba(#2c2c2c, 0.04); min-height: 60px; transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);">
           </div>
 
-          <mat-card>
+          <mat-card>            
 
             <button type="button" mat-icon-button style="float:right" (click)="remove(todo)" [disabled]="todo.done">
               <span class="mdi mdi-24px mdi-delete"></span>
+            </button>
+
+            <button type="button" mat-icon-button style="float:right" (click)="textInput = todo.name" [disabled]="todo.done">
+              <span class="mdi mdi-24px mdi-content-copy"></span>
             </button>
 
             <mat-card-content>
