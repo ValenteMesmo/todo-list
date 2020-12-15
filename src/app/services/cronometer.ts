@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { throttle } from '../shared/throttle.decorator';
 import { StoreService, TodoCollection } from './StoreService';
 
 @Injectable({
@@ -57,12 +58,14 @@ export class Cronometer {
     return `${hours}:${("00" + minutes).slice(-2)}:${("00" + seconds).slice(-2)}`;
   }
 
+  @throttle()
   removeTime(time) {
     this.todos.times = this.todos.times.filter(f => f !== time);
 
     StoreService.save(this.todos);
   }
 
+  @throttle()
   click() {
     this.todos.times.push(this.formatHourFromDate(new Date()));
 
