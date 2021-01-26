@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { throttle } from '../shared/throttle.decorator';
 import { StoreService, TodoCollection } from './StoreService';
-
+import * as moment from 'moment';
 @Injectable({
   providedIn: 'root',
 })
@@ -18,27 +18,42 @@ export class Cronometer {
   todos: TodoCollection;
 
   constructor() {
+    moment.locale('pt-br');
+
     StoreService.getCurrent().subscribe(f => {
       this.todos = f;
 
 
-      this.todos.times.map(f => new Date(f));
+      this.todos.times.map(f => moment(f).toDate());
       if (this.todos.times.length % 2 === 0)
         this.pauseClick();
-      else 
+      else
         this.playClick();
 
       let currentTime = 0;
+
+      const now = moment().toDate();
+      const nowTime = moment().set({ hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds() })
+        .toDate()
+        .getTime();
+
       if (this.todos.times.length) {
         for (let i = 0; i < this.todos.times.length; i += 2) {
-          let a = this.todos.times[i];
-          let b = this.todos.times[i + 1];
+          const a = this.todos.times[i];
+          const b = this.todos.times[i + 1];
+
+          const dateA = moment(now);
+          dateA.set(this.getTimeObject(a));
+
+          const dateB = moment(now);
+          dateB.set(this.getTimeObject(b));          
+
           if (b)
-            currentTime += new Date("01/01/2018 " + b).getTime() - new Date("01/01/2018 " + a).getTime();
+            currentTime += dateB.toDate().getTime() - dateA.toDate().getTime();
           else
-            currentTime += new Date(`01/01/2018 ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`).getTime() - new Date("01/01/2018 " + a).getTime();
+            currentTime += nowTime - dateA.toDate().getTime();
         }
-        const aaa = new Date(`01/01/2018 00:00:00`);
+        const aaa = moment(now).toDate();
         aaa.setMilliseconds(currentTime);
         this.seconds = aaa.getSeconds();
         this.minutes = aaa.getMinutes();
@@ -48,6 +63,15 @@ export class Cronometer {
       else
         this.time = "0:00:00";
     });
+  }
+
+  private getTimeObject(timeString: string) {
+    const values = timeString.split(':');
+
+    if (values.length !== 3)
+      return { hour: 0, minute: 0, second: 0, millisecond: 0 };
+
+    return { hour: Number(values[0]), minute: Number(values[1]), second: Number(values[2]) };
   }
 
   private formatHourFromDate(date: Date) {
@@ -67,7 +91,7 @@ export class Cronometer {
 
   @throttle()
   click() {
-    this.todos.times.push(this.formatHourFromDate(new Date()));
+    this.todos.times.push(this.formatHourFromDate(moment().toDate()));
 
     if (this.running)
       this.pauseClick();
