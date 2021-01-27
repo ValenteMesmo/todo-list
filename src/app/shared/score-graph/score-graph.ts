@@ -24,14 +24,15 @@ export class ScoreGraphComponent {
       for (let i = 1; i <= currentDay; i++) {
         const squareMoment = today.clone().add(i - currentDay, "days");
         const todos = StoreService.getByDate(squareMoment.toDate());
-        (today.clone().add(i - currentDay, "days").toDate());
+
         const square = {
           ...todos,
           timesAsString: todos.times.map(f => f.split(":").slice(0, 2).join(":")).join(" - "),
-          level: this.getLevel(todos),
+          level: this.getLevel(todos, squareMoment.day() === 6 || squareMoment.day() === 0),
           color: '',
           date: squareMoment.format("DD/MM/YYYY")
         };
+
         if (square.level === 1)
           square.color = 'white';//'#e17f50';
         if (square.level === 2)
@@ -43,7 +44,7 @@ export class ScoreGraphComponent {
     });
   }
 
-  getLevel(todos: TodoCollection) {
+  getLevel(todos: TodoCollection, isWeekend: boolean) {
     if (todos.achieved3)
       return 3;
 
@@ -53,7 +54,7 @@ export class ScoreGraphComponent {
     if (todos.achieved1)
       return 1;
 
-    return 0;
+    return isWeekend ? -1 : 0;
   }
 }
 

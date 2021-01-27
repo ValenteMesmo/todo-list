@@ -83,6 +83,11 @@ ul {
   list-style-type: none;
 }
 
+.squares li[data-level="-1"] {
+  background-color: #272727;
+  list-style-type: none;
+}
+
 .squares li[data-level="1"] {
   background-color: #af6a2e;
 }
