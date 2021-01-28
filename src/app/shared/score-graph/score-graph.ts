@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { StoreService, TodoCollection } from '../../services/StoreService';
 import * as moment from 'moment';
+import { throttle } from '../throttle.decorator';
 
 @Component({
   selector: 'score-graph',
@@ -29,6 +30,7 @@ export class ScoreGraphComponent {
           ...todos,
           //TODO: parei aqui! calculando total
           timesAsString: `${todos.times.map(f => f.split(":").slice(0, 2).join(":")).join(" - ")}`,
+          times: todos.times,
           level: this.getLevel(todos, squareMoment.day() === 6 || squareMoment.day() === 0),
           color: '',
           date: squareMoment.format("DD/MM/YYYY")
@@ -56,6 +58,25 @@ export class ScoreGraphComponent {
       return 1;
 
     return isWeekend ? -1 : 0;
+  }
+
+  @throttle()
+  copyTime(time: string) {
+    const formattedTime = time.split(":").slice(0, 2).join("");
+    if (formattedTime.length === 3)
+      this.copy("0" + formattedTime);
+    else
+      this.copy(formattedTime);
+  }
+  
+  copy(text) {
+    const input = document.createElement('input');
+    input.setAttribute('value', text);
+    document.body.appendChild(input);
+    input.select();
+    const result = document.execCommand('copy');
+    document.body.removeChild(input);
+    return result;
   }
 }
 

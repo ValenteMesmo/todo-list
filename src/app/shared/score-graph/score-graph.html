@@ -1,4 +1,9 @@
-<modal-dialog [(open)]="openModal" [title]="selectedSquare?.date" [subtitle]="selectedSquare?.timesAsString">
+<modal-dialog [(open)]="openModal" [title]="selectedSquare?.date">
+  <p>
+    <ng-template ngFor let-time [ngForOf]="selectedSquare?.times" let-index="index">
+      {{index == 0 ? '' : '-'}} <span (click)="copyTime(time)" style="cursor:pointer;">{{time.split(":").slice(0, 2).join(":")}}</span>
+    </ng-template> 
+  </p>
   <div *ngIf="selectedSquare">
     <p *ngFor="let task of selectedSquare.tasks">[{{task.done ? 'X' : '_'}}] {{task.name}}</p>
   </div>
