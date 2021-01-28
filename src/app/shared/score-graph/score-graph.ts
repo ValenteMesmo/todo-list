@@ -27,7 +27,8 @@ export class ScoreGraphComponent {
 
         const square = {
           ...todos,
-          timesAsString: todos.times.map(f => f.split(":").slice(0, 2).join(":")).join(" - "),
+          //TODO: parei aqui! calculando total
+          timesAsString: `${todos.times.map(f => f.split(":").slice(0, 2).join(":")).join(" - ")}`,
           level: this.getLevel(todos, squareMoment.day() === 6 || squareMoment.day() === 0),
           color: '',
           date: squareMoment.format("DD/MM/YYYY")

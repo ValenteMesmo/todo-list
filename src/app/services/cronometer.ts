@@ -23,8 +23,7 @@ export class Cronometer {
     StoreService.getCurrent().subscribe(f => {
       this.todos = f;
 
-
-      this.todos.times.map(f => moment(f).toDate());
+      //this.todos.times.map(f => moment(f).toDate());
       if (this.todos.times.length % 2 === 0)
         this.pauseClick();
       else
@@ -44,16 +43,20 @@ export class Cronometer {
 
           const dateA = moment(now);
           dateA.set(this.getTimeObject(a));
+       
 
-          const dateB = moment(now);
-          dateB.set(this.getTimeObject(b));          
-
-          if (b)
+          if (b) {
+            const dateB = moment(now);
+            dateB.set(this.getTimeObject(b));   
             currentTime += dateB.toDate().getTime() - dateA.toDate().getTime();
+          }
           else
             currentTime += nowTime - dateA.toDate().getTime();
         }
         const aaa = moment(now).toDate();
+        aaa.setHours(0);
+        aaa.setMinutes(0);
+        aaa.setSeconds(0);
         aaa.setMilliseconds(currentTime);
         this.seconds = aaa.getSeconds();
         this.minutes = aaa.getMinutes();
