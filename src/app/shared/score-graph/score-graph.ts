@@ -62,8 +62,8 @@ export class ScoreGraphComponent {
 
   @throttle()
   copyTime(time: string) {
-    const formattedTime = time.split(":").slice(0, 2).join("");
-    if (formattedTime.length === 3)
+    const formattedTime = time.split(":").slice(0, 2).join(":");
+    if (formattedTime.length === 4)
       this.copy("0" + formattedTime);
     else
       this.copy(formattedTime);
