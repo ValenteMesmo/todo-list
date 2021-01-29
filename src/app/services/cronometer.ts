@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { throttle } from '../shared/throttle.decorator';
 import { StoreService, TodoCollection } from './StoreService';
 import * as moment from 'moment';
+import { NotificationService } from './notification-service';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -17,7 +19,7 @@ export class Cronometer {
 
   todos: TodoCollection;
 
-  constructor() {
+  constructor(public readonly notification: NotificationService) {
     moment.locale('pt-br');
 
     StoreService.getCurrent().subscribe(f => {
@@ -117,6 +119,9 @@ export class Cronometer {
       this.minutes = 0;
       this.hours++;
     }
+
+    if (this.hours === 8 && this.minutes === 0 && this.seconds === 0)
+      this.notification.notify("8 hours done!", "(╯°□°) ╯︵ ┻━┻");
 
     this.time = this.formatHour(this.hours, this.minutes, this.seconds);
   }
