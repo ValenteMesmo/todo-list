@@ -30,6 +30,8 @@ export class TodoPageComponent {
 
     this.todoList.push({ name: this.textInput.trim(), done: false });
     this.textInput = '';
+
+    moveItemInArray(this.todoList.tasks, this.todoList.tasks.length-1, 0);
     StoreService.save(this.todoList);
   }
 
