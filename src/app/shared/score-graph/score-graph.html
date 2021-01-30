@@ -6,8 +6,10 @@
   </p>
   <div *ngIf="selectedSquare">
     <p *ngFor="let task of selectedSquare.tasks">[{{task.done ? 'X' : '_'}}] {{task.name}}</p>
+    <p *ngIf="selectedSquare.tasks.length == 0">ლ(ಠ益ಠლ)</p>
   </div>
 </modal-dialog>
+
 <div class="graph" style="width:100%">
   <ul class="months">
     <li>Jan</li>

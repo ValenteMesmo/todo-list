@@ -24,7 +24,7 @@ export class ScoreGraphComponent {
 
       for (let i = 1; i <= currentDay; i++) {
         const squareMoment = today.clone().add(i - currentDay, "days");
-        const todos = StoreService.getByDate(squareMoment.toDate());
+        const todos = StoreService.getByDate(squareMoment.toDate(), false);
 
         const square = {
           ...todos,

@@ -13,14 +13,17 @@ export class StoreService {
   private static todosLoaded: EventEmitter<TodoCollection> = new EventEmitter<TodoCollection>();  
 
   static getCurrent(): Observable<TodoCollection> {
-    setTimeout(() => StoreService.todosLoaded.emit(StoreService.getByDate(new Date())),1);
+    setTimeout(() => StoreService.todosLoaded.emit(StoreService.getByDate(new Date(),true)),1);
     return StoreService.todosLoaded;
   }
 
-  static getByDate(date: Date): TodoCollection {
+  static getByDate(date: Date, isCurrentDay: boolean): TodoCollection {
     const value = window.localStorage.getItem(`${this.key}-${date.toLocaleDateString()}`);
     if (!value) {
       const newValue = new TodoCollection();
+
+      if (!isCurrentDay)
+        return newValue;
 
       const lastDateString = window.localStorage.getItem(`${this.key}-lastdate`);
       if (!lastDateString)
