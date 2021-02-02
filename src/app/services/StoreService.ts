@@ -10,10 +10,10 @@ export class StoreService {
     this.todosLoaded.emit(current);
   }
 
-  private static todosLoaded: EventEmitter<TodoCollection> = new EventEmitter<TodoCollection>();  
+  private static todosLoaded: EventEmitter<TodoCollection> = new EventEmitter<TodoCollection>();
 
   static getCurrent(): Observable<TodoCollection> {
-    setTimeout(() => StoreService.todosLoaded.emit(StoreService.getByDate(new Date(),true)),1);
+    setTimeout(() => StoreService.todosLoaded.emit(StoreService.getByDate(new Date(), true)), 1);
     return StoreService.todosLoaded;
   }
 
@@ -37,7 +37,7 @@ export class StoreService {
       if (previousCollectionParsed && previousCollectionParsed.tasks) {
         const previousTodos = [
           ...previousCollectionParsed.tasks
-        ].filter(f => !f.done);
+        ].filter(f => !f.done || f.stacks > f.done);
 
         for (let i = 0; i < previousTodos.length; i++)
           newValue.push(previousTodos[i]);
@@ -95,25 +95,40 @@ export class TodoCollection {
   }
 
   updatePercentage() {
-    const doneTasks1 = this.tasks.slice(0, TIER1_LENGTH).filter(f => f.done).length;
-    const doneTasks2 = this.tasks.slice(0, TIER2_LENGTH).filter(f => f.done).length;
-    const doneTasks3 = this.tasks.slice(0, TIER3_LENGTH).filter(f => f.done).length;
+    const doneCount = this.tasks.map(f => Number(f.done)).reduce((sum, current) => sum + current, 0);
 
-    this.percentage1 = (doneTasks1 * 100 / TIER1_LENGTH);
-    this.percentage2 = (doneTasks2 * 100 / TIER2_LENGTH);
-    this.percentage3 = (doneTasks3 * 100 / TIER3_LENGTH);
+    this.percentage1 = (doneCount * 100 / TIER1_LENGTH);
+    this.percentage2 = (doneCount * 100 / TIER2_LENGTH);
+    this.percentage3 = (doneCount * 100 / TIER3_LENGTH);
 
-    if (this.percentage1 === 100 && this.achieved1 === AchievementState.locked)
-      this.achieved1 = AchievementState.unlocking;
-    if (this.percentage2 === 100 && this.achieved2 === AchievementState.locked)
-      this.achieved2 = AchievementState.unlocking;
-    if (this.percentage3 === 100 && this.achieved3 === AchievementState.locked)
+    if (this.percentage1 >= 100) {
+      if (this.achieved1 === AchievementState.locked)
+        this.achieved1 = AchievementState.unlocking;
+    }
+    else
+      this.achieved1 = AchievementState.locked;
+
+    if (this.percentage2 >= 100) {
+      if (this.achieved2 === AchievementState.locked)
+        this.achieved2 = AchievementState.unlocking;
+    }
+    else
+      this.achieved2 = AchievementState.locked;
+
+    if (this.percentage3 >= 100) {
+      if (this.achieved3 === AchievementState.locked)
       this.achieved3 = AchievementState.unlocking;
+    }
+    else
+      this.achieved3 = AchievementState.locked;
+
+
   }
 }
 
 
 export class Todo {
   name: string;
-  done: boolean;
+  done: boolean | number;
+  stacks: number;
 }

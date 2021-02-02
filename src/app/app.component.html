@@ -1,5 +1,13 @@
-<app-todo-page *ngIf="Navigation.isPlanning()"></app-todo-page>
-<app-doing-page *ngIf="Navigation.isDoing()"></app-doing-page>
+<check-button [(pressed)]="openEdit">
+  <span class="mdi mdi-clipboard-arrow-left-outline"></span> Edit Tasks
+</check-button>
+
+<score-graph *ngIf="window.innerWidth > 360"></score-graph>
+
+<modal-dialog [(open)]="openEdit" title="Edit">
+  <app-todo-page></app-todo-page>
+</modal-dialog>
+<app-doing-page></app-doing-page>
 
 <button mat-raised-button style="background-color:#616161; position:fixed;right:15px;bottom:15px" (click)="cronometer.click()">
   {{cronometer.time}} <span [class.mdi-timer-off-outline]="cronometer.running" [class.mdi-timer-outline]="!cronometer.running" class="mdi mdi-24px"></span>
@@ -7,7 +15,7 @@
 
 <mat-chip-list #chipList style="position:fixed;right:126px;bottom:18px">
 
-  <mat-chip *ngFor="let click of todos?.times"            
+  <mat-chip *ngFor="let click of todos?.times"
             (click)="cronometer.removeTime(click)"
             [selectable]="selectable"
             [removable]="removable">

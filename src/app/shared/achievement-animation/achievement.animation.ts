@@ -15,11 +15,9 @@ export class AchievementAnimationComponent {
     return this._achieved;
   }
 
-  @Input() title: string;
-  @Input() detail: string;
-
   @Input() set achieved(value: AchievementState) {
     this._achieved = value;
+
     if (this._achieved === AchievementState.unlocking) {
       setTimeout(() => {
         SoundService.play2();
@@ -30,5 +28,8 @@ export class AchievementAnimationComponent {
       }, 900);
     }
   }
+
+  @Input() title: string;
+  @Input() detail: string;  
 }
 

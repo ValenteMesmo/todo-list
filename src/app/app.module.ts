@@ -42,6 +42,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ScoreGraphComponent } from './shared/score-graph/score-graph';
 import { ShinyBackgroundDirective } from './shared/shiny-background/shiny-background.directive';
 import { ModalDialogComponent } from './shared/modal-dialog/modal-dialog.component';
+import { StackedCheckButtonComponent } from './shared/stacked-check-button/stacked-check-button';
 
 const materialModules = [
   MatAutocompleteModule,
@@ -81,6 +82,7 @@ const materialModules = [
   declarations: [
     AppComponent
     , CheckButtonComponent
+    , StackedCheckButtonComponent
     , AchievementAnimationComponent
     , DoingPageComponent
     , TodoPageComponent

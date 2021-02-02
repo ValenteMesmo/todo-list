@@ -12,6 +12,9 @@ export class AppComponent {
   title = 'todo-app';
   Navigation = Navigation;
   todos: TodoCollection;
+  openEdit: boolean;
+
+  window = window;
 
   constructor(public readonly cronometer: Cronometer) {
     StoreService.getCurrent().subscribe(f => this.todos  = f);

@@ -17,7 +17,8 @@ export class TodoPageComponent {
   Navigation = Navigation;
 
   todoList: TodoCollection;
-  textInput = '';
+  newTaskName = '';
+  newTaskStacks = '1';
   achieved = false;
 
   constructor() {
@@ -25,11 +26,11 @@ export class TodoPageComponent {
   }
 
   add() {
-    if (!this.textInput.trim())
+    if (!this.newTaskName.trim())
       return;
 
-    this.todoList.push({ name: this.textInput.trim(), done: false });
-    this.textInput = '';
+    this.todoList.push({ name: this.newTaskName.trim(), done: 0, stacks: Number(this.newTaskStacks) });
+    this.newTaskName = '';
 
     moveItemInArray(this.todoList.tasks, this.todoList.tasks.length-1, 0);
     StoreService.save(this.todoList);
