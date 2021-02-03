@@ -39,8 +39,11 @@ export class StoreService {
           ...previousCollectionParsed.tasks
         ].filter(f => !f.done || f.stacks > f.done || f.recurring)
           .map(f => {
-            if (f.recurring)
-              f.done = 0;
+            if (f.stacks > 1 && !f.recurring)
+              f.stacks = f.stacks - Number(f.done);
+
+            f.done = 0;
+
             return f;
           });
 
