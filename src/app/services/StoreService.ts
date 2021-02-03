@@ -37,7 +37,12 @@ export class StoreService {
       if (previousCollectionParsed && previousCollectionParsed.tasks) {
         const previousTodos = [
           ...previousCollectionParsed.tasks
-        ].filter(f => !f.done || f.stacks > f.done);
+        ].filter(f => !f.done || f.stacks > f.done || f.recurring)
+          .map(f => {
+            if (f.recurring)
+              f.done = 0;
+            return f;
+          });
 
         for (let i = 0; i < previousTodos.length; i++)
           newValue.push(previousTodos[i]);
@@ -117,7 +122,7 @@ export class TodoCollection {
 
     if (this.percentage3 >= 100) {
       if (this.achieved3 === AchievementState.locked)
-      this.achieved3 = AchievementState.unlocking;
+        this.achieved3 = AchievementState.unlocking;
     }
     else
       this.achieved3 = AchievementState.locked;
@@ -131,4 +136,5 @@ export class Todo {
   name: string;
   done: boolean | number;
   stacks: number;
+  recurring: boolean;
 }

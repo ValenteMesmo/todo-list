@@ -1,12 +1,12 @@
 <div style="margin-top: 21px;">
 
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" style="padding-right:12px">
           <mat-label>Create new Task</mat-label>
           <input matInput #input maxlength="120" [(ngModel)]="newTaskName" (keyup.enter)="add()" autocomplete="off" autofocus>
           <mat-hint align="end">{{input.value?.length || 0}}/120</mat-hint>
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" style="padding-right:12px">
           <mat-label>Stacks</mat-label>
           <mat-select [(ngModel)]="newTaskStacks">
             <mat-option value="1">1</mat-option>
@@ -22,7 +22,10 @@
           </mat-select>
           <mat-hint align="end">How many times will you do it</mat-hint>
         </mat-form-field>
+  
+  <mat-checkbox [(ngModel)]="newTaskRecurring" style="padding-right:12px">Recurring</mat-checkbox>
 
+  <br />
   <br />
   <div style="padding: 0px 30px 54px 30px;">
     <div cdkDropList (cdkDropListDropped)="drop($event)">
@@ -38,7 +41,7 @@
 
           <mat-card style="background-color: rgba(255, 255, 255, 0.1)">
 
-            <button type="button" mat-icon-button style="float:right" (click)="remove(todo)" [disabled]="todo.done">
+            <button type="button" mat-icon-button style="float:right" (click)="remove(todo)" [disabled]="todo.done > 0">
               <span class="mdi mdi-24px mdi-delete"></span>
             </button>
 

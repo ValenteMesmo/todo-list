@@ -19,6 +19,7 @@ export class TodoPageComponent {
   todoList: TodoCollection;
   newTaskName = '';
   newTaskStacks = '1';
+  newTaskRecurring = false;
   achieved = false;
 
   constructor() {
@@ -29,10 +30,15 @@ export class TodoPageComponent {
     if (!this.newTaskName.trim())
       return;
 
-    this.todoList.push({ name: this.newTaskName.trim(), done: 0, stacks: Number(this.newTaskStacks) });
+    this.todoList.push({
+      name: this.newTaskName.trim(),
+      done: 0,
+      stacks: Number(this.newTaskStacks),
+      recurring: this.newTaskRecurring
+    });
     this.newTaskName = '';
 
-    moveItemInArray(this.todoList.tasks, this.todoList.tasks.length-1, 0);
+    moveItemInArray(this.todoList.tasks, this.todoList.tasks.length - 1, 0);
     StoreService.save(this.todoList);
   }
 
