@@ -18,9 +18,15 @@ export class DoingPageComponent {
 
   todoList: TodoCollection;
   textInput = '';
+  recurringTasks: Todo[] = [];
+  normalTasks: Todo[] = [];
 
   constructor() {
-    StoreService.getCurrent().subscribe(f => this.todoList = f);
+    StoreService.getCurrent().subscribe(todoList => {
+      this.recurringTasks = todoList.tasks.filter(f => f.recurring);
+      this.normalTasks = todoList.tasks.filter(f => !f.recurring);
+      this.todoList = todoList;
+    });
   }
 
   todoClicked() {
@@ -41,7 +47,7 @@ export class DoingPageComponent {
       return true;
 
     if (i >= TIER2_LENGTH && i < TIER3_LENGTH && this.todoList?.achieved2)
-      return true;   
+      return true;
 
     return false;
   }

@@ -1,19 +1,37 @@
 <div style="margin-top: 21px;">
 
-  <div style="width:100%;">
+  <table style="width:100%;">
+    <tr>
+      <td>
 
-    <ng-template ngFor let-todo [ngForOf]="todoList?.tasks" let-i="index">
+        <ng-template ngFor let-todo [ngForOf]="recurringTasks" let-i="index">
 
-      <div *ngIf="todo.stacks > 1 && shoudRenderTodoItem(i)" class="button-wrapper">
-        <stacked-check-button [(count)]="todo.done" [size]="todo.stacks" (countChange)="todoClicked()">{{todo.name}}</stacked-check-button>
-      </div>
+          <div *ngIf="todo.stacks > 1 " class="button-wrapper">
+            <stacked-check-button [(count)]="todo.done" [size]="todo.stacks" (countChange)="todoClicked()">{{todo.name}}</stacked-check-button>
+          </div>
 
-      <div *ngIf="!(todo.stacks > 1) && shoudRenderTodoItem(i)" class="button-wrapper">
-        <check-button [(pressed)]="todo.done" (pressedChange)="todoClicked(todo)">{{todo.name}}</check-button>
-      </div>
+          <div *ngIf="!(todo.stacks > 1) " class="button-wrapper">
+            <check-button [(pressed)]="todo.done" (pressedChange)="todoClicked()">{{todo.name}}</check-button>
+          </div>
 
-    </ng-template>
+        </ng-template>
+      </td>
+      <td>
 
-  </div>
+        <ng-template ngFor let-todo [ngForOf]="normalTasks" let-i="index">
+
+          <div *ngIf="todo.stacks > 1 && shoudRenderTodoItem(i)" class="button-wrapper">
+            <stacked-check-button [(count)]="todo.done" [size]="todo.stacks" (countChange)="todoClicked()">{{todo.name}}</stacked-check-button>
+          </div>
+
+          <div *ngIf="!(todo.stacks > 1) && shoudRenderTodoItem(i)" class="button-wrapper">
+            <check-button [(pressed)]="todo.done" (pressedChange)="todoClicked()">{{todo.name}}</check-button>
+          </div>
+
+        </ng-template>
+      </td>
+
+    </tr>
+  </table>
 
 </div>
