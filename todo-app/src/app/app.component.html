@@ -1,0 +1,48 @@
+<ion-app>
+  <ion-header [translucent]="true">
+
+    <ion-toolbar>
+      
+      <ion-buttons slot="end">
+        <app-login-button></app-login-button>
+      </ion-buttons>
+
+      <ion-title>Missões do dia</ion-title>
+
+    </ion-toolbar>
+
+  </ion-header>
+
+  <ion-content [fullscreen]="true">
+
+
+    
+    <div class="ion-padding">
+
+      <app-task-list></app-task-list>
+      
+      <!-- <ion-item>
+        <ion-label position="floating">Cadastrar nova missão...</ion-label>
+        <ion-input (keyup.enter)="addItem()" [(ngModel)]="newTitle"></ion-input>
+      </ion-item>
+     
+
+
+      <app-task-list></app-task-list>
+
+      <ion-reorder-group (ionItemReorder)="$event.detail.complete();" disabled="false">
+
+
+        <ion-item *ngFor="let mission of missions">
+          <ion-reorder slot="start"></ion-reorder>
+          <ion-label>
+            {{mission.title}}
+          </ion-label>
+        </ion-item>
+
+
+      </ion-reorder-group> -->
+
+    </div>
+  </ion-content>
+</ion-app>

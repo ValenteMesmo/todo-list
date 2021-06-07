@@ -1,0 +1,2 @@
+<ion-button *ngIf="!authService.loggedIn" fill="outline" (click)="authService.login()">Login</ion-button>
+<app-user-info *ngIf="authService.loggedIn" (click)="authService.logout()" style="cursor: pointer;"></app-user-info>
