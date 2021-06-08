@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 
 export enum EventType {
-  chronometerButtonClicked,
-  taskCreated,
-  TaskOrderChanged,
+  chronometerButtonClicked = 0,
+  timeclicked = 1,
+  taskCreated = 2,
+  TaskOrderChanged = 3,
 }
 
 export interface Quests {
@@ -12,6 +13,12 @@ export interface Quests {
   repeatable: boolean,
 
   completed: number
+}
+
+export interface TodoEvent {
+  type: EventType;
+  date: Date;
+  args?: any;
 }
 
 export class MyTimer {
@@ -28,20 +35,33 @@ export class MyTimer {
   }
 
   constructor() {
+
   }
 
   click(when: Date) {
     this.clicks.push(when);
-    this.recalculateTimer();
 
     if (this.timeout)
       this.pause();
     else
       this.start();
+
+    this.recalculateTimer();
+  }
+
+  undoClick(which: Date) {
+    this.clicks = this.clicks.filter(f => f.toLocaleTimeString() != which.toLocaleTimeString());
+
+    if (this.timeout)
+      this.pause();
+    else
+      this.start();
+
+    this.recalculateTimer();
   }
 
   private setMilliseconds(value: number) {
-    this.seconds = value / 1000;
+    this.seconds = Math.floor(value / 1000);
 
     if (this.seconds >= 60) {
       this.minutes = Math.floor(this.seconds / 60);
@@ -117,20 +137,49 @@ export class EventService {
   //TODO: separar tarefas em mainquests e sidequests... main feitas em pomodoro, side feitas no break
 
   timer: MyTimer;
+  private readonly store_key = 'todov2-id-000';
+  events = [];
 
   constructor() {
 
     this.timer = new MyTimer();
+
+    this.events = (JSON.parse(
+      localStorage.getItem(`${this.store_key}-${new Date().toLocaleDateString()}`)
+    ) || []) as [];
+
+    this.events.forEach(e => {
+      const todoEvent = e as TodoEvent;
+      todoEvent.date = new Date(e.date);
+      this.publish(todoEvent, false);
+    });
+
+
+    //localStorage.setItem(`${this.store_key}-${new Date().toLocaleDateString()}`, JSON.stringify([]));
+    
   }
 
-  publish(type: EventType, date: Date, arg: any) {
-    if (type == EventType.chronometerButtonClicked)
-      this.handleTimerStarted(date);
+  publish(e: TodoEvent, save = true) {
+    if (e.type == EventType.chronometerButtonClicked)
+      this.handleTimerStarted(e);
 
+    if (e.type == EventType.timeclicked)
+      this.handleTimeClicked(e);
+
+    if (save) {
+      this.events.push(e);
+
+      localStorage.setItem(
+        `${this.store_key}-${new Date().toLocaleDateString()}`
+        , JSON.stringify(this.events));
+    }
   }
 
-  private handleTimerStarted(date: Date) {
-    this.timer.click(date);
+  private handleTimerStarted(e: TodoEvent) {
+    this.timer.click(e.date);
   }
 
+  private handleTimeClicked(e: TodoEvent) {
+    this.timer.undoClick(new Date(e.args));
+  }
 }

@@ -9,7 +9,7 @@
 
 <ng-template ngFor let-time [ngForOf]="service.timer.clicks" let-index="index">
 
-  <ion-chip style="top: 3px;">
+  <ion-chip style="top: 3px;" (click)="removeTime(time)">
     <ion-label>{{time.toLocaleTimeString()}}</ion-label>
   </ion-chip>
 
