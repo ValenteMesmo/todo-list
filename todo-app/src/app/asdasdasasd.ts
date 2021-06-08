@@ -21,6 +21,7 @@ export class MyTimer {
   private timeout: any;
   public clicks: Date[] = [];
   public currentTime: string;
+  public goal: string;
 
   public get running(): boolean {
     return !!this.timeout;
@@ -70,6 +71,17 @@ export class MyTimer {
     }
 
     this.currentTime = this.toLocaleTimeString();
+    this.goal = this.calculateGoal();
+  }
+
+  calculateGoal(): string {
+    const worked = new Date(1989, 4, 8, this.hours, this.minutes, this.seconds).getTime();
+    const goal = new Date(1989, 4, 8, 8, 0, 0).getTime();
+
+    const result = new Date(1989, 4, 8, 0, 0, 0);
+    result.setMilliseconds(goal - worked);
+
+    return `${this.zeroPad(result.getHours())}:${this.zeroPad(result.getMinutes())}:${this.zeroPad(result.getSeconds())}`;
   }
 
   private start() {
@@ -87,10 +99,16 @@ export class MyTimer {
   }
 
   private zeroPad(n) {
-    if (n > 9)
-      return `${n}`;
+    if (n >= 0 && n <= 9)
+      return `0${n}`;
 
-    return `0${n}`;
+    if (n < 0 && n >= -9)
+      return `-0${n * -1}`;
+
+    if (n < 0)
+      return `-${n}`;
+
+    return `${n}`;
   }
 }
 
@@ -98,38 +116,11 @@ export class MyTimer {
 export class EventService {
   //TODO: separar tarefas em mainquests e sidequests... main feitas em pomodoro, side feitas no break
 
-  //times: Date[] = [];
-  //tasks = [];
-
-  //running = false;
-  //timer: Timer;
   timer: MyTimer;
-  //currentTime = "00:00:00";
-  //startDate: Date;
 
   constructor() {
 
-    //this.timer = new Timer();
     this.timer = new MyTimer();
-    //this.timer.addEventListener('secondsUpdated', e =>
-    //  this.currentTime = this.timer.getTimeValues().toString()
-    //);
-
-    //setInterval(() => {
-    //  let mili = 0;
-    //  for (var i = 0; i < this.times.length - 1; i += 2) {
-    //    mili += this.times[i + 1].getTime() - this.times[i].getTime();
-    //  }
-
-    //  if (this.running) {
-    //    const a = new Date();
-    //    a.setMilliseconds(mili);
-    //    mili += this.times[this.times.length - 1].getTime() - a.getTime();
-    //  }
-    //  const b = new Date();
-    //  b.setMilliseconds(mili)
-    //  this.currentTime = b.toLocaleTimeString();
-    //}, 1000);
   }
 
   publish(type: EventType, date: Date, arg: any) {
@@ -140,32 +131,6 @@ export class EventService {
 
   private handleTimerStarted(date: Date) {
     this.timer.click(date);
-    //if (this.running) {
-    //  this.timer.click(date);
-    //  this.running = false;
-    //  this.times.push(date);
-    //  //this.currentTime = this.timer.getTimeValues().toString();
-    //  return;
-    //}
-
-    //this.startDate = date;
-    //const milliseconds = Math.abs(
-    //  date.getTime()
-    //  - this.startDate.getTime()
-    //);
-    ////this.startDate.setMilliseconds(milliseconds);
-    //this.timer.click(date);
-    ////this.timer.start({
-    ////  precision: 'seconds'
-    ////  , startValues: {
-    ////    seconds: milliseconds
-    ////  }
-    ////});
-
-    //this.running = true;
-
-    ////this.currentTime = this.timer.getTimeValues().toString();
-    //this.times.push(date);
   }
 
 }

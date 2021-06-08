@@ -20,8 +20,8 @@ export class ChronometerComponent {
     const a = new Date();
     const b = new Date();
 
-    a.setMilliseconds(-1000 * 60 * 2);
-    b.setMilliseconds(-1000 * 60);
+    a.setMilliseconds(-1000 * 60 * 60 * 9);
+    b.setMilliseconds(-1000 * 60 * 60 * 3);
     this.service.publish(0, a, '');
     this.service.publish(0, b, '');
 

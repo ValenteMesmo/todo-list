@@ -1,20 +1,6 @@
-<!-- <ion-card *ngFor="let i of items" (touchstart)="dragStart($event)" (touchend)="dragEnd($event)" (touchmove)="drag($event)" (mousedown)="dragStart($event)" (mouseup)="dragEnd($event)" (mousemove)="drag($event)">
-  <ion-card-content>
-    {{i}}
-  </ion-card-content>
-</ion-card> -->
-
-<!-- <div id="outerContainer">
-  <div id="container" (touchstart)="dragStart($event)" (touchend)="dragEnd($event)" (touchmove)="drag($event)" (mousedown)="dragStart($event)" (mouseup)="dragEnd($event)" (mousemove)="drag($event)">
-    <div #item>
-aaa
-    </div>
-  </div>
-</div> -->
-
-
 <app-chronometer></app-chronometer>
 
+<div style="padding:18px" >
 <ion-reorder-group disabled="false" (ionItemReorder)="doReorder($event)">
 
   <ng-template ngFor let-i [ngForOf]="items" let-index="index">
@@ -22,7 +8,6 @@ aaa
    
 
     <ion-item >
-      <ion-icon slot="start" name="play-outline"></ion-icon>
       <ion-reorder slot="end"></ion-reorder>
       <ion-label>
         Item {{i}}
@@ -33,3 +18,4 @@ aaa
   
 
 </ion-reorder-group> 
+  </div>
