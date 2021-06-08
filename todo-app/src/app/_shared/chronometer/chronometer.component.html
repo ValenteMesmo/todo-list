@@ -1,23 +1,28 @@
-<ion-button (click)="toggle()" [color]="service.running ? 'danger' : 'success'">
-    <ion-icon *ngIf="!service.running" name="play-circle-outline"></ion-icon>
-    <ion-icon *ngIf="service.running" name="pause-circle-outline"></ion-icon>
-    <ion-label>&nbsp;{{service.currentTime}}</ion-label>
+<ion-button (click)="toggle()" [color]="service.timer.running ? 'success' : 'warning'">
+  <ion-icon *ngIf="!service.timer.running" name="play-circle-outline"></ion-icon>
+  <ion-icon *ngIf="service.timer.running" name="pause-circle-outline"></ion-icon>
+  <ion-label>&nbsp;{{service.timer.currentTime}}</ion-label>
 </ion-button>
 
-<ion-chip *ngFor="let time of service.times" style="top: 3px;">
-    <ion-label>{{time}}</ion-label>
-</ion-chip>
-<!-- 
-<ion-chip *ngIf="running">
-    <ion-label>{{currentTime}}</ion-label>
-    <ion-icon name="pause"></ion-icon>
-</ion-chip> -->
+<ng-template ngFor let-time [ngForOf]="service.timer.clicks" let-index="index">
+
+  <ion-chip style="top: 3px;">
+    <ion-label>{{time.toLocaleTimeString()}}</ion-label>
+  </ion-chip>
 
 
-<!-- 
-    decidi usar um timer... 
-    clicar nele da play/stop e registra a hora...
-    a primeira tarefa é a que contabiliza os pomodoros...
+  <ion-chip *ngIf="index < service.timer.clicks.length - 1 && index%2==0"
+            color="success"
+            style="top: 3px; padding-left: 0px;"
+            [title]="formatInterval(service.timer.clicks[index+1], time)">
+    <ion-icon name='snow-outline'></ion-icon>
+  </ion-chip>
 
+  <ion-chip *ngIf="index < service.timer.clicks.length - 1 && index%2!=0"
+            color="warning"
+            style="top: 3px; padding-left: 0px;"
+            [title]="formatInterval(service.timer.clicks[index+1], time)">
+    <ion-icon name='sunny-outline'></ion-icon>
+  </ion-chip>
 
--->
+</ng-template>

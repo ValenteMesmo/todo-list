@@ -1,63 +1,171 @@
 import { Injectable } from "@angular/core";
-import Timer from "easytimer.js";
-import * as moment from "moment";
 
-enum eventType {
-    chronometerButtonClicked,
-    TaskOrderChanged,
-    TaskCreated
+export enum EventType {
+  chronometerButtonClicked,
+  taskCreated,
+  TaskOrderChanged,
+}
+
+export interface Quests {
+  name: string,
+  pomodoroCount: number,
+  repeatable: boolean,
+
+  completed: number
+}
+
+export class MyTimer {
+  private seconds = 0;
+  private minutes = 0;
+  private hours = 0;
+  private timeout: any;
+  public clicks: Date[] = [];
+  public currentTime: string;
+
+  public get running(): boolean {
+    return !!this.timeout;
+  }
+
+  constructor() {
+  }
+
+  click(when: Date) {
+    this.clicks.push(when);
+    this.recalculateTimer();
+
+    if (this.timeout)
+      this.pause();
+    else
+      this.start();
+  }
+
+  private setMilliseconds(value: number) {
+    this.seconds = value / 1000;
+
+    if (this.seconds >= 60) {
+      this.minutes = Math.floor(this.seconds / 60);
+      this.seconds = Math.floor(this.seconds % 60);
+
+      if (this.minutes >= 60) {
+        this.hours = Math.floor(this.minutes / 60);
+        this.minutes = Math.floor(this.minutes % 60);
+      }
+    }
+  }
+
+  private recalculateTimer() {
+    if (this.clicks.length > 0) {
+      let milliseconds = 0;
+
+      for (var i = 1; i < this.clicks.length; i++)
+        if (i % 2 != 0)
+          milliseconds += this.clicks[i].getTime() - this.clicks[i - 1].getTime();
+
+      if (this.timeout) {
+        const last = this.clicks.length % 2 == 0 ? Date.now() : this.clicks[this.clicks.length - 1].getTime();
+        milliseconds += Date.now() - last;
+      }
+
+      this.setMilliseconds(milliseconds);
+    }
+
+    this.currentTime = this.toLocaleTimeString();
+  }
+
+  private start() {
+    clearTimeout(this.timeout);
+    this.timeout = setInterval(() => this.recalculateTimer(), 1000);
+  }
+
+  private pause() {
+    clearTimeout(this.timeout);
+    this.timeout = null;
+  }
+
+  private toLocaleTimeString() {
+    return `${this.zeroPad(this.hours)}:${this.zeroPad(this.minutes)}:${this.zeroPad(this.seconds)}`;
+  }
+
+  private zeroPad(n) {
+    if (n > 9)
+      return `${n}`;
+
+    return `0${n}`;
+  }
 }
 
 @Injectable({ providedIn: 'root' })
 export class EventService {
-    //TODO: separar tarefas em mainquests e sidequests... main feitas em pomodoro, side feitas no break
-    times = [];
-    running = false;
-    timer: Timer;
-    currentTime = "00:00:00";
+  //TODO: separar tarefas em mainquests e sidequests... main feitas em pomodoro, side feitas no break
 
-    constructor() {
+  //times: Date[] = [];
+  //tasks = [];
 
-        this.timer = new Timer();
+  //running = false;
+  //timer: Timer;
+  timer: MyTimer;
+  //currentTime = "00:00:00";
+  //startDate: Date;
 
-        this.timer.addEventListener('secondsUpdated', e =>
-            this.currentTime = this.timer.getTimeValues().toString()
-        );
-    }
+  constructor() {
 
-    publish(type: eventType, date: Date, arg: string) {
-        if (type == eventType.chronometerButtonClicked)
-            this.handleTimerStarted(date, arg);
+    //this.timer = new Timer();
+    this.timer = new MyTimer();
+    //this.timer.addEventListener('secondsUpdated', e =>
+    //  this.currentTime = this.timer.getTimeValues().toString()
+    //);
 
-    }
+    //setInterval(() => {
+    //  let mili = 0;
+    //  for (var i = 0; i < this.times.length - 1; i += 2) {
+    //    mili += this.times[i + 1].getTime() - this.times[i].getTime();
+    //  }
 
-    private handleTimerStarted(date: Date, arg: string) {
+    //  if (this.running) {
+    //    const a = new Date();
+    //    a.setMilliseconds(mili);
+    //    mili += this.times[this.times.length - 1].getTime() - a.getTime();
+    //  }
+    //  const b = new Date();
+    //  b.setMilliseconds(mili)
+    //  this.currentTime = b.toLocaleTimeString();
+    //}, 1000);
+  }
 
-        if(this.running){
-            this.timer.pause();
-            this.running = false;
-            this.times.push(date.toLocaleTimeString());
-            this.currentTime = this.timer.getTimeValues().toString();
-            return;
-        }
+  publish(type: EventType, date: Date, arg: any) {
+    if (type == EventType.chronometerButtonClicked)
+      this.handleTimerStarted(date);
 
-        const now = new Date();
-        //now.setMilliseconds(moment().diff(date));
-        const milliseconds = moment().diff(date);
+  }
 
-        this.timer.start({
-            precision: 'seconds'
-            , startValues: {
-                // seconds: now.getSeconds()
-                // , minutes: now.getMinutes()
-                // , hours: now.getHours()
-                seconds: milliseconds
-            }
-        });
-        this.running = true;
+  private handleTimerStarted(date: Date) {
+    this.timer.click(date);
+    //if (this.running) {
+    //  this.timer.click(date);
+    //  this.running = false;
+    //  this.times.push(date);
+    //  //this.currentTime = this.timer.getTimeValues().toString();
+    //  return;
+    //}
 
-        this.currentTime = this.timer.getTimeValues().toString();
-        this.times.push(date.toLocaleTimeString());
-    }
+    //this.startDate = date;
+    //const milliseconds = Math.abs(
+    //  date.getTime()
+    //  - this.startDate.getTime()
+    //);
+    ////this.startDate.setMilliseconds(milliseconds);
+    //this.timer.click(date);
+    ////this.timer.start({
+    ////  precision: 'seconds'
+    ////  , startValues: {
+    ////    seconds: milliseconds
+    ////  }
+    ////});
+
+    //this.running = true;
+
+    ////this.currentTime = this.timer.getTimeValues().toString();
+    //this.times.push(date);
+  }
 
 }
