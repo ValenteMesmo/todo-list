@@ -173,7 +173,19 @@ export class MyTimer {
         this.onLongBreakStarted.emit("bora estudar?");
     }
 
-    this.pomodoroTime = `00:${this.zeroPad(minutes)}:${this.zeroPad(seconds)}`;
+    const pomodoroDate = new Date(1989, 4, 8);
+
+    if (this.pomodoroState == 0)
+      pomodoroDate.setMinutes(25);
+    else if (this.pomodoroState == 1)
+      pomodoroDate.setMinutes(5);
+    else 
+      pomodoroDate.setMinutes(30);
+
+    pomodoroDate.setSeconds(pomodoroDate.getSeconds() - seconds);
+    pomodoroDate.setMinutes(pomodoroDate.getMinutes() - minutes);
+
+    this.pomodoroTime = `00:${this.zeroPad(pomodoroDate.getMinutes())}:${this.zeroPad(pomodoroDate.getSeconds())}`;
   }
 
   calculateGoal(): string {
