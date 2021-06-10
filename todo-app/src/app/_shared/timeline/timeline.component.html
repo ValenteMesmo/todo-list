@@ -1,0 +1,32 @@
+<!--<div class="container" *ngFor="let item of events">
+  <img src="/w3images/bandmember.jpg" alt="Avatar" style="width:100%;">
+  <p>{{item.type}} - {{item.args}}</p>
+  <span class="time-right">{{item.date.toLocaleTimeString()}}</span>
+</div>-->
+
+<!--{{service.processor.timer.clicks.length}}
+<p *ngFor="let i of service.processor.timer.clicks">{{i.toLocaleTimeString()}}</p>-->
+
+
+<ng-template ngFor let-item [ngForOf]="events">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon [name]='item.icon' [color]="item.color"></ion-icon>
+        <ion-label>&nbsp;{{item.title}}</ion-label>
+        <div style="float: right; cursor:pointer;" (click)="remove(item)">
+          <ion-icon name='trash' color="danger"></ion-icon>
+        </div>
+      </ion-card-title>
+      <ion-card-subtitle>{{item.detail}}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      {{item.time}}
+    </ion-card-content>
+  </ion-card>
+
+  <div *ngIf="item.bonus" class="ion-padding">
+    {{item.bonus}}
+  </div>
+</ng-template>

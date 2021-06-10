@@ -1,17 +1,7 @@
-<p>
-  <ion-button (click)="toggle()"
-              [color]="service.timer.running ? 'success' : 'warning'"
-              [title]="service.timer.goal"
-              style="font-size: 6vh; height: 9vh;">
-    <ion-icon *ngIf="!service.timer.running" name="play-circle-outline"></ion-icon>
-    <ion-icon *ngIf="service.timer.running" name="pause-circle-outline"></ion-icon>
-    <ion-label>&nbsp;{{service.timer.pomodoroTime}}</ion-label>
-  </ion-button>
-
-</p>
+<!--<p>-->
+<!--</p>
   <p><ion-label style="font-size: 3vh;">Total: {{service.timer.currentTime}}</ion-label></p>
-  <p><ion-label style="font-size: 3vh;">Saldo: {{service.timer.goal}}</ion-label></p>
-
+  <p><ion-label style="font-size: 3vh;">Saldo: {{service.timer.goal}}</ion-label></p>-->
 <!--<ion-chip style="top: 3px; padding-left: 0px;">
   <ion-icon name="hammer-outline"></ion-icon>
   <ion-label>{{service.timer.pomodoroCount}}</ion-label>
@@ -25,14 +15,14 @@
   <ion-label>{{service.timer.pomodoroTime}}</ion-label>
 </ion-chip>-->
 
-<ng-template ngFor let-time [ngForOf]="service.timer.clicks" let-index="index">
+<ng-template ngFor let-time [ngForOf]="service.processor.timer.clicks" let-index="index">
 
-  <ion-chip style="top: 3px;" (click)="removeTime(time)">
+  <!--<ion-chip style="top: 3px;" (click)="removeTime(time)">
     <ion-label>{{time.toLocaleTimeString()}}</ion-label>
-  </ion-chip>
+  </ion-chip>-->
 
 
-  <ion-chip *ngIf="index < service.timer.clicks.length - 1 && index%2==0"
+  <!--<ion-chip *ngIf="index < service.timer.clicks.length - 1 && index%2==0"
             color="success"
             style="top: 3px; padding-left: 0px;"
             [title]="formatInterval(service.timer.clicks[index+1], time)">
@@ -44,6 +34,16 @@
             style="top: 3px; padding-left: 0px;"
             [title]="formatInterval(service.timer.clicks[index+1], time)">
     <ion-icon name='sunny-outline'></ion-icon>
-  </ion-chip>
+  </ion-chip>-->
 
 </ng-template>
+
+
+<ion-button (click)="toggle()"
+            [color]="service.processor.timer.running ? 'success' : 'warning'"
+            [title]="service.processor.timer.goal"
+            style="font-size: 3vh; height: 6vh;">
+  <ion-icon *ngIf="!service.processor.timer.running" name="play-circle-outline"></ion-icon>
+  <ion-icon *ngIf="service.processor.timer.running" name="pause-circle-outline"></ion-icon>
+  <ion-label>&nbsp;{{service.processor.timer.pomodoroTime}}</ion-label>
+</ion-button>

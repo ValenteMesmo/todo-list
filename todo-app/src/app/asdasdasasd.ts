@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
 
 export enum EventType {
   chronometerButtonClicked = 0,
@@ -169,7 +170,7 @@ export class MyTimer {
     const delta = goal - worked;
     result.setMilliseconds(delta);
 
-    return `${delta > 0 ? '-' : '+' }${this.zeroPad(result.getHours())}:${this.zeroPad(result.getMinutes())}:${this.zeroPad(result.getSeconds())}`;
+    return `${delta > 0 ? '-' : '+'}${this.zeroPad(result.getHours())}:${this.zeroPad(result.getMinutes())}:${this.zeroPad(result.getSeconds())}`;
   }
 
   private start() {
@@ -200,45 +201,41 @@ export class MyTimer {
   }
 }
 
-@Injectable({ providedIn: 'root' })
-export class EventService {
-  //TODO: separar tarefas em mainquests e sidequests... main feitas em pomodoro, side feitas no break
-  //TODO: utilizar cron para cadastrar tarefas recorrentes
-  timer: MyTimer;
-  private readonly store_key = 'todov2-id-000';
-  events = [];
+export class EventProcessor {
+  public onEventsChanged: BehaviorSubject<TodoEvent[]>;
+
+  public _events: TodoEvent[] = [];
+  public timer: MyTimer;
 
   constructor() {
-
     this.timer = new MyTimer();
-
-    this.events = (JSON.parse(
-      localStorage.getItem(`${this.store_key}-${new Date().toLocaleDateString()}`)
-    ) || []) as [];
-
-    this.events.forEach(e => {
-      const todoEvent = e as TodoEvent;
-      todoEvent.date = new Date(e.date);
-      this.publish(todoEvent, false);
-    });
-
-    //localStorage.setItem(`${this.store_key}-${new Date().toLocaleDateString()}`, JSON.stringify([]));
+    this.onEventsChanged = new BehaviorSubject<TodoEvent[]>(this._events);
   }
 
-  publish(e: TodoEvent, save = true) {
+  public process(e: TodoEvent) {
+    this.processSingleEvent(e, true);
+  }
+
+  private processSingleEvent(e: TodoEvent, emitChanges: boolean) {
+    e.date = new Date(e.date);
+
     if (e.type == EventType.chronometerButtonClicked)
       this.handleTimerStarted(e);
 
     if (e.type == EventType.timeclicked)
       this.handleTimeClicked(e);
 
-    if (save) {
-      this.events.push(e);
+    if (emitChanges == false)
+      return;
 
-      localStorage.setItem(
-        `${this.store_key}-${new Date().toLocaleDateString()}`
-        , JSON.stringify(this.events));
-    }
+    this._events.push(e);
+    this.onEventsChanged.next(this._events);
+  }
+
+  public processAll(events: TodoEvent[]) {
+    events.forEach(e => this.processSingleEvent(e, false));
+    this._events = events;
+    this.onEventsChanged.next(this._events);
   }
 
   private handleTimerStarted(e: TodoEvent) {
@@ -247,5 +244,31 @@ export class EventService {
 
   private handleTimeClicked(e: TodoEvent) {
     this.timer.undoClick(new Date(e.args));
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class EventService {
+  //TODO: separar tarefas em mainquests e sidequests... main feitas em pomodoro, side feitas no break
+  //TODO: utilizar cron para cadastrar tarefas recorrentes
+  public processor: EventProcessor;
+  private readonly store_key = 'todov2-id-000';
+
+  constructor() {
+    this.processor = new EventProcessor();
+
+    let _events = (JSON.parse(
+      localStorage.getItem(`${this.store_key}-${new Date().toLocaleDateString()}`)
+    ) || []) as TodoEvent[];
+
+    this.processor.processAll(_events);
+  }
+
+  publish(e: TodoEvent, save = true) {
+    this.processor.process(e);
+
+    localStorage.setItem(
+      `${this.store_key}-${new Date().toLocaleDateString()}`
+      , JSON.stringify(this.processor._events));
   }
 }

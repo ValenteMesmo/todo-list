@@ -2,12 +2,14 @@
   <ion-header [translucent]="true">
 
     <ion-toolbar>
-      
-      <ion-buttons slot="end">
-        <app-login-button></app-login-button>
-      </ion-buttons>
 
-      <ion-title>Missões do dia</ion-title>
+        <app-login-button slot="start"></app-login-button>
+
+      <!---->
+        <app-chronometer slot="end"></app-chronometer>
+
+      
+      <!--<ion-title>Missões do dia</ion-title>-->
 
     </ion-toolbar>
 
@@ -15,17 +17,15 @@
 
   <ion-content [fullscreen]="true">
 
-
-    
     <div class="ion-padding">
 
       <app-task-list></app-task-list>
-      
+
       <!-- <ion-item>
         <ion-label position="floating">Cadastrar nova missão...</ion-label>
         <ion-input (keyup.enter)="addItem()" [(ngModel)]="newTitle"></ion-input>
       </ion-item>
-     
+
 
 
       <app-task-list></app-task-list>
@@ -46,3 +46,9 @@
     </div>
   </ion-content>
 </ion-app>
+
+<!--<div style="position:fixed;z-index:1;">
+  <app-chronometer></app-chronometer>
+</div>-->
+<!--<ion-item>
+</ion-item>-->

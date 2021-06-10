@@ -14,9 +14,10 @@ import { LoginButtonComponent } from './authentication/login-button/login-button
 import { FormsModule } from '@angular/forms';
 import { TaskListComponent } from './_shared/draggable/task-list.component';
 import { ChronometerComponent } from './_shared/chronometer/chronometer.component';
+import { TimelineComponent } from './_shared/timeline/timeline.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginButtonComponent, UserInfoComponent, TaskListComponent, ChronometerComponent],
+  declarations: [AppComponent, LoginButtonComponent, UserInfoComponent, TaskListComponent, ChronometerComponent, TimelineComponent],
   entryComponents: [],
   imports: [
     BrowserModule

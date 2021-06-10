@@ -3,6 +3,7 @@ import { MsalBroadcastService, MsalGuardConfiguration, MsalService, MSAL_GUARD_C
 import { InteractionStatus, RedirectRequest } from '@azure/msal-browser';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { EventService } from './asdasdasasd';
 
 @Component({
   selector: 'app-root',
@@ -12,11 +13,10 @@ import { filter, takeUntil } from 'rxjs/operators';
 export class AppComponent {
 
   newTitle: string;
-  missions = [];
+
+  constructor(protected readonly service: EventService) { }
 
   addItem() {
-    if (this.newTitle)
-      this.missions.push({ title: this.newTitle });
   }
 
 }
