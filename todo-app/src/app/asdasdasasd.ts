@@ -1,5 +1,6 @@
-import { Injectable } from "@angular/core";
+import { EventEmitter, Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
+import { throttle } from "./_shared/decorators/throttle.decorator";
 
 export enum EventType {
   chronometerButtonClicked = 0,
@@ -33,6 +34,9 @@ export class MyTimer {
   public pomodoroTime: string;
   public pomodoroState = 0;
   public pomodoroCount = 0;
+  public onPomodoroStarted = new EventEmitter<string>();
+  public onShortBreakStarted = new EventEmitter<string>();
+  public onLongBreakStarted = new EventEmitter<string>();
 
   public get running(): boolean {
     return !!this.timeout;
@@ -123,7 +127,9 @@ export class MyTimer {
     }
 
     this.pomodoroCount = 0;
+    const previousPomodoroState = this.pomodoroState;
     this.pomodoroState = 0;
+
     while (true) {
 
       if (this.pomodoroState == 0) {
@@ -156,6 +162,15 @@ export class MyTimer {
       } else
         break;
 
+    }
+
+    if (this.pomodoroState != previousPomodoroState) {
+      if (this.pomodoroState == 0)
+        this.onPomodoroStarted.emit("bora trabalhar!");
+      else if (this.pomodoroState == 1)
+        this.onShortBreakStarted.emit("beber agua?");
+      else
+        this.onLongBreakStarted.emit("bora estudar?");
     }
 
     this.pomodoroTime = `00:${this.zeroPad(minutes)}:${this.zeroPad(seconds)}`;
@@ -262,6 +277,12 @@ export class EventService {
     ) || []) as TodoEvent[];
 
     this.processor.processAll(_events);
+
+    setTimeout(() => {
+      this.processor.timer.onPomodoroStarted.subscribe(f => NotificationService.send(f, ""));
+      this.processor.timer.onShortBreakStarted.subscribe(f => NotificationService.send(f, ""));
+      this.processor.timer.onLongBreakStarted.subscribe(f => NotificationService.send(f, ""));
+    }, 1000);
   }
 
   publish(e: TodoEvent, save = true) {
@@ -272,3 +293,40 @@ export class EventService {
       , JSON.stringify(this.processor._events));
   }
 }
+
+class _NotificationService {
+
+  @throttle()
+  public send(
+    title: string
+    , body: string
+    , iconUrl: string = 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png') {
+
+    if (this.permissionGranted == false)
+      return;
+
+    const notification = new Notification(title, {
+      icon: iconUrl,
+      body: body,
+    });
+
+    setTimeout(() => notification.close(), 9000);
+
+    notification.onclick = () => {
+      window.open(window.location.href);
+    };
+  }
+
+  public requestPermission() {
+    if (this.permissionGranted)
+      return;
+
+    Notification.requestPermission();
+  }
+
+  get permissionGranted(): boolean {
+    return Notification.permission == "granted";
+  }
+}
+
+export const NotificationService = new _NotificationService();

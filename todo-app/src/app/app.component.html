@@ -4,7 +4,8 @@
     <ion-toolbar>
 
         <app-login-button slot="start"></app-login-button>
-
+      <button *ngIf="!notification.permissionGranted" (click)="notification.requestPermission()">Enable Notifications</button>
+      <button *ngIf="notification.permissionGranted" (click)="notification.send('test','123')">Test Notifications</button>
       <!---->
         <app-chronometer slot="end"></app-chronometer>
 
