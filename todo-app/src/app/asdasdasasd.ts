@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
+import { tap } from "rxjs/operators";
 import { throttle } from "./_shared/decorators/throttle.decorator";
 
 export enum EventType {
@@ -27,7 +28,6 @@ export class MyTimer {
   private seconds = 0;
   private minutes = 0;
   private hours = 0;
-  private timeout: any;
   public clicks: Date[] = [];
   public currentTime: string;
   public goal: string;
@@ -38,9 +38,9 @@ export class MyTimer {
   public onShortBreakStarted = new EventEmitter<string>();
   public onLongBreakStarted = new EventEmitter<string>();
 
-  public get running(): boolean {
-    return !!this.timeout;
-  }
+  public running: boolean;
+  pomodoroCountdown: string;
+  currentTimeInterval: string;
 
   constructor() {
 
@@ -49,7 +49,7 @@ export class MyTimer {
   click(when: Date) {
     this.clicks.push(when);
 
-    if (this.timeout)
+    if (this.running)
       this.pause();
     else
       this.start();
@@ -60,7 +60,7 @@ export class MyTimer {
   undoClick(which: Date) {
     this.clicks = this.clicks.filter(f => f.toLocaleTimeString() != which.toLocaleTimeString());
 
-    if (this.timeout)
+    if (this.running)
       this.pause();
     else
       this.start();
@@ -92,7 +92,7 @@ export class MyTimer {
         if (i % 2 != 0)
           milliseconds += this.clicks[i].getTime() - this.clicks[i - 1].getTime();
 
-      if (this.timeout) {
+      if (this.running) {
         const last = this.clicks.length % 2 == 0
           ? Date.now()
           : this.clicks[this.clicks.length - 1].getTime();
@@ -112,8 +112,9 @@ export class MyTimer {
       this.setPomodoro(0);
     }
 
-    this.currentTime = this.toLocaleTimeString();
+    this.currentTime = new Date(1989, 4, 8, this.hours, this.minutes, this.seconds).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     this.goal = this.calculateGoal();
+    this.updateCurrentTimeInterval();
   }
 
   setPomodoro(milliseconds: number) {
@@ -126,8 +127,8 @@ export class MyTimer {
       seconds = Math.floor(seconds % 60);
     }
 
-    this.pomodoroCount = 0;
     const previousPomodoroState = this.pomodoroState;
+    this.pomodoroCount = 0;
     this.pomodoroState = 0;
 
     while (true) {
@@ -164,7 +165,7 @@ export class MyTimer {
 
     }
 
-    if (this.pomodoroState != previousPomodoroState) {
+    if (this.running && this.pomodoroState != previousPomodoroState) {
       if (this.pomodoroState == 0)
         this.onPomodoroStarted.emit("bora trabalhar!");
       else if (this.pomodoroState == 1)
@@ -179,13 +180,28 @@ export class MyTimer {
       pomodoroDate.setMinutes(25);
     else if (this.pomodoroState == 1)
       pomodoroDate.setMinutes(5);
-    else 
+    else
       pomodoroDate.setMinutes(30);
 
     pomodoroDate.setSeconds(pomodoroDate.getSeconds() - seconds);
     pomodoroDate.setMinutes(pomodoroDate.getMinutes() - minutes);
 
-    this.pomodoroTime = `00:${this.zeroPad(pomodoroDate.getMinutes())}:${this.zeroPad(pomodoroDate.getSeconds())}`;
+    this.pomodoroTime = `00:${this.zeroPad(minutes)}:${this.zeroPad(seconds)}`;
+    this.pomodoroCountdown = `00:${this.zeroPad(pomodoroDate.getMinutes())}:${this.zeroPad(pomodoroDate.getSeconds())}`;
+  }
+
+  updateCurrentTimeInterval() {
+    if (this.clicks.length > 0) {
+      const latests = this.clicks.sort()[this.clicks.length -1];
+
+      const a = new Date(1989, 4, 8, 0, 0, 0);
+      a.setMilliseconds(
+        Date.now()
+        -
+        latests.getTime()
+      );
+      this.currentTimeInterval = a.toLocaleTimeString();
+    }
   }
 
   calculateGoal(): string {
@@ -197,17 +213,22 @@ export class MyTimer {
     const delta = goal - worked;
     result.setMilliseconds(delta);
 
-    return `${delta > 0 ? '-' : '+'}${this.zeroPad(result.getHours())}:${this.zeroPad(result.getMinutes())}:${this.zeroPad(result.getSeconds())}`;
+    return `${delta > 0 ? '-' : '+'}${this.zeroPad(result.getHours())}:${this.zeroPad(result.getMinutes())}`;
   }
 
   private start() {
-    clearTimeout(this.timeout);
-    this.timeout = setInterval(() => this.recalculateTimer(), 1000);
+    this.running = true;
+    this.timeLoop();
+  }
+
+  private timeLoop() {
+    this.recalculateTimer();
+    if (this.running)
+      setTimeout(() => this.timeLoop(), 1000);
   }
 
   private pause() {
-    clearTimeout(this.timeout);
-    this.timeout = null;
+    this.running = false;
   }
 
   private toLocaleTimeString() {
@@ -274,18 +295,21 @@ export class EventProcessor {
   }
 }
 
+export const Constants = {
+  store_key: 'todov2-id-000'
+};
+
 @Injectable({ providedIn: 'root' })
 export class EventService {
   //TODO: separar tarefas em mainquests e sidequests... main feitas em pomodoro, side feitas no break
   //TODO: utilizar cron para cadastrar tarefas recorrentes
   public processor: EventProcessor;
-  private readonly store_key = 'todov2-id-000';
 
   constructor() {
     this.processor = new EventProcessor();
 
     let _events = (JSON.parse(
-      localStorage.getItem(`${this.store_key}-${new Date().toLocaleDateString()}`)
+      localStorage.getItem(`${Constants.store_key}-${new Date().toLocaleDateString()}`)
     ) || []) as TodoEvent[];
 
     this.processor.processAll(_events);
@@ -301,12 +325,30 @@ export class EventService {
     this.processor.process(e);
 
     localStorage.setItem(
-      `${this.store_key}-${new Date().toLocaleDateString()}`
+      `${Constants.store_key}-${new Date().toLocaleDateString()}`
       , JSON.stringify(this.processor._events));
   }
 }
 
 class _NotificationService {
+  private _permissionGranted: boolean = false;
+  get permissionGranted(): boolean {
+    return this._permissionGranted;
+  }
+  set permissionGranted(value: boolean) {
+    if (value)
+      this.requestPermission();
+    else {
+      this._permissionGranted = false;
+      localStorage.setItem(`${Constants.store_key}-notifications`, '0');
+    }
+  }
+
+  constructor() {
+    this._permissionGranted =
+      Notification.permission == "granted"
+      && localStorage.getItem(`${Constants.store_key}-notifications`) == '1';
+  }
 
   @throttle()
   public send(
@@ -320,9 +362,12 @@ class _NotificationService {
     const notification = new Notification(title, {
       icon: iconUrl,
       body: body,
+      //silent: true
     });
 
-    setTimeout(() => notification.close(), 9000);
+    //window.navigator.vibrate(pattern)
+
+    setTimeout(() => notification.close(), 1000 * 60 * 3);
 
     notification.onclick = () => {
       window.open(window.location.href);
@@ -330,15 +375,18 @@ class _NotificationService {
   }
 
   public requestPermission() {
-    if (this.permissionGranted)
+    if (Notification.permission == "granted") {
+      this._permissionGranted = true;
+      localStorage.setItem(`${Constants.store_key}-notifications`, '1');
       return;
+    }
 
-    Notification.requestPermission();
+    Notification.requestPermission().then(f => {
+      this._permissionGranted = f == "granted";
+      localStorage.setItem(`${Constants.store_key}-notifications`, this._permissionGranted ? '1' : '0');
+    });
   }
 
-  get permissionGranted(): boolean {
-    return Notification.permission == "granted";
-  }
 }
 
 export const NotificationService = new _NotificationService();

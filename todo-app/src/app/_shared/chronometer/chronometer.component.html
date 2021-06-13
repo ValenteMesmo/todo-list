@@ -40,10 +40,12 @@
 
 
 <ion-button (click)="toggle()"
-            [color]="service.processor.timer.running ? 'success' : 'warning'"
+            [color]="service.processor.timer.running ? (service.processor.timer.pomodoroState == 0 ? 'success' : 'warning') : 'danger'"
             [title]="service.processor.timer.goal"
-            style="font-size: 3vh; height: 6vh;">
+            style="font-size: 3vh; height: 6vh; margin:0px;">
+  
   <ion-icon *ngIf="!service.processor.timer.running" name="play-circle-outline"></ion-icon>
   <ion-icon *ngIf="service.processor.timer.running" name="pause-circle-outline"></ion-icon>
   <ion-label>&nbsp;{{service.processor.timer.pomodoroTime}}</ion-label>
 </ion-button>
+

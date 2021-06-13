@@ -3,15 +3,12 @@
 
     <ion-toolbar>
 
-        <app-login-button slot="start"></app-login-button>
-      <button *ngIf="!notification.permissionGranted" (click)="notification.requestPermission()">Enable Notifications</button>
-      <button *ngIf="notification.permissionGranted" (click)="notification.send('test','123')">Test Notifications</button>
+      <!--<app-login-button slot="start"></app-login-button>-->
+      <button (click)="notification.send('test','123')">Test Notifications</button>
       <!---->
-        <app-chronometer slot="end"></app-chronometer>
-
-      
+      <ion-toggle [(ngModel)]="notification.permissionGranted"></ion-toggle>
+      <app-chronometer slot="end"></app-chronometer>
       <!--<ion-title>Missões do dia</ion-title>-->
-
     </ion-toolbar>
 
   </ion-header>
@@ -19,9 +16,79 @@
   <ion-content [fullscreen]="true">
 
     <div class="ion-padding">
+      <!--<ion-item>
+        <ion-label position="floating">Cadastrar nova missão...</ion-label>
+        <ion-input (keyup.enter)="addItem()" [(ngModel)]="newTitle"></ion-input>
+      </ion-item>
 
-      <app-task-list></app-task-list>
+      <ion-item>
+        <ion-label position="floating">Cadastrar nova missão...</ion-label>
+        <ion-input (keyup.enter)="addItem()" [(ngModel)]="newTitle"></ion-input>
+      </ion-item>
 
+      <ion-item>
+        <ion-label position="floating">Cadastrar nova missão...</ion-label>
+        <ion-input (keyup.enter)="addItem()" [(ngModel)]="newTitle"></ion-input>
+      </ion-item>-->
+
+      <table>
+        <tr><td><ion-label>&nbsp;{{service.processor.timer.goal}}</ion-label></td></tr>
+        <tr><td><ion-label>&nbsp;{{service.processor.timer.currentTime}}</ion-label></td></tr>
+      </table>
+
+      <!--<ion-card>
+        <ion-card-content>
+          <app-chronometer slot="end"></app-chronometer>
+
+          <table>
+            <tr><td><ion-label>&nbsp;{{service.processor.timer.goal}}</ion-label></td></tr>
+            <tr><td><ion-label>&nbsp;{{service.processor.timer.currentTime}}</ion-label></td></tr>
+          </table>
+
+
+          <ion-label>&nbsp;_{{service.processor.timer.pomodoroState}}_</ion-label>
+
+        </ion-card-content>
+      </ion-card>-->
+      <!--<ion-card color="success">
+        <ion-card-header>
+          <ion-card-title>
+            <table>
+              <tr>
+                <td>
+                </td>
+                <td>-->
+      <!--<table>
+      <tr><td><ion-label>&nbsp; Total: {{service.processor.timer.currentTime}}</ion-label></td></tr>
+      <tr><td><ion-label>&nbsp; Saldo: {{service.processor.timer.goal}}</ion-label></td></tr>
+      </table>-->
+      <!--<ion-item>
+        <ion-label position="floating">Cadastrar nova missão...</ion-label>
+        <ion-input (keyup.enter)="addItem()" [(ngModel)]="newTitle"></ion-input>
+      </ion-item>-->
+      <!--</td>
+            </tr>
+          </table>
+
+          <ion-label>Pomodoro</ion-label>
+
+        </ion-card-title>
+        <ion-card-subtitle>teste</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        teste 2
+      </ion-card-content>-->
+      <!--<app-chronometer></app-chronometer>-->
+      <!--</ion-card>-->
+
+      <div class="ion-padding" *ngIf="service.processor.timer.currentTimeInterval">
+        + {{service.processor.timer.currentTimeInterval}}
+      </div>
+
+      <app-timeline></app-timeline>
+
+      <!--      <app-task-list></app-task-list>-->
       <!-- <ion-item>
         <ion-label position="floating">Cadastrar nova missão...</ion-label>
         <ion-input (keyup.enter)="addItem()" [(ngModel)]="newTitle"></ion-input>
