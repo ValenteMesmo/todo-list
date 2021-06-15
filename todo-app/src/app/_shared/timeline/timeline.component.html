@@ -13,11 +13,11 @@
     <ion-card-content>
       <ion-icon color="secondary" name="stopwatch-outline" style="margin-bottom: -2px;"></ion-icon>
       <ion-label color="secondary">{{item.time}}</ion-label>
-
-
+            
       <ion-label *ngIf="index != 0" style="position: absolute; right: 15px;">{{item.bonus}}</ion-label>
+      <ion-label *ngIf="index == 0 && !service.processor.timer.running" style="position: absolute; right: 15px;">つづく</ion-label>
       <ion-label *ngIf="index == 0 && service.processor.timer.running && service.processor.timer.currentTimeInterval" style="position: absolute; right: 15px;">+ {{service.processor.timer.currentTimeInterval}}</ion-label>
     </ion-card-content>
   </ion-card>
-  
+
 </ng-template>

@@ -41,7 +41,7 @@ export class TimelineComponent {
               title: `tive que relaxar`,
               detail: `total: ${this.service.processor.timer.currentTime} | saldo: ${this.service.processor.timer.goal}`,
               date: date,
-              time: date.toLocaleTimeString(),
+              time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
               icon: "stop-circle-outline",
               color: "danger",
               bonus: `- ${this.calcularBonus( dates, index-1)}`
@@ -52,7 +52,7 @@ export class TimelineComponent {
               title: `trabalhando!`,
               detail: "aaaaaaaa",
               date: date,
-              time: date.toLocaleTimeString(),
+              time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
               icon: "play-circle-outline",
               color: "success",
               bonus: `+ ${this.calcularBonus(dates, index - 1)}`
@@ -65,7 +65,7 @@ export class TimelineComponent {
             title: "Começamos! vamos que vamos!",
             detail: "bbbbbbbbb",
             date: date,
-            time: date.toLocaleTimeString(),
+            time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             icon: "play-circle-outline",
             color: "success",
             bonus: `+ ${this.calcularBonus(dates, index - 1)}`
@@ -129,6 +129,6 @@ export class TimelineComponent {
   formatInterval(a: Date, b: Date) {
     const date = new Date(1989, 4, 8, 0, 0, 0, 0);
     date.setMilliseconds(a.getTime() - b.getTime());
-    return date.toLocaleTimeString();
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 }

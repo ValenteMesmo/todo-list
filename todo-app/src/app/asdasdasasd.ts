@@ -111,7 +111,8 @@ export class MyTimer {
       this.setPomodoro(0);
     }
 
-    this.currentTime = new Date(1989, 4, 8, this.hours, this.minutes, this.seconds).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    this.currentTime = new Date(1989, 4, 8, this.hours, this.minutes, this.seconds)
+      .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     this.goal = this.calculateGoal();
   }
 
@@ -198,7 +199,7 @@ export class MyTimer {
         -
         latests.getTime()
       );
-      this.currentTimeInterval = a.toLocaleTimeString();
+      this.currentTimeInterval = a.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
   }
 
