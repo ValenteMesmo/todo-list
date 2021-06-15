@@ -1,32 +1,23 @@
-<!--<div class="container" *ngFor="let item of events">
-  <img src="/w3images/bandmember.jpg" alt="Avatar" style="width:100%;">
-  <p>{{item.type}} - {{item.args}}</p>
-  <span class="time-right">{{item.date.toLocaleTimeString()}}</span>
-</div>-->
-
-<!--{{service.processor.timer.clicks.length}}
-<p *ngFor="let i of service.processor.timer.clicks">{{i.toLocaleTimeString()}}</p>-->
-
-
-<ng-template ngFor let-item [ngForOf]="events">
+<ng-template ngFor let-item [ngForOf]="events" let-index="index">
   <ion-card>
     <ion-card-header>
+
       <ion-card-title>
-        <ion-icon [name]='item.icon' [color]="item.color"></ion-icon>
-        <ion-label>&nbsp;{{item.title}}</ion-label>
-        <div style="float: right; cursor:pointer;" (click)="remove(item)">
+        <ion-label> {{item.title}}</ion-label>
+        <div style="cursor: pointer; position: absolute; right: 0px; top: 0px;" (click)="remove(item)">
           <ion-icon name='trash' color="danger"></ion-icon>
         </div>
       </ion-card-title>
-      <ion-card-subtitle>{{item.detail}}</ion-card-subtitle>
     </ion-card-header>
 
     <ion-card-content>
-      {{item.time}}
+      <ion-icon color="secondary" name="stopwatch-outline" style="margin-bottom: -2px;"></ion-icon>
+      <ion-label color="secondary">{{item.time}}</ion-label>
+
+
+      <ion-label *ngIf="index != 0" style="position: absolute; right: 15px;">{{item.bonus}}</ion-label>
+      <ion-label *ngIf="index == 0 && service.processor.timer.running && service.processor.timer.currentTimeInterval" style="position: absolute; right: 15px;">+ {{service.processor.timer.currentTimeInterval}}</ion-label>
     </ion-card-content>
   </ion-card>
-
-  <div *ngIf="item.bonus" class="ion-padding">
-    {{item.bonus}}
-  </div>
+  
 </ng-template>

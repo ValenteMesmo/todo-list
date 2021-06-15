@@ -1,6 +1,5 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { tap } from "rxjs/operators";
 import { throttle } from "./_shared/decorators/throttle.decorator";
 
 export enum EventType {
@@ -43,7 +42,7 @@ export class MyTimer {
   currentTimeInterval: string;
 
   constructor() {
-
+    this.timeLoop();
   }
 
   click(when: Date) {
@@ -114,7 +113,6 @@ export class MyTimer {
 
     this.currentTime = new Date(1989, 4, 8, this.hours, this.minutes, this.seconds).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     this.goal = this.calculateGoal();
-    this.updateCurrentTimeInterval();
   }
 
   setPomodoro(milliseconds: number) {
@@ -192,7 +190,7 @@ export class MyTimer {
 
   updateCurrentTimeInterval() {
     if (this.clicks.length > 0) {
-      const latests = this.clicks.sort()[this.clicks.length -1];
+      const latests = this.clicks.sort()[this.clicks.length - 1];
 
       const a = new Date(1989, 4, 8, 0, 0, 0);
       a.setMilliseconds(
@@ -210,21 +208,23 @@ export class MyTimer {
 
     const result = new Date(1989, 4, 8, 0, 0, 0);
 
-    const delta = goal - worked;
+    const plus = worked > goal;
+    const delta = plus ? worked - goal : goal - worked;
     result.setMilliseconds(delta);
 
-    return `${delta > 0 ? '-' : '+'}${this.zeroPad(result.getHours())}:${this.zeroPad(result.getMinutes())}`;
+    return `${plus ? '+' : '-'}${this.zeroPad(result.getHours())}:${this.zeroPad(result.getMinutes())}`;
   }
 
   private start() {
     this.running = true;
-    this.timeLoop();
   }
 
   private timeLoop() {
-    this.recalculateTimer();
     if (this.running)
-      setTimeout(() => this.timeLoop(), 1000);
+      this.recalculateTimer();
+
+    this.updateCurrentTimeInterval();
+    setTimeout(() => this.timeLoop(), 1000);
   }
 
   private pause() {

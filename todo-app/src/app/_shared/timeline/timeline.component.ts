@@ -41,10 +41,10 @@ export class TimelineComponent {
               title: `tive que relaxar`,
               detail: `total: ${this.service.processor.timer.currentTime} | saldo: ${this.service.processor.timer.goal}`,
               date: date,
-              time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-              icon: "pause-circle-outline",
-              color: "warning",
-              bonus: `+ ${this.formatInterval(date, dates[index + 1])}`
+              time: date.toLocaleTimeString(),
+              icon: "stop-circle-outline",
+              color: "danger",
+              bonus: `- ${this.calcularBonus( dates, index-1)}`
             });
           }//se for impar, registrar intervalo de lazer
           else {
@@ -52,10 +52,10 @@ export class TimelineComponent {
               title: `trabalhando!`,
               detail: "aaaaaaaa",
               date: date,
-              time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              time: date.toLocaleTimeString(),
               icon: "play-circle-outline",
               color: "success",
-              bonus: `- ${this.formatInterval(date, dates[index + 1])}`
+              bonus: `+ ${this.calcularBonus(dates, index - 1)}`
             });
           }
 
@@ -65,16 +65,34 @@ export class TimelineComponent {
             title: "Começamos! vamos que vamos!",
             detail: "bbbbbbbbb",
             date: date,
-            time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            time: date.toLocaleTimeString(),
             icon: "play-circle-outline",
             color: "success",
-            bonus: null
+            bonus: `+ ${this.calcularBonus(dates, index - 1)}`
           });
         }
       });
 
       //this.events = this.events.sort().reverse();
     });
+  }
+
+  private calcularBonus(dates: Date[], index: number) {
+
+    const begin = index
+      +
+      0;
+    const end = index
+      +
+      1;
+
+    if (begin >= dates.length
+      || end >= dates.length
+      || begin < 0
+      || end < 0    )
+      return '';
+
+    return this.formatInterval(dates[begin], dates[end]);
   }
 
   private removeConfirm(item: TimelineEvent) {
@@ -95,11 +113,11 @@ export class TimelineComponent {
         {
           text: 'Cancelar',
           role: 'cancel',
-          cssClass: 'secondary',
+          //cssClass: 'secondary',
           handler: () => {}
         }, {
           text: 'Excluir',
-          cssClass: 'danger',
+          cssClass: 'color-danger',
           handler: () => this.removeConfirm(item)
         }
       ]
