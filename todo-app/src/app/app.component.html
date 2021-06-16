@@ -1,10 +1,22 @@
 <ion-app>
+
+
   <ion-header [translucent]="true">
 
     <ion-toolbar>
 
-      <button (click)="notification.send('test','123')">Test Notifications</button>
-      <ion-toggle [(ngModel)]="notification.permissionGranted"></ion-toggle>
+      <!--<button (click)="notification.send('test','123')">Test Notifications</button>-->
+
+      <!--<ion-toggle [(ngModel)]="notification.permissionGranted"></ion-toggle>-->
+
+      <app-login-button slot="start"></app-login-button>
+
+      <div slot="start" (click)="notification.permissionGranted = !notification.permissionGranted" style="cursor:pointer">
+        <ion-icon *ngIf="notification.permissionGranted" name='notifications' color="medium" size="large"></ion-icon>
+        <ion-icon *ngIf="!notification.permissionGranted" name='notifications-off' color="medium" size="large"></ion-icon>
+      </div>
+
+
       <table slot="end" style="margin-right: 15px;">
         <tr>
           <td>
@@ -18,11 +30,18 @@
 
   </ion-header>
 
-  <ion-content [fullscreen]="true">
+  <ion-content [fullscreen]="true" id="main">
 
     <div class="ion-padding">
       <app-timeline></app-timeline>
 
     </div>
   </ion-content>
+
+
+
+
+
+  <!--<ion-router-outlet id="main"></ion-router-outlet>-->
+
 </ion-app>

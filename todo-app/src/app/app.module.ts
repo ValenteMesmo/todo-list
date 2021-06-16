@@ -9,7 +9,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { MsalBroadcastService, MsalGuard, MsalInterceptor, MsalModule, MsalRedirectComponent, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG } from '@azure/msal-angular';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MSALGuardConfigFactory, MSALInstanceFactory, MSALInterceptorConfigFactory } from './authentication/azure-app.config';
-import { UserInfoComponent } from './user-info/user-info.component';
 import { LoginButtonComponent } from './authentication/login-button/login-button.component';
 import { FormsModule } from '@angular/forms';
 import { TaskListComponent } from './_shared/draggable/task-list.component';
@@ -17,7 +16,7 @@ import { ChronometerComponent } from './_shared/chronometer/chronometer.componen
 import { TimelineComponent } from './_shared/timeline/timeline.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginButtonComponent, UserInfoComponent, TaskListComponent, ChronometerComponent, TimelineComponent],
+  declarations: [AppComponent, LoginButtonComponent, TaskListComponent, ChronometerComponent, TimelineComponent],
   entryComponents: [],
   imports: [
     BrowserModule
