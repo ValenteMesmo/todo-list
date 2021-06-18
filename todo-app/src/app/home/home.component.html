@@ -1,0 +1,53 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>      
+    </ion-buttons>
+    <ion-label *ngIf="service.processor.timer.pomodoroState==0">Pomodoro</ion-label>
+    <ion-label *ngIf="service.processor.timer.pomodoroState==1">Break</ion-label>
+    <ion-label *ngIf="service.processor.timer.pomodoroState==2">Long Break</ion-label>
+    <!--<app-login-button slot="start"></app-login-button>-->
+    <!--<div slot="start" (click)="notification.permissionGranted = !notification.permissionGranted" style="cursor:pointer">
+      <ion-icon *ngIf="notification.permissionGranted" name='notifications' color="medium" size="large"></ion-icon>
+      <ion-icon *ngIf="!notification.permissionGranted" name='notifications-off' color="medium" size="large"></ion-icon>
+    </div>-->
+    <table slot="end" style="margin-right: 15px;">
+      <tr>
+        <td>
+          <ion-label>{{service.processor.timer.currentTime}}</ion-label>
+        </td>
+      </tr>
+      <tr><td><ion-label color="medium">{{service.processor.timer.goal}}</ion-label></td></tr>
+    </table>
+    <app-chronometer slot="end"></app-chronometer>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!--<ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">teste</ion-title>
+    </ion-toolbar>
+  </ion-header>-->
+
+  <div id="container">
+
+    <!--<ion-card>
+      <ion-icon name="create-outline"></ion-icon>
+      <ion-card-header>
+        <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+        <ion-card-title>Card Title</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        Keep close to Nature's heart... and break clear away, once in awhile,
+        and climb a mountain or spend a week in the woods. Wash your spirit clean.
+      </ion-card-content>
+    </ion-card>-->
+
+    <app-timeline></app-timeline>
+
+  </div>
+</ion-content>
+
+

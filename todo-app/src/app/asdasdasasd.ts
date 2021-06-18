@@ -186,7 +186,7 @@ export class MyTimer {
     pomodoroDate.setMinutes(pomodoroDate.getMinutes() - minutes);
 
     this.pomodoroTime = `00:${this.zeroPad(minutes)}:${this.zeroPad(seconds)}`;
-    this.pomodoroCountdown = `00:${this.zeroPad(pomodoroDate.getMinutes())}:${this.zeroPad(pomodoroDate.getSeconds())}`;
+    this.pomodoroCountdown = `${this.zeroPad(pomodoroDate.getMinutes())}:${this.zeroPad(pomodoroDate.getSeconds())}`;
   }
 
   updateCurrentTimeInterval() {
@@ -218,6 +218,9 @@ export class MyTimer {
 
   private start() {
     this.running = true;
+    this.pomodoroCount = 0;    
+    this.pomodoroState = 0;
+    this.pomodoroCountdown = "25:00";
   }
 
   private timeLoop() {
@@ -230,6 +233,8 @@ export class MyTimer {
 
   private pause() {
     this.running = false;
+    this.pomodoroCount = 0;
+    this.pomodoroState = 0;
   }
 
   private toLocaleTimeString() {

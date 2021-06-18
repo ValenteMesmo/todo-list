@@ -34,6 +34,7 @@ export class AuthenticationService {
     , private authService: MsalService
     , private msalBroadcastService: MsalBroadcastService
     , private http: HttpClient) {
+
     this.msalBroadcastService.inProgress$
       .pipe(
         filter((status: InteractionStatus) => status === InteractionStatus.None)

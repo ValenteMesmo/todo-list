@@ -1,4 +1,5 @@
 import { Component, Inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { MsalBroadcastService, MsalGuardConfiguration, MsalService, MSAL_GUARD_CONFIG } from '@azure/msal-angular';
 import { InteractionStatus, RedirectRequest } from '@azure/msal-browser';
 import { Subject } from 'rxjs';
@@ -18,7 +19,9 @@ export class AppComponent {
 
   constructor(
     protected readonly service: EventService
-  ) { }
+    , protected readonly router: Router
+  ) {    
+  }
 
   addItem() {
   }
