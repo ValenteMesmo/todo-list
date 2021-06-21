@@ -3,12 +3,21 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { RouterModule, Routes } from "@angular/router";
 import { IonicModule } from "@ionic/angular";
-import { TasksComponent } from "./tasks.component";
+import { TaskEditComponent } from "./edit/task-edit.component";
+import { TaskListComponent } from "./list/task-list.component";
 
 const routes: Routes = [
   {
     path: '',
-    component: TasksComponent
+    component: TaskListComponent
+  },
+  {
+    path: ':id/edit',
+    component: TaskEditComponent
+  },
+  {
+    path: 'new',
+    component: TaskEditComponent
   }
 ];
 
@@ -21,7 +30,8 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [
-    TasksComponent
+    TaskListComponent,
+    TaskEditComponent
   ]
 })
 export class TasksModule { }

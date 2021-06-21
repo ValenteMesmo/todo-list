@@ -4,6 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { RouterModule, Routes } from "@angular/router";
 import { IonicModule } from "@ionic/angular";
 import { ChronometerComponent } from "./chronometer/chronometer.component";
+import { CurrentTaskComponent } from "./current-task/current-task.component";
 import { HomeComponent } from "./home.component";
 import { TimelineComponent } from "./timeline/timeline.component";
 
@@ -26,6 +27,7 @@ const routes: Routes = [
     HomeComponent
     , ChronometerComponent
     , TimelineComponent
+    , CurrentTaskComponent
   ]
 })
 export class HomeModule { }

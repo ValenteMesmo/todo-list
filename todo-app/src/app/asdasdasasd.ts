@@ -3,24 +3,35 @@ import { BehaviorSubject } from "rxjs";
 import { throttle } from "./_shared/decorators/throttle.decorator";
 
 export enum EventType {
-  chronometerButtonClicked = 0,
-  timeclicked = 1,
+  chronometerButtonClick = 0,
+  undoChronometerButtonClick = 1,
   taskCreated = 2,
-  TaskOrderChanged = 3,
-}
-
-export interface Quests {
-  name: string,
-  pomodoroCount: number,
-  repeatable: boolean,
-
-  completed: number
+  undoTaskCreated = 3,
+  TaskOrderChanged = 4
 }
 
 export interface TodoEvent {
   type: EventType;
   date: Date;
   args?: any;
+}
+
+export enum TaskType {
+  Pomodoro = 0,
+  Break = 1,
+  LongBreak = 2
+}
+
+export interface Task {
+  created: Date;
+  name: string;
+  repeat: boolean;
+  type: TaskType;
+}
+
+export interface AppState {
+  events: TodoEvent[];
+  tasks: Task[];
 }
 
 export class MyTimer {
@@ -38,8 +49,8 @@ export class MyTimer {
   public onLongBreakStarted = new EventEmitter<string>();
 
   public running: boolean;
-  pomodoroCountdown: string;
-  currentTimeInterval: string;
+  public pomodoroCountdown: string;
+  public currentTimeInterval: string;
 
   constructor() {
     this.timeLoop();
@@ -218,7 +229,7 @@ export class MyTimer {
 
   private start() {
     this.running = true;
-    this.pomodoroCount = 0;    
+    this.pomodoroCount = 0;
     this.pomodoroState = 0;
     this.pomodoroCountdown = "25:00";
   }
@@ -258,8 +269,11 @@ export class MyTimer {
 export class EventProcessor {
   public onEventsChanged: BehaviorSubject<TodoEvent[]>;
 
-  public _events: TodoEvent[] = [];
+  private _events: TodoEvent[] = [];
   public timer: MyTimer;
+
+  get times(): Date[] { return this.timer.clicks; }
+  public tasks: Task[] = [];
 
   constructor() {
     this.timer = new MyTimer();
@@ -273,11 +287,17 @@ export class EventProcessor {
   private processSingleEvent(e: TodoEvent, emitChanges: boolean) {
     e.date = new Date(e.date);
 
-    if (e.type == EventType.chronometerButtonClicked)
+    if (e.type == EventType.chronometerButtonClick)
       this.handleTimerStarted(e);
 
-    if (e.type == EventType.timeclicked)
+    if (e.type == EventType.undoChronometerButtonClick)
       this.handleTimeClicked(e);
+
+    if (e.type == EventType.taskCreated)
+      this.handleTaskCreated(e);
+
+    if (e.type == EventType.undoTaskCreated)
+      this.handleUndoTaskCreated(e);
 
     if (emitChanges == false)
       return;
@@ -299,10 +319,24 @@ export class EventProcessor {
   private handleTimeClicked(e: TodoEvent) {
     this.timer.undoClick(new Date(e.args));
   }
+
+  private handleTaskCreated(e: TodoEvent) {
+    this.tasks.push({
+      name: "",
+      repeat: false,
+      type: TaskType.Pomodoro,
+      created: e.date
+    });
+  }
+
+  private handleUndoTaskCreated(e: TodoEvent) {
+    this.tasks = this.tasks
+      .filter(f => f.created.getTime() != new Date(e.args).getTime());
+  }
 }
 
 export const Constants = {
-  store_key: 'todov2-id-000'
+  store_key: 'todo.2.0.0'
 };
 
 @Injectable({ providedIn: 'root' })
@@ -310,6 +344,8 @@ export class EventService {
   //TODO: separar tarefas em mainquests e sidequests... main feitas em pomodoro, side feitas no break
   //TODO: utilizar cron para cadastrar tarefas recorrentes
   public processor: EventProcessor;
+  private events: TodoEvent[] = [];
+  public tasks: Task[] = [];
 
   constructor() {
     this.processor = new EventProcessor();
@@ -317,6 +353,8 @@ export class EventService {
     let _events = (JSON.parse(
       localStorage.getItem(`${Constants.store_key}-${new Date().toLocaleDateString()}`)
     ) || []) as TodoEvent[];
+
+    this.processor.onEventsChanged.subscribe(f => this.events = f);
 
     this.processor.processAll(_events);
 
@@ -327,12 +365,13 @@ export class EventService {
     }, 1000);
   }
 
-  publish(e: TodoEvent, save = true) {
+  publish(e: TodoEvent) {
     this.processor.process(e);
 
-    localStorage.setItem(
-      `${Constants.store_key}-${new Date().toLocaleDateString()}`
-      , JSON.stringify(this.processor._events));
+    setTimeout(() =>
+      localStorage.setItem(
+        `${Constants.store_key}-${new Date().toLocaleDateString()}`
+        , JSON.stringify(this.events)), 0);
   }
 }
 

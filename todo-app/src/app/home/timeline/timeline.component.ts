@@ -7,10 +7,13 @@ interface TimelineEvent {
   title: string;
   detail: string;
   time: string;
+  type: EventType;
   date: Date;
   bonus: string;
   icon: string;
   color: string;
+  firstAndStopped? : boolean;
+  firstAndRunning?: boolean;
 }
 
 @Component({
@@ -28,7 +31,8 @@ export class TimelineComponent {
     service.processor.onEventsChanged.subscribe(events => {
       this.events = [];
 
-      const dates = service.processor.timer.clicks.sort().reverse();
+      const dates = service.processor.times.sort().reverse();
+      //service.processor.timer.clicks.sort().reverse();
 
       dates.forEach((date, index, dates) => {
 
@@ -44,7 +48,9 @@ export class TimelineComponent {
               time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
               icon: "stop-circle-outline",
               color: "danger",
-              bonus: `- ${this.calcularBonus( dates, index-1)}`
+              type: EventType.chronometerButtonClick,
+              bonus: `- ${this.calcularBonus(dates, index - 1)}`,
+              firstAndStopped: index == 0
             });
           }//se for impar, registrar intervalo de lazer
           else {
@@ -55,7 +61,9 @@ export class TimelineComponent {
               time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
               icon: "play-circle-outline",
               color: "success",
-              bonus: `+ ${this.calcularBonus(dates, index - 1)}`
+              type: EventType.chronometerButtonClick,
+              bonus: `+ ${this.calcularBonus(dates, index - 1)}`,
+              firstAndRunning: index == 0
             });
           }
 
@@ -68,12 +76,27 @@ export class TimelineComponent {
             time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             icon: "play-circle-outline",
             color: "success",
-            bonus: `+ ${this.calcularBonus(dates, index - 1)}`
+            type: EventType.chronometerButtonClick,
+            bonus: `+ ${this.calcularBonus(dates, index - 1)}`,
+            firstAndRunning: index == 0
           });
         }
       });
 
-      //this.events = this.events.sort().reverse();
+      service.processor.tasks.forEach(task => {
+        this.events.push({
+          title: task.name,
+          time: task.created.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          bonus: '',
+          color: '',
+          date: task.created,
+          detail: 'aaaa',
+          type: EventType.taskCreated,
+          icon: 'test'
+        });
+      });
+
+      this.events = this.events.sort((a, b) => a.date.getTime() - b.date.getTime()).reverse();
     });
   }
 
@@ -89,7 +112,7 @@ export class TimelineComponent {
     if (begin >= dates.length
       || end >= dates.length
       || begin < 0
-      || end < 0    )
+      || end < 0)
       return '';
 
     return this.formatInterval(dates[begin], dates[end]);
@@ -97,7 +120,7 @@ export class TimelineComponent {
 
   private removeConfirm(item: TimelineEvent) {
     this.service.publish({
-      type: EventType.timeclicked,
+      type: EventType.undoChronometerButtonClick,
       date: new Date(),
       args: item.date
     });
@@ -114,7 +137,7 @@ export class TimelineComponent {
           text: 'Cancelar',
           role: 'cancel',
           //cssClass: 'secondary',
-          handler: () => {}
+          handler: () => { }
         }, {
           text: 'Excluir',
           cssClass: 'color-danger',

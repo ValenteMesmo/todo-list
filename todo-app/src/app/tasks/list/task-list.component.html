@@ -1,0 +1,84 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+      <ion-label>Tasks</ion-label>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/home">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+
+  <div id="container">
+
+    <ion-reorder-group disabled="false" (ionItemReorder)="$event.detail.complete()">
+
+      <ion-card *ngFor="let task of service.processor.tasks">
+
+        <ion-card-header>
+
+          <div style="position: absolute; z-index: 2; top: 12px; left: 12px;">
+            <ion-reorder>
+              <ion-icon name="reorder-two-outline" color="medium" size="large"></ion-icon>
+            </ion-reorder>
+          </div>
+
+          <div class="ion-padding" style="margin-top:-27px;margin-top: -27px;padding-left: 30px;">
+            <ion-item>
+              <ion-input [(ngModel)]="task.name" placeholder="Task name" autocomplete="off" inputmode="text" name=""></ion-input>
+            </ion-item>
+
+
+          </div>
+
+          <ion-radio-group [(ngModel)]="task.type">
+
+            <ion-item>
+              <ion-label>Pomodoro</ion-label>
+              <ion-radio slot="start" value="0"></ion-radio>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Break</ion-label>
+              <ion-radio slot="start" value="1"></ion-radio>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Long break</ion-label>
+              <ion-radio slot="start" value="2"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+
+          <ion-item>
+            <ion-toggle [(ngModel)]="task.repeats"></ion-toggle>
+            <ion-label>Repeats</ion-label>
+          </ion-item>
+
+          <div style="cursor: pointer; position: absolute; z-index: 2; right: 15px; top: 15px;"
+               (click)="remove(task)">
+            <ion-icon name='trash' color="danger" style="font-size:21px;"></ion-icon>
+          </div>
+
+        </ion-card-header>
+
+
+
+      </ion-card>
+
+    </ion-reorder-group>
+
+  </div>
+</ion-content>
+<ion-fab vertical="bottom" horizontal="end">
+  <ion-fab-button routerLink="/tasks/new">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+
