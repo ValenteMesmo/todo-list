@@ -2,7 +2,8 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
-      <ion-label>Edit task</ion-label>
+      <ion-label *ngIf="editId">Edit task</ion-label>
+      <ion-label *ngIf="!editId">New task</ion-label>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button routerLink="/tasks">
@@ -18,7 +19,7 @@
     <ion-item>
       <ion-label position="floating">Name</ion-label>
       <ion-input #taskNameInput
-                 [(ngModel)]="name"
+                 [(ngModel)]="model.name"
                  autocomplete="off"
                  inputmode="text"
                  name="task-name"></ion-input>
@@ -27,7 +28,7 @@
     <ion-item>
       <ion-label>Type</ion-label>
 
-      <ion-radio-group [(ngModel)]="type">
+      <ion-radio-group [(ngModel)]="model.type">
 
         <ion-item>
           <ion-label>Pomodoro</ion-label>
@@ -48,7 +49,7 @@
 
     <ion-item>
       <ion-label>Repeats</ion-label>
-      <ion-toggle [(ngModel)]="repeats"></ion-toggle>
+      <ion-toggle [(ngModel)]="model.repeats"></ion-toggle>
     </ion-item>
 
     <ion-item>

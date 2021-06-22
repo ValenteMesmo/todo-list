@@ -8,20 +8,13 @@ import { throttle } from "../../_shared/decorators/throttle.decorator";
   , styleUrls: ['./task-list.component.scss']
 })
 export class TaskListComponent {
-  gender = "0";
-
   constructor(
     protected readonly router: Router
     , protected readonly service: EventService) {
   }
 
   @throttle()
-  add() {
-    this.service.publish({ date: new Date(), type: EventType.taskCreated, args: 'testando 123...' });
-  }
-
-  @throttle()
   remove(task: Task) {
-    this.service.publish({ date: new Date(), type: EventType.undoTaskCreated, args: task.created });
+    this.service.publish({ date: new Date(), type: EventType.taskDeleted, args: task.created });
   }
 }

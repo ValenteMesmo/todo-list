@@ -6,8 +6,9 @@ export enum EventType {
   chronometerButtonClick = 0,
   undoChronometerButtonClick = 1,
   taskCreated = 2,
-  undoTaskCreated = 3,
-  TaskOrderChanged = 4
+  taskDeleted = 3,
+  taskEdited = 4,
+  TaskOrderChanged = 5,
 }
 
 export interface TodoEvent {
@@ -296,7 +297,10 @@ export class EventProcessor {
     if (e.type == EventType.taskCreated)
       this.handleTaskCreated(e);
 
-    if (e.type == EventType.undoTaskCreated)
+    if (e.type == EventType.taskEdited)
+      this.handleTaskEdited(e);
+
+    if (e.type == EventType.taskDeleted)
       this.handleUndoTaskCreated(e);
 
     if (emitChanges == false)
@@ -320,13 +324,20 @@ export class EventProcessor {
     this.timer.undoClick(new Date(e.args));
   }
 
+  private handleTaskEdited(e: TodoEvent) {
+    const index = e.args.index as number;
+    const data = e.args as Task;
+
+    if (data && this.tasks[index])
+      this.tasks[index] = data;
+  }
+
   private handleTaskCreated(e: TodoEvent) {
-    this.tasks.push({
-      name: "",
-      repeat: false,
-      type: TaskType.Pomodoro,
-      created: e.date
-    });
+
+    const data = e.args as Task;
+
+    if (data)
+      this.tasks.push(data);
   }
 
   private handleUndoTaskCreated(e: TodoEvent) {
@@ -345,7 +356,6 @@ export class EventService {
   //TODO: utilizar cron para cadastrar tarefas recorrentes
   public processor: EventProcessor;
   private events: TodoEvent[] = [];
-  public tasks: Task[] = [];
 
   constructor() {
     this.processor = new EventProcessor();
@@ -357,6 +367,8 @@ export class EventService {
     this.processor.onEventsChanged.subscribe(f => this.events = f);
 
     this.processor.processAll(_events);
+
+    console.log(_events);
 
     setTimeout(() => {
       this.processor.timer.onPomodoroStarted.subscribe(f => NotificationService.send(f, ""));
