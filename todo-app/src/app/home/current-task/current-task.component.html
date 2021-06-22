@@ -1,22 +1,15 @@
-<ion-card *ngIf="service.processor.tasks && service.processor.tasks.length">
-  <ion-card-header>
+<div *ngIf="service.processor.tasks && service.processor.tasks.length"
+     class="ion-padding" style="font-size: 30px;">
+  
+  <ion-button [color]="service.processor.timer.pomodoroState == 0 ? 'success' : 'warning'">
+    <ion-icon name="checkbox"></ion-icon>
+    <ion-label>Complete</ion-label>
+  </ion-button>
 
-    <ion-card-title>
-      <ion-label style="width: 93%; display: block;"> {{service.processor.tasks[0].name || 'Unnamed'}}</ion-label>
-      <div style="cursor: pointer; position: absolute; right: 0px; top: 0px;" (click)="remove(item)">
-        <ion-icon name='trash' color="danger"></ion-icon>
-      </div>
-    </ion-card-title>
-  </ion-card-header>
+  <ion-label>{{service.processor.tasks[0].name || 'Unnamed'}}</ion-label>
+</div>
 
-  <ion-card-content>
-    <ion-icon color="secondary" name="stopwatch-outline" style="margin-bottom: -2px;"></ion-icon>
-    <ion-label color="secondary">{{service.processor.tasks[0].created}}</ion-label>
-
-    <ion-label style="position: absolute; right: 15px;">つづく</ion-label>
-  </ion-card-content>
-</ion-card>
-
-<div *ngIf="!service.processor.tasks || !service.processor.tasks.length">
+<div *ngIf="!service.processor.tasks || !service.processor.tasks.length"
+     class="ion-padding">
   Cadastre tarefas!
 </div>
