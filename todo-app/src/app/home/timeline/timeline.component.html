@@ -14,7 +14,8 @@
                      style="width: 93%; display: block; margin-left: 18px;">
             &nbsp;{{item.title}}
           </ion-label>
-          <div style="cursor: pointer; position: absolute; right: 0px; top: 0px;">
+          <div style="cursor: pointer; position: absolute; right: 0px; top: 0px;"
+               (click)="remove(item)">
             <ion-icon name='trash' color="danger"></ion-icon>
           </div>
         </ion-card-title>

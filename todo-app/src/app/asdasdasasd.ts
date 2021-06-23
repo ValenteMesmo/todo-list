@@ -2,6 +2,7 @@ import { EventEmitter, Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { throttle } from "./_shared/decorators/throttle.decorator";
 
+
 export enum EventType {
   chronometerButtonClick = 0,
   undoChronometerButtonClick = 1,
@@ -10,6 +11,7 @@ export enum EventType {
   taskEdited = 4,
   TaskOrderChanged = 5,
   TaskCompleted = 6,
+  undoTaskCompletion = 7
 }
 
 export interface TodoEvent {
@@ -300,6 +302,9 @@ export class EventProcessor {
     if (e.type == EventType.TaskCompleted)
       this.handleTaskCompleted(e);
 
+    if (e.type == EventType.undoTaskCompletion)
+      this.handleTaskUndo(e);
+
     if (emitChanges == false)
       return;
 
@@ -353,6 +358,26 @@ export class EventProcessor {
     //this.tasks = this.tasks
     //  .filter(f => f.created.getTime() != new Date(e.args).getTime());
   }
+
+  private handleTaskUndo(e: TodoEvent) {
+    console.log(e);
+    e.args = new Date(e.args);
+
+    const task = this.completedTasks
+      .find(f =>
+        new Date(f.completed).getTime() == e.args.getTime()
+      );
+
+    if (task) {
+      task.completed = null;
+      this.tasks = [task].concat(this.tasks);
+      this.completedTasks = this.completedTasks.filter(f=> f!= task);
+    }
+    //this.tasks = this.tasks
+    //  .filter(f => f.created.getTime() != new Date(e.args).getTime());
+  }
+
+
 }
 
 export const Constants = {

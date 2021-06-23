@@ -120,11 +120,19 @@ export class TimelineComponent {
   }
 
   private removeConfirm(item: TimelineEvent) {
-    this.service.publish({
-      type: EventType.undoChronometerButtonClick,
-      date: new Date(),
-      args: item.date
-    });
+
+    let type: EventType = null;
+    if (item.type == EventType.chronometerButtonClick)
+      type = EventType.undoChronometerButtonClick;
+    else if (item.type == EventType.TaskCompleted)
+      type = EventType.undoTaskCompletion;
+
+    if (type != null)
+      this.service.publish({
+        type: type,
+        date: new Date(),
+        args: item.date
+      });
   }
 
   @throttle()
