@@ -12,7 +12,7 @@ interface TimelineEvent {
   bonus: string;
   icon: string;
   color: string;
-  firstAndStopped? : boolean;
+  firstAndStopped?: boolean;
   firstAndRunning?: boolean;
 }
 
@@ -46,7 +46,7 @@ export class TimelineComponent {
               detail: `total: ${this.service.processor.timer.currentTime} | saldo: ${this.service.processor.timer.goal}`,
               date: date,
               time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-              icon: "stop-circle-outline",
+              icon: "pause-outline",
               color: "danger",
               type: EventType.chronometerButtonClick,
               bonus: `- ${this.calcularBonus(dates, index - 1)}`,
@@ -59,7 +59,7 @@ export class TimelineComponent {
               detail: "aaaaaaaa",
               date: date,
               time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-              icon: "play-circle-outline",
+              icon: "play-outline",
               color: "success",
               type: EventType.chronometerButtonClick,
               bonus: `+ ${this.calcularBonus(dates, index - 1)}`,
@@ -74,7 +74,7 @@ export class TimelineComponent {
             detail: "bbbbbbbbb",
             date: date,
             time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            icon: "play-circle-outline",
+            icon: "play-outline",
             color: "success",
             type: EventType.chronometerButtonClick,
             bonus: `+ ${this.calcularBonus(dates, index - 1)}`,
@@ -83,18 +83,19 @@ export class TimelineComponent {
         }
       });
 
-      service.processor.tasks.forEach(task => {
+      this.service.processor.completedTasks.forEach(task =>
+
         this.events.push({
-          title: task.name,
-          time: task.created.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          title: `${task.name}`,
+          time: task.completed.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           bonus: '',
-          color: '',
-          date: task.created,
-          detail: 'aaaa',
-          type: EventType.taskCreated,
-          icon: 'test'
-        });
-      });
+          color: 'primary',
+          date: task.completed,
+          detail: '',
+          type: EventType.TaskCompleted,
+          icon: 'checkbox-outline'
+        })
+      );
 
       this.events = this.events.sort((a, b) => a.date.getTime() - b.date.getTime()).reverse();
     });

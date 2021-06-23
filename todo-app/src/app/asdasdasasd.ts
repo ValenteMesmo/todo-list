@@ -9,6 +9,7 @@ export enum EventType {
   taskDeleted = 3,
   taskEdited = 4,
   TaskOrderChanged = 5,
+  TaskCompleted = 6,
 }
 
 export interface TodoEvent {
@@ -24,15 +25,11 @@ export enum TaskType {
 }
 
 export interface Task {
+  completed?: Date;
   created: Date;
   name: string;
   repeat: boolean;
   type: TaskType;
-}
-
-export interface AppState {
-  events: TodoEvent[];
-  tasks: Task[];
 }
 
 export class MyTimer {
@@ -249,10 +246,6 @@ export class MyTimer {
     this.pomodoroState = 0;
   }
 
-  private toLocaleTimeString() {
-    return `${this.zeroPad(this.hours)}:${this.zeroPad(this.minutes)}:${this.zeroPad(this.seconds)}`;
-  }
-
   private zeroPad(n) {
     if (n >= 0 && n <= 9)
       return `0${n}`;
@@ -275,6 +268,7 @@ export class EventProcessor {
 
   get times(): Date[] { return this.timer.clicks; }
   public tasks: Task[] = [];
+  public completedTasks: Task[] = [];
 
   constructor() {
     this.timer = new MyTimer();
@@ -301,7 +295,10 @@ export class EventProcessor {
       this.handleTaskEdited(e);
 
     if (e.type == EventType.taskDeleted)
-      this.handleUndoTaskCreated(e);
+      this.handleUndoTaskDeleted(e);
+
+    if (e.type == EventType.TaskCompleted)
+      this.handleTaskCompleted(e);
 
     if (emitChanges == false)
       return;
@@ -340,9 +337,21 @@ export class EventProcessor {
       this.tasks.push(data);
   }
 
-  private handleUndoTaskCreated(e: TodoEvent) {
+  private handleUndoTaskDeleted(e: TodoEvent) {
+    //Todo: remove by index?
     this.tasks = this.tasks
       .filter(f => f.created.getTime() != new Date(e.args).getTime());
+  }
+
+  private handleTaskCompleted(e: TodoEvent) {
+
+    const removed = this.tasks.splice(e.args, 1)[0];
+    if (removed) {
+      removed.completed = e.date;
+      this.completedTasks.push(removed);
+    }
+    //this.tasks = this.tasks
+    //  .filter(f => f.created.getTime() != new Date(e.args).getTime());
   }
 }
 

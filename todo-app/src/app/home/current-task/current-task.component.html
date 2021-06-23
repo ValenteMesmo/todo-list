@@ -1,15 +1,22 @@
 <div *ngIf="service.processor.tasks && service.processor.tasks.length"
-     class="ion-padding" style="font-size: 30px;">
+     class="ion-padding"
+     style="font-size: 30px; cursor:pointer;"
+     (click)="completeTask()">
   
-  <ion-button [color]="service.processor.timer.pomodoroState == 0 ? 'success' : 'warning'">
+  <!--<ion-button (click)="completeTask()"
+              [color]="service.processor.timer.pomodoroState == 0 ? 'success' : 'warning'">
     <ion-icon name="checkbox"></ion-icon>
     <ion-label>Complete</ion-label>
-  </ion-button>
+  </ion-button>-->
 
-  <ion-label>{{service.processor.tasks[0].name || 'Unnamed'}}</ion-label>
+  <ion-icon color="primary" name="square-outline"></ion-icon>
+  <ion-label color="primary">&nbsp; {{service.processor.tasks[0].name || 'Unnamed'}}</ion-label>
 </div>
 
 <div *ngIf="!service.processor.tasks || !service.processor.tasks.length"
-     class="ion-padding">
-  Cadastre tarefas!
+     class="ion-padding"
+     style="cursor:pointer"
+     [routerLink]="['../tasks' ,'new']">
+  <ion-icon color="primary" name="add-circle"></ion-icon>
+   <ion-label color="primary">&nbsp;Cadastre tarefas!</ion-label>
 </div>

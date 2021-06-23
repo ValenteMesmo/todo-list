@@ -1,23 +1,55 @@
-<ng-template ngFor let-item [ngForOf]="events" let-index="index">
-  <ion-card>
-    <ion-card-header>
+<div style="margin-bottom: 66px;">
 
-      <ion-card-title>
-        <ion-label style="width: 93%; display: block;"> {{item.title}}</ion-label>
-        <div style="cursor: pointer; position: absolute; right: 0px; top: 0px;" (click)="remove(item)">
-          <ion-icon name='trash' color="danger"></ion-icon>
-        </div>
-      </ion-card-title>
-    </ion-card-header>
+  <ng-template ngFor let-item [ngForOf]="events" let-index="index">
 
-    <ion-card-content>
-      <ion-icon color="secondary" name="stopwatch-outline" style="margin-bottom: -2px;"></ion-icon>
-      <ion-label color="secondary">{{item.time}}</ion-label>
-            
-      <ion-label *ngIf="!item.firstAndStopped && !item.firstAndRunning" style="position: absolute; right: 15px;">{{item.bonus}}</ion-label>
-      <ion-label *ngIf="item.firstAndStopped" style="position: absolute; right: 15px;">つづく</ion-label>
-      <ion-label *ngIf="item.firstAndRunning && service.processor.timer.currentTimeInterval" style="position: absolute; right: 15px;">+ {{service.processor.timer.currentTimeInterval}}</ion-label>
-    </ion-card-content>
-  </ion-card>
 
-</ng-template>
+    <ion-card style="font-size:21px;">
+      <ion-card-header>
+
+        <ion-card-title>
+          <div style="position: absolute; top: 3px;">
+            <ion-icon [color]="item.color" [name]="item.icon"></ion-icon>
+          </div>
+          <ion-label color="medium"
+                     style="width: 93%; display: block; margin-left: 18px;">
+            &nbsp;{{item.title}}
+          </ion-label>
+          <div style="cursor: pointer; position: absolute; right: 0px; top: 0px;">
+            <ion-icon name='trash' color="danger"></ion-icon>
+          </div>
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <!--<ion-icon color="medium" name="time-outline" style="margin-bottom: -2px;"></ion-icon>-->
+        <ion-label color="medium">{{item.time}}</ion-label>
+        <ion-label *ngIf="!item.firstAndStopped && !item.firstAndRunning" style="position: absolute; right: 15px;">{{item.bonus}}</ion-label>
+        <ion-label *ngIf="item.firstAndStopped" style="position: absolute; right: 15px;">つづく</ion-label>
+        <ion-label *ngIf="item.firstAndRunning && service.processor.timer.currentTimeInterval" style="position: absolute; right: 15px;">+ {{service.processor.timer.currentTimeInterval}}</ion-label>
+      </ion-card-content>
+    </ion-card>
+
+    <!--<ion-card *ngIf="item.type == 0">
+      <ion-card-header>
+
+        <ion-card-title>
+          <ion-label style="width: 93%; display: block;">&nbsp;{{item.title}}</ion-label>
+          <div style="cursor: pointer; position: absolute; right: 0px; top: 0px;" (click)="remove(item)">
+            <ion-icon name='trash' color="danger"></ion-icon>
+          </div>
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-icon color="secondary" name="stopwatch-outline" style="margin-bottom: -2px;"></ion-icon>
+        <ion-label color="secondary">&nbsp; {{item.time}}</ion-label>
+
+        <ion-label *ngIf="!item.firstAndStopped && !item.firstAndRunning" style="position: absolute; right: 15px;">{{item.bonus}}</ion-label>
+        <ion-label *ngIf="item.firstAndStopped" style="position: absolute; right: 15px;">つづく</ion-label>
+        <ion-label *ngIf="item.firstAndRunning && service.processor.timer.currentTimeInterval" style="position: absolute; right: 15px;">+ {{service.processor.timer.currentTimeInterval}}</ion-label>
+      </ion-card-content>
+    </ion-card>-->
+
+  </ng-template>
+
+</div>

@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { EventService } from "../../asdasdasasd";
+import { EventService, EventType } from "../../asdasdasasd";
 
 @Component({
   selector: 'app-current-task',
@@ -9,4 +9,12 @@ import { EventService } from "../../asdasdasasd";
 export class CurrentTaskComponent {
   constructor(
     protected readonly service: EventService) { }
+
+  completeTask() {
+    this.service.publish({
+      date: new Date(),
+      type: EventType.TaskCompleted,
+      args: 0
+    });
+  }
 }
