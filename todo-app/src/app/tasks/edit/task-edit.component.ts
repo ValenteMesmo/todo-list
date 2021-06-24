@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IonInput } from "@ionic/angular";
-import { EventService, EventType, Task, TaskType } from "../../asdasdasasd";
 import { throttle } from "../../_shared/decorators/throttle.decorator";
+import { EventType, Task } from "../../_shared/services/event-processor";
+import { EventService } from "../../_shared/services/event-service";
 
 @Component({
   templateUrl: './task-edit.component.html'

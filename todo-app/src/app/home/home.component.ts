@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
-import { EventService, NotificationService } from "../asdasdasasd";
+import { EventService } from "../_shared/services/event-service";
+import { NotificationService } from "../_shared/services/notification.service";
 
 @Component({
   templateUrl: './home.component.html',

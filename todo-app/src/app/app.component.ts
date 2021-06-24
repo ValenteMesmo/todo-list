@@ -1,10 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { MsalBroadcastService, MsalGuardConfiguration, MsalService, MSAL_GUARD_CONFIG } from '@azure/msal-angular';
-import { InteractionStatus, RedirectRequest } from '@azure/msal-browser';
-import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
-import { EventService, NotificationService } from './asdasdasasd';
+import { EventService } from './_shared/services/event-service';
+import { NotificationService } from './_shared/services/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -17,10 +14,7 @@ export class AppComponent {
 
   notification = NotificationService;
 
-  constructor(
-    protected readonly service: EventService
-    , protected readonly router: Router
-  ) {    
+  constructor(protected readonly router: Router) {
   }
 
   addItem() {

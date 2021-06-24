@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
-import { EventService } from "../../asdasdasasd";
 import { throttle } from "../../_shared/decorators/throttle.decorator";
+import { EventService } from "../../_shared/services/event-service";
 
 @Component({
   selector: "app-chronometer",

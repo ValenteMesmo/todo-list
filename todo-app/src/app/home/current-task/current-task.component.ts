@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
-import { EventService, EventType } from "../../asdasdasasd";
+import { EventType } from "../../_shared/services/event-processor";
+import { EventService } from "../../_shared/services/event-service";
 
 @Component({
   selector: 'app-current-task',

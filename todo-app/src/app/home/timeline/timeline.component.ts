@@ -1,7 +1,8 @@
 import { Component } from "@angular/core";
 import { AlertController } from "@ionic/angular";
-import { EventService, EventType } from "../../asdasdasasd";
 import { throttle } from "../../_shared/decorators/throttle.decorator";
+import { EventType } from "../../_shared/services/event-processor";
+import { EventService } from "../../_shared/services/event-service";
 
 interface TimelineEvent {
   title: string;
