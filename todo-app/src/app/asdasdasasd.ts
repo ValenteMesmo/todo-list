@@ -305,6 +305,9 @@ export class EventProcessor {
     if (e.type == EventType.undoTaskCompletion)
       this.handleTaskUndo(e);
 
+    if (e.type == EventType.TaskOrderChanged)
+      this.handleTaskReorder(e);
+
     if (emitChanges == false)
       return;
 
@@ -371,10 +374,25 @@ export class EventProcessor {
     if (task) {
       task.completed = null;
       this.tasks = [task].concat(this.tasks);
-      this.completedTasks = this.completedTasks.filter(f=> f!= task);
+      this.completedTasks = this.completedTasks.filter(f => f != task);
     }
     //this.tasks = this.tasks
     //  .filter(f => f.created.getTime() != new Date(e.args).getTime());
+  }
+
+  private handleTaskReorder(e: TodoEvent) {
+    function array_move(arr, old_index, new_index) {
+      if (new_index >= arr.length) {
+        var k = new_index - arr.length + 1;
+        while (k--) {
+          arr.push(undefined);
+        }
+      }
+      arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+      return arr; // for testing
+    };
+
+    this.tasks = array_move(this.tasks, e.args.from, e.args.to);
   }
 
 

@@ -17,7 +17,7 @@
 
   <div id="container">
 
-    <ion-reorder-group disabled="false" (ionItemReorder)="$event.detail.complete()">
+    <ion-reorder-group disabled="false" (ionItemReorder)="orderChanged($event)">
 
       <ion-card *ngFor="let task of service.processor.tasks; let i = index">
 
