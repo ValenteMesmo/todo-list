@@ -1,7 +1,9 @@
-import { Constants } from "../constants";
+import { Injectable } from "@angular/core";
 import { throttle } from "../decorators/throttle.decorator";
+import { StorageService } from "./storage.service";
 
-class _NotificationService {
+@Injectable({ providedIn: 'root' })
+export class NotificationService {
   private _permissionGranted: boolean = false;
 
   get permissionGranted(): boolean {
@@ -13,14 +15,14 @@ class _NotificationService {
       this.requestPermission();
     else {
       this._permissionGranted = false;
-      localStorage.setItem(`${Constants.store_key}-notifications`, '0');
+      this.StorageService.saveNotification(false);      
     }
   }
 
-  constructor() {
+  constructor(private readonly StorageService: StorageService) {
     this._permissionGranted =
       Notification.permission == "granted"
-      && localStorage.getItem(`${Constants.store_key}-notifications`) == '1';
+      && this.StorageService.loadNotification();
   }
 
   @throttle()
@@ -50,16 +52,13 @@ class _NotificationService {
   public requestPermission() {
     if (Notification.permission == "granted") {
       this._permissionGranted = true;
-      localStorage.setItem(`${Constants.store_key}-notifications`, '1');
+      this.StorageService.saveNotification(true);      
       return;
     }
 
     Notification.requestPermission().then(f => {
       this._permissionGranted = f == "granted";
-      localStorage.setItem(`${Constants.store_key}-notifications`, this._permissionGranted ? '1' : '0');
+      this.StorageService.saveNotification(this._permissionGranted);      
     });
   }
-
 }
-
-export const NotificationService = new _NotificationService();

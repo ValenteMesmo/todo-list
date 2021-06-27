@@ -15,7 +15,7 @@ export class TaskEditComponent implements OnInit {
   ionInput: IonInput;
 
   editId: string;
-  model = { name: '', type: '0', repeats: false};
+  model = { name: '', type: '0', repeats: false };
 
   constructor(
     protected readonly router: Router
@@ -46,16 +46,16 @@ export class TaskEditComponent implements OnInit {
   @throttle()
   save() {
 
-    const task : Task = {
+    const task: Task = {
       created: new Date(),
       name: this.model.name,
       repeat: this.model.repeats,
       type: Number(this.model.type)
     };
-        
+
     this.service.publish({
-      date: new Date(),
       type: !this.editId ? EventType.taskCreated : EventType.taskEdited,
+      date: new Date(),
       args: !this.editId ? task : { ...task, index: Number(this.editId) }
     });
 
