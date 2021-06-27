@@ -12,9 +12,9 @@ export class AppComponent {
 
   newTitle: string;
 
-  notification = NotificationService;
-
-  constructor(protected readonly router: Router) {
+  constructor(
+    protected readonly router: Router,
+    protected notification: NotificationService  ) {
   }
 
   addItem() {

@@ -15,11 +15,10 @@ export class EventService {
     this.processor = new EventProcessor();
 
     const previousDayData = StorageService.getLastDay();
-    const currentDayData = StorageService.getCurrent();
     console.log(previousDayData);
-    console.log(currentDayData);
 
-    let _events = (currentDayData || []) as TodoEvent[];
+    let _events = StorageService.getCurrent();
+    console.log(_events);
 
     this.processor.onEventsChanged.subscribe(f => this.events = f);
 

@@ -1,4 +1,4 @@
-import { EventEmitter } from "@angular/core";
+import { Subject } from "rxjs";
 
 export class MyTimer {
   private seconds = 0;
@@ -10,13 +10,14 @@ export class MyTimer {
   public pomodoroTime: string;
   public pomodoroState = 0;
   public pomodoroCount = 0;
-  public onPomodoroStarted = new EventEmitter<string>();
-  public onShortBreakStarted = new EventEmitter<string>();
-  public onLongBreakStarted = new EventEmitter<string>();
+  public onPomodoroStarted = new Subject<string>();
+  public onShortBreakStarted = new Subject<string>();
+  public onLongBreakStarted = new Subject<string>();
 
   public running: boolean;
   public pomodoroCountdown: string;
   public currentTimeInterval: string;
+  public muted = true;
 
   constructor() {
     this.timeLoop();
@@ -42,6 +43,18 @@ export class MyTimer {
       this.start();
 
     this.recalculateTimer();
+  }
+
+  clear() {
+    this.seconds = 0;
+    this.minutes = 0;
+    this.hours = 0;
+    this.clicks = [];
+    this.currentTime = '';
+    this.goal = '';
+    this.pomodoroTime = '';
+    this.pomodoroState = 0;
+    this.pomodoroCount = 0;
   }
 
   private setMilliseconds(value: number) {
@@ -141,13 +154,13 @@ export class MyTimer {
 
     }
 
-    if (this.running && this.pomodoroState != previousPomodoroState) {
+    if (!this.muted && this.running && this.pomodoroState != previousPomodoroState) {
       if (this.pomodoroState == 0)
-        this.onPomodoroStarted.emit("bora trabalhar!");
+        this.onPomodoroStarted.next("bora trabalhar!");
       else if (this.pomodoroState == 1)
-        this.onShortBreakStarted.emit("beber agua?");
+        this.onShortBreakStarted.next("beber agua?");
       else
-        this.onLongBreakStarted.emit("bora estudar?");
+        this.onLongBreakStarted.next("bora estudar?");
     }
 
     const pomodoroDate = new Date(1989, 4, 8);

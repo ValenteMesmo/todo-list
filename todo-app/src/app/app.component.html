@@ -19,6 +19,12 @@
               <ion-icon name="checkbox-outline"></ion-icon>
               <ion-label>&nbsp; Task list</ion-label>
             </ion-item>
+            <ion-item (click)="notification.permissionGranted = !notification.permissionGranted" style="cursor:pointer">
+              <ion-icon *ngIf="notification.permissionGranted" name='notifications' color="medium" size="large"></ion-icon>
+              <ion-icon *ngIf="!notification.permissionGranted" name='notifications-off' color="medium" size="large"></ion-icon>
+              <ion-label>&nbsp; Notifications</ion-label>
+            </ion-item>
+
           </ion-menu-toggle>
         </ion-list>
 

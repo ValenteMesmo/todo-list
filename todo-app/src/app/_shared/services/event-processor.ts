@@ -87,9 +87,15 @@ export class EventProcessor {
   }
 
   public processAll(events: TodoEvent[]) {
+    this.timer.muted = true;
     events.forEach(e => this.processSingleEvent(e, false));
     this._events = events;
     this.onEventsChanged.next(this._events);
+
+    //TODO: findout why timout is needed to avoid notifications on startup
+    setTimeout(() =>
+      this.timer.muted = false
+      , 3000);
   }
 
   private handleTimerStarted(e: TodoEvent) {
