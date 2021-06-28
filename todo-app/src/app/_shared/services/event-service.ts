@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { EventProcessor, TodoEvent } from "./event-processor";
+import { EventProcessor, EventType, TodoEvent } from "./event-processor";
 import { MyTimer } from "./my-timer";
 import { NotificationService } from "./notification.service";
 import { StorageService } from "./storage.service";
@@ -13,6 +13,8 @@ export class EventService {
   constructor(
     private readonly StorageService: StorageService
     , readonly NotificationService: NotificationService) {
+
+    //StorageService.save([]);
     this.processor = new EventProcessor();
 
     this.processor.timeAdded.subscribe(value =>
@@ -23,9 +25,29 @@ export class EventService {
       this.timer.undoClick(value)
     );
 
-    const previousDayData = StorageService.getLastDay();
+    
 
     let _events = StorageService.getCurrent();
+
+
+    if (StorageService.isFirstAccessOfTheDay()) {
+      const previousDayData = StorageService.getLastDay();
+      console.log(previousDayData);
+      const processor2 = new EventProcessor();
+      processor2.processAll(previousDayData);
+
+
+      processor2.tasks
+        .forEach(f =>
+          _events.push({
+            type: EventType.taskCreated
+            , date: new Date()
+            , args: { ...f, index: _events.length }
+          })
+      );
+
+      console.log(processor2.tasks);
+    }
 
     this.processor.onEventsChanged.subscribe(f => {
       console.log(f);

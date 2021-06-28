@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { TodoEvent } from "./event-processor";
+import * as moment from "moment";
 
 @Injectable({ providedIn: 'root' })
 export class StorageService {
@@ -24,6 +25,10 @@ export class StorageService {
     return this.getByDate(new Date());
   }
 
+  isFirstAccessOfTheDay(): boolean {
+    return new Date().toLocaleDateString() != localStorage.getItem(`${this.store_key}-lastdate`);
+  }
+
   getByDate(date: Date): TodoEvent[] {
     return (
       JSON.parse(
@@ -39,7 +44,7 @@ export class StorageService {
     if (!dateString)
       return [];
 
-    return this.getByDate(new Date(dateString));
+    return this.getByDate(moment(dateString, "DD/MM/YYYY").toDate());
   }
 
   saveNotification(value: boolean): void {
