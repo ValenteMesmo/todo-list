@@ -10,6 +10,7 @@ export class MyTimer {
   public pomodoroTime: string;
   public pomodoroState = 0;
   public pomodoroCount = 0;
+  //TODO: move to processor?
   public onPomodoroStarted = new Subject<string>();
   public onShortBreakStarted = new Subject<string>();
   public onLongBreakStarted = new Subject<string>();

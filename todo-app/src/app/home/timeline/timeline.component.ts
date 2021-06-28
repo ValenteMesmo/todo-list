@@ -30,11 +30,13 @@ export class TimelineComponent {
     , public alertController: AlertController) {
 
     service.processor.onEventsChanged.subscribe(events => {
+      console.log('eventos mudaram');
+      //console.log(events);
       this.events = [];
 
       const dates = service.processor.times.sort().reverse();
       //service.processor.timer.clicks.sort().reverse();
-
+      //console.log(service.processor.times);
       dates.forEach((date, index, dates) => {
 
         //se não for o ultimo click...        
@@ -44,7 +46,7 @@ export class TimelineComponent {
           if ((dates.length % 2 == 0 && index % 2 == 0) || (dates.length % 2 != 0 && index % 2 != 0)) {
             this.events.push({
               title: `tive que relaxar`,
-              detail: `total: ${this.service.processor.timer.currentTime} | saldo: ${this.service.processor.timer.goal}`,
+              detail: `total: ${this.service.timer.currentTime} | saldo: ${this.service.timer.goal}`,
               date: date,
               time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
               icon: "pause-outline",

@@ -13,8 +13,8 @@ export class CurrentTaskComponent {
 
   completeTask() {
     this.service.publish({
-      date: new Date(),
       type: EventType.TaskCompleted,
+      date: new Date(),
       args: 0
     });
   }

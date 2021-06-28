@@ -1,5 +1,4 @@
-import { BehaviorSubject } from "rxjs";
-import { MyTimer } from "./my-timer";
+import { Subject } from "rxjs";
 
 export interface TodoEvent {
   type: EventType;
@@ -32,21 +31,18 @@ export interface Task {
   type: TaskType;
 }
 
-
 export class EventProcessor {
-  public onEventsChanged: BehaviorSubject<TodoEvent[]>;
+  public onEventsChanged = new Subject<TodoEvent[]>();
+  public timeAdded = new Subject<Date>();
+  public timeRemoved = new Subject<Date>();
 
   private _events: TodoEvent[] = [];
-  public timer: MyTimer;
 
-  get times(): Date[] { return this.timer.clicks; }
+  public times: Date[] = [];
   public tasks: Task[] = [];
   public completedTasks: Task[] = [];
 
-  constructor() {
-    this.timer = new MyTimer();
-    this.onEventsChanged = new BehaviorSubject<TodoEvent[]>(this._events);
-  }
+  constructor() { }
 
   public process(e: TodoEvent) {
     this.processSingleEvent(e, true);
@@ -56,10 +52,10 @@ export class EventProcessor {
     e.date = new Date(e.date);
 
     if (e.type == EventType.chronometerButtonClick)
-      this.handleTimerStarted(e);
+      this.addTime(e);
 
     if (e.type == EventType.undoChronometerButtonClick)
-      this.handleTimeClicked(e);
+      this.removeTime(e);
 
     if (e.type == EventType.taskCreated)
       this.handleTaskCreated(e);
@@ -83,27 +79,27 @@ export class EventProcessor {
       return;
 
     this._events.push(e);
-    this.onEventsChanged.next(this._events);
+
+    this.onEventsChanged.next(this._events)
+
   }
 
   public processAll(events: TodoEvent[]) {
-    this.timer.muted = true;
     events.forEach(e => this.processSingleEvent(e, false));
     this._events = events;
-    this.onEventsChanged.next(this._events);
-
-    //TODO: findout why timout is needed to avoid notifications on startup
     setTimeout(() =>
-      this.timer.muted = false
-      , 3000);
+      this.onEventsChanged.next(this._events)
+      , 0);
   }
 
-  private handleTimerStarted(e: TodoEvent) {
-    this.timer.click(e.date);
+  private addTime(e: TodoEvent) {
+    this.times.push(e.date);
+    this.timeAdded.next(e.date);
   }
 
-  private handleTimeClicked(e: TodoEvent) {
-    this.timer.undoClick(new Date(e.args));
+  private removeTime(e: TodoEvent) {
+    this.times = this.times.filter(f => f.getTime() != new Date(e.args).getTime());
+    this.timeRemoved.next(new Date(e.args));
   }
 
   private handleTaskEdited(e: TodoEvent) {
@@ -140,7 +136,6 @@ export class EventProcessor {
   }
 
   private handleTaskUndo(e: TodoEvent) {
-    console.log(e);
     e.args = new Date(e.args);
 
     const task = this.completedTasks

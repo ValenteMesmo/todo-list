@@ -26,7 +26,7 @@
         <ion-label color="medium">{{item.time}}</ion-label>
         <ion-label *ngIf="!item.firstAndStopped && !item.firstAndRunning" style="position: absolute; right: 15px;">{{item.bonus}}</ion-label>
         <ion-label *ngIf="item.firstAndStopped" style="position: absolute; right: 15px;">つづく</ion-label>
-        <ion-label *ngIf="item.firstAndRunning && service.processor.timer.currentTimeInterval" style="position: absolute; right: 15px;">+ {{service.processor.timer.currentTimeInterval}}</ion-label>
+        <ion-label *ngIf="item.firstAndRunning && service.timer.currentTimeInterval" style="position: absolute; right: 15px;">+ {{service.timer.currentTimeInterval}}</ion-label>
       </ion-card-content>
     </ion-card>
 
