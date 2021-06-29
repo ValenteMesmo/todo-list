@@ -37,7 +37,8 @@ export class EventService {
       processor2.processAll(previousDayData);
 
 
-      processor2.tasks
+      [...processor2.tasks]
+        .concat(processor2.completedTasks.filter(f => f.repeat))        
         .forEach(f =>
           _events.push({
             type: EventType.taskCreated
