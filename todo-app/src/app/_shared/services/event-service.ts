@@ -50,18 +50,18 @@ export class EventService {
       console.log(processor2.tasks);
     }
 
+
+    this.processor.processAll(_events);
+
     this.processor.onEventsChanged.subscribe(f => {
       if (f.length)
         this.StorageService.save(f);
     });
 
-    this.processor.processAll(_events);
+    this.timer.onPomodoroStarted.subscribe(f => NotificationService.send(f, ""));
+    this.timer.onShortBreakStarted.subscribe(f => NotificationService.send(f, ""));
+    this.timer.onLongBreakStarted.subscribe(f => NotificationService.send(f, ""));
 
-    setTimeout(() => {
-      this.timer.onPomodoroStarted.subscribe(f => NotificationService.send(f, ""));
-      this.timer.onShortBreakStarted.subscribe(f => NotificationService.send(f, ""));
-      this.timer.onLongBreakStarted.subscribe(f => NotificationService.send(f, ""));
-    }, 1000);
   }
 
   publish(e: TodoEvent) {

@@ -121,7 +121,7 @@ export class EventProcessor {
   private handleUndoTaskDeleted(e: TodoEvent) {
     //Todo: remove by index?
     this.tasks = this.tasks
-      .filter(f => f.created.getTime() != new Date(e.args).getTime());
+      .filter(f => new Date(f.created).getTime() != new Date(e.args).getTime());
   }
 
   private handleTaskCompleted(e: TodoEvent) {

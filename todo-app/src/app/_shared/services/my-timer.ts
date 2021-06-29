@@ -1,6 +1,11 @@
 import { Subject } from "rxjs";
+import { TaskType } from "./event-processor";
 
 export class MyTimer {
+  private readonly pomodoroDuration = 25;
+  private readonly breakDuration = 5;
+  private readonly longBreakDuration = 30;
+
   private seconds = 0;
   private minutes = 0;
   private hours = 0;
@@ -17,8 +22,7 @@ export class MyTimer {
 
   public running: boolean;
   public pomodoroCountdown: string;
-  public currentTimeInterval: string;
-  public muted = true;
+  public currentTimeInterval: string = "00:00";
 
   constructor() {
     this.timeLoop();
@@ -123,9 +127,9 @@ export class MyTimer {
 
     while (true) {
 
-      if (this.pomodoroState == 0) {
-        if (minutes >= 25) {
-          minutes -= 25;
+      if (this.pomodoroState == TaskType.Pomodoro) {
+        if (minutes >= this.pomodoroDuration) {
+          minutes -= this.pomodoroDuration;
           this.pomodoroCount++;
 
           if (this.pomodoroCount % 4 == 0)
@@ -136,16 +140,16 @@ export class MyTimer {
         else
           break;
       }
-      else if (this.pomodoroState == 1) {
-        if (minutes >= 5) {
-          minutes -= 5;
+      else if (this.pomodoroState == TaskType.Break) {
+        if (minutes >= this.breakDuration) {
+          minutes -= this.breakDuration;
           this.pomodoroState = 0;
         }
         else
           break;
-      } else if (this.pomodoroState == 2) {
-        if (minutes >= 30) {
-          minutes -= 30;
+      } else if (this.pomodoroState == TaskType.LongBreak) {
+        if (minutes >= this.longBreakDuration) {
+          minutes -= this.longBreakDuration;
           this.pomodoroState = 0;
         }
         else
@@ -155,7 +159,7 @@ export class MyTimer {
 
     }
 
-    if (!this.muted && this.running && this.pomodoroState != previousPomodoroState) {
+    if (this.running && this.pomodoroState != previousPomodoroState) {
       if (this.pomodoroState == 0)
         this.onPomodoroStarted.next("bora trabalhar!");
       else if (this.pomodoroState == 1)
@@ -167,11 +171,11 @@ export class MyTimer {
     const pomodoroDate = new Date(1989, 4, 8);
 
     if (this.pomodoroState == 0)
-      pomodoroDate.setMinutes(25);
+      pomodoroDate.setMinutes(this.pomodoroDuration);
     else if (this.pomodoroState == 1)
-      pomodoroDate.setMinutes(5);
+      pomodoroDate.setMinutes(this.breakDuration);
     else
-      pomodoroDate.setMinutes(30);
+      pomodoroDate.setMinutes(this.longBreakDuration);
 
     pomodoroDate.setSeconds(pomodoroDate.getSeconds() - seconds);
     pomodoroDate.setMinutes(pomodoroDate.getMinutes() - minutes);
@@ -190,7 +194,11 @@ export class MyTimer {
         -
         latests.getTime()
       );
-      this.currentTimeInterval = a.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      if (a.getHours() < Number(this.currentTimeInterval.split(':')[0]))
+        window.location.reload();
+
+      this.currentTimeInterval = a.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });      
     }
   }
 
@@ -211,7 +219,7 @@ export class MyTimer {
     this.running = true;
     this.pomodoroCount = 0;
     this.pomodoroState = 0;
-    this.pomodoroCountdown = "25:00";
+    this.pomodoroCountdown = `${this.pomodoroDuration}:00`;
   }
 
   private timeLoop() {
