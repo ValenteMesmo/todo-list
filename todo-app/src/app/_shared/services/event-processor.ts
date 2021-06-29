@@ -1,4 +1,4 @@
-import { Subject } from "rxjs";
+import { BehaviorSubject, Subject } from "rxjs";
 
 export interface TodoEvent {
   type: EventType;
@@ -32,7 +32,7 @@ export interface Task {
 }
 
 export class EventProcessor {
-  public onEventsChanged = new Subject<TodoEvent[]>();
+  public onEventsChanged = new BehaviorSubject<TodoEvent[]>([]);
   public timeAdded = new Subject<Date>();
   public timeRemoved = new Subject<Date>();
 

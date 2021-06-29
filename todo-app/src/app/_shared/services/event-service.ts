@@ -25,7 +25,7 @@ export class EventService {
       this.timer.undoClick(value)
     );
 
-    
+
 
     let _events = StorageService.getCurrent();
 
@@ -44,14 +44,14 @@ export class EventService {
             , date: new Date()
             , args: { ...f, index: _events.length }
           })
-      );
+        );
 
       console.log(processor2.tasks);
     }
 
     this.processor.onEventsChanged.subscribe(f => {
-      console.log(f);
-      this.StorageService.save(f);
+      if (f.length)
+        this.StorageService.save(f);
     });
 
     this.processor.processAll(_events);
