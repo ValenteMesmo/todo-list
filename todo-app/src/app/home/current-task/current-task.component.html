@@ -1,18 +1,26 @@
 <div class="ion-padding"
      style="font-size: 30px; cursor:pointer;">
-  <div *ngIf="service.processor.tasks && service.processor.tasks.length"
-       (click)="completeTask()">
 
-   
+  <div (click)="completeTask()"
+       *ngIf="(service.timer.pomodoroState == 0 && pomodoroTask)
+       || (service.timer.pomodoroState == 1 && breakTask)
+       || (service.timer.pomodoroState == 2 && longBreakTask)">
 
     <ion-icon color="primary"
               name="square-outline"
               style="position:absolute; margin-top:3px"></ion-icon>
-    <ion-label color="primary"
-               style="margin-left: 27px;">&nbsp;{{service.processor.tasks[0].name || 'Unnamed'}}</ion-label>
+
+    <ion-label color="primary" style="margin-left: 27px;">
+      <span *ngIf="service.timer.pomodoroState == 0">&nbsp;{{pomodoroTask.name || 'Unnamed'}}</span>
+      <span *ngIf="service.timer.pomodoroState == 1">&nbsp;{{breakTask.name || 'Unnamed'}}</span>
+      <span *ngIf="service.timer.pomodoroState == 2">&nbsp;{{longBreakTask.name || 'Unnamed'}}</span>
+    </ion-label>
+
   </div>
 
-  <div *ngIf="!service.processor.tasks || !service.processor.tasks.length"
+  <div *ngIf="(service.timer.pomodoroState == 0 && !pomodoroTask)
+       || (service.timer.pomodoroState == 1 && !breakTask)
+       || (service.timer.pomodoroState == 2 && !longBreakTask)"
        [routerLink]="['../tasks' ,'new']">
     <ion-icon color="primary"
               name="add-circle"
