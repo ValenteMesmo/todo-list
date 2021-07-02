@@ -15,7 +15,8 @@
 
 <ion-content [fullscreen]="true">
 
-  <ion-list>
+  <ion-list (keyup.enter)="save()">
+
     <ion-item>
       <ion-label position="floating">Name</ion-label>
       <ion-input #taskNameInput
@@ -54,7 +55,6 @@
 
     <ion-item>
       <ion-button (click)="save()" slot="end">Save</ion-button>
-
     </ion-item>
 
   </ion-list>
