@@ -1,4 +1,6 @@
 import { Component } from "@angular/core";
+import { of } from "rxjs";
+import { delay, tap } from "rxjs/operators";
 import { EventType, Task, TaskType } from "../../_shared/services/event-processor";
 import { EventService } from "../../_shared/services/event-service";
 
@@ -12,6 +14,8 @@ export class CurrentTaskComponent {
   breakTask: Task;
   longBreakTask: Task;
 
+
+
   constructor(public service: EventService) {
 
     service.processor.onEventsChanged.subscribe(f => {
@@ -20,6 +24,17 @@ export class CurrentTaskComponent {
       this.longBreakTask = service.processor.tasks.find(f => f.type == TaskType.LongBreak);
     });
 
+  }
+
+  disabled = false;
+  checkBoxClicked() {
+    this.disabled = true;
+    of({})
+      .pipe(
+        delay(600)
+        , tap(() => this.completeTask())
+        , tap(() => this.disabled = false)
+      ).subscribe();
   }
 
   completeTask() {

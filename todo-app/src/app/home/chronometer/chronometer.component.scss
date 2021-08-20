@@ -1,0 +1,23 @@
+.small-text {
+  font-size: 3vh;
+}
+
+.big-text {
+  font-size: 6vh;
+}
+
+.float-btn {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-right: 15px;
+  position: fixed;
+  /*width: 6vw;*/
+  height: auto;
+  bottom: calc((1.5vw + 3vh)/2);
+  right: calc((1.5vw + 3vh)/2);
+  background-color: #191919;
+  color: #FFF;
+  border-radius: 50px;
+  text-align: center;
+  box-shadow: 2px 2px 3px #0000006b;
+}

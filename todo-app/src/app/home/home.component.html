@@ -1,37 +1,7 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-label *ngIf="service.timer.pomodoroState==0">Pomodoro</ion-label>
-    <ion-label *ngIf="service.timer.pomodoroState==1">Break</ion-label>
-    <ion-label *ngIf="service.timer.pomodoroState==2">Long Break</ion-label>
-    <!--<app-login-button slot="start"></app-login-button>-->    
-    <table slot="end" style="margin-right: 15px;">
-      <tr>
-        <td>
-          <ion-label>{{service.timer.currentTime}}</ion-label>
-        </td>
-      </tr>
-      <tr><td><ion-label color="medium">{{service.timer.goal}}</ion-label></td></tr>
-    </table>
-    <!--<app-chronometer slot="end"></app-chronometer>-->
-  </ion-toolbar>
-</ion-header>
+<new-task-form></new-task-form>
+<task-list></task-list>
+<app-chronometer></app-chronometer>
+<div>{{service.processor.progress}}</div>
+<div>{{service.processor.currentGoal}}</div>
+<progress id="file" [value]="service.processor.progress" max="100"> 32% </progress>
 
-<ion-content [fullscreen]="true">
-
-  <div id="container">
-
-    <app-current-task></app-current-task>
-    <app-timeline></app-timeline>
-
-  </div>
-</ion-content>
-
-<ion-fab vertical="bottom" horizontal="end">
-  <!--<ion-fab-button routerLink="/tasks/new">
-    <ion-icon name="add"></ion-icon>
-  </ion-fab-button>-->
-  <app-chronometer></app-chronometer>
-</ion-fab>

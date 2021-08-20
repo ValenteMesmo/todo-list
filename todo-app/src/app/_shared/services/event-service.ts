@@ -6,7 +6,7 @@ import { StorageService } from "./storage.service";
 
 @Injectable({ providedIn: 'root' })
 export class EventService {
-  //TODO: utilizar cron para cadastrar tarefas recorrentes
+  //TODO: utilizar cron para cadastrar tarefas recorrentes  
   public processor: EventProcessor;
   public timer: MyTimer = new MyTimer();
 

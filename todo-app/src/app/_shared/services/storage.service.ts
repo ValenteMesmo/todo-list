@@ -5,7 +5,7 @@ import * as moment from "moment";
 @Injectable({ providedIn: 'root' })
 export class StorageService {
 
-  readonly store_key = 'todo.2.0.0';
+  readonly store_key = 'todo.2.0.1';
 
   save(current: TodoEvent[]): void {
     const date = new Date();

@@ -35,12 +35,19 @@ export class EventProcessor {
   public onEventsChanged = new BehaviorSubject<TodoEvent[]>([]);
   public timeAdded = new Subject<Date>();
   public timeRemoved = new Subject<Date>();
+  public goal1Reached = new Subject();
+  public goal2Reached = new Subject();
+  public goal3Reached = new Subject();
 
   private _events: TodoEvent[] = [];
 
+  //state
   public times: Date[] = [];
   public tasks: Task[] = [];
   public completedTasks: Task[] = [];
+  public progress = 0;
+  public currentGoal = 1;
+  //state
 
   constructor() { }
 
@@ -119,9 +126,7 @@ export class EventProcessor {
   }
 
   private handleUndoTaskDeleted(e: TodoEvent) {
-    //Todo: remove by index?
-    this.tasks = this.tasks
-      .filter(f => new Date(f.created).getTime() != new Date(e.args).getTime());
+    this.tasks.splice(e.args, 1)[0];
   }
 
   private handleTaskCompleted(e: TodoEvent) {
@@ -131,8 +136,43 @@ export class EventProcessor {
       removed.completed = e.date;
       this.completedTasks.push(removed);
     }
-    //this.tasks = this.tasks
-    //  .filter(f => f.created.getTime() != new Date(e.args).getTime());
+
+    this.updateProgress();
+  }
+
+  private updateProgress() {
+    const completeCount = this.completedTasks.length;
+    const goal1 = 3;
+    const goal2 = 9;
+    const goal3 = 18;
+
+    const calculateProgress = (goal: number) =>
+      this.progress = (100 * completeCount) / goal;
+
+    if (completeCount < goal1) {
+      this.currentGoal = 1;
+      calculateProgress(goal1);
+    }
+    else if (completeCount < goal2) {
+      if (this.currentGoal != 2)
+        this.goal1Reached.next();
+
+      this.currentGoal = 2;
+      calculateProgress(goal2);
+    }
+    else if (completeCount < goal3) {
+      if (this.currentGoal != 3)
+        this.goal2Reached.next();
+
+      this.currentGoal = 3;
+      calculateProgress(goal3);
+    }
+    else if (this.currentGoal == 3) {
+      this.goal3Reached.next();
+
+      this.currentGoal = 4;
+      this.progress = 100;
+    }
   }
 
   private handleTaskUndo(e: TodoEvent) {
@@ -148,8 +188,8 @@ export class EventProcessor {
       this.tasks = [task].concat(this.tasks);
       this.completedTasks = this.completedTasks.filter(f => f != task);
     }
-    //this.tasks = this.tasks
-    //  .filter(f => f.created.getTime() != new Date(e.args).getTime());
+
+    this.updateProgress();
   }
 
   private handleTaskReorder(e: TodoEvent) {

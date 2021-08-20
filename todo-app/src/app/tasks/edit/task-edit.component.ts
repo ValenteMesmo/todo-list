@@ -9,7 +9,7 @@ import { EventService } from "../../_shared/services/event-service";
   templateUrl: './task-edit.component.html'
   , styleUrls: ['./task-edit.component.scss']
 })
-export class TaskEditComponent implements OnInit {
+export class TaskEditComponent {
 
   @ViewChild('taskNameInput', { static: true })
   ionInput: IonInput;
@@ -23,7 +23,8 @@ export class TaskEditComponent implements OnInit {
     , readonly activatedRoute: ActivatedRoute) {
     activatedRoute.params.subscribe(f => {
       this.editId = f["id"];
-
+      setTimeout(() =>
+        this.ionInput.setFocus(), 300);
       const task = this.service.processor.tasks[this.editId] as Task;
       if (!task) {
         this.editId = null;
@@ -36,12 +37,6 @@ export class TaskEditComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-
-    setTimeout(() =>
-      this.ionInput.setFocus(), 150);
-
-  }
 
   @throttle()
   save() {

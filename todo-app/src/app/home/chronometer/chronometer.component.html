@@ -1,12 +1,26 @@
-<ion-button (click)="toggle()"
-            [color]="service.timer.running ? (service.timer.pomodoroState == 0 ? 'success' : 'warning') : 'danger'"
-            [title]="service.timer.goal"
-            style="font-size: 3vh; height: 6vh;">
+<button class="float-btn" (click)="toggle()">
 
-  <ion-label>{{service.timer.pomodoroCountdown}}&nbsp;</ion-label>
+  <!--[color]="service.timer.running ? (service.timer.pomodoroState == 0 ? 'success' : 'warning') : 'danger'"-->
 
-  <ion-icon *ngIf="!service.timer.running" name="play-circle-outline"></ion-icon>
-  <ion-icon *ngIf="service.timer.running" name="pause-circle-outline"></ion-icon>
-  
-</ion-button>
+
+  <table>
+    <tr>
+      <td class="big-text" rowspan="2" >
+        ⏱
+      </td>
+      <td class="big-text">
+        {{service.timer.pomodoroCountdown}}
+      </td>
+    </tr>
+    <tr>
+      <td class="small-text">
+        {{service.timer.currentTime}}
+      </td>
+    </tr>
+  </table>
+
+  <!--<ion-icon *ngIf="!service.timer.running" name="play-circle-outline"></ion-icon>
+  <ion-icon *ngIf="service.timer.running" name="pause-circle-outline"></ion-icon>-->
+
+</button>
 

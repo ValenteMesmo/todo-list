@@ -6,6 +6,8 @@ import { IonicModule } from "@ionic/angular";
 import { ChronometerComponent } from "./chronometer/chronometer.component";
 import { CurrentTaskComponent } from "./current-task/current-task.component";
 import { HomeComponent } from "./home.component";
+import { NewTaskFormComponent } from "./new-task-form/new-task-form.component";
+import { TaskListComponent } from "./task-list/task-list.component";
 import { TimelineComponent } from "./timeline/timeline.component";
 
 const routes: Routes = [
@@ -28,6 +30,8 @@ const routes: Routes = [
     , ChronometerComponent
     , TimelineComponent
     , CurrentTaskComponent
+    , NewTaskFormComponent
+    , TaskListComponent
   ]
 })
 export class HomeModule { }

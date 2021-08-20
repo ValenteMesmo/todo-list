@@ -1,0 +1,7 @@
+<div *ngFor="let task of service.processor.tasks; let i = index">
+  <div>
+    <button (click)="complete(i)">V</button>
+    <span>{{task.name}}</span>
+    <button (click)="remove(i)">X</button>
+  </div>
+</div>

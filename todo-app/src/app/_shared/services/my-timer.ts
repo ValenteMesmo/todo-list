@@ -21,10 +21,11 @@ export class MyTimer {
   public onLongBreakStarted = new Subject<string>();
 
   public running: boolean;
-  public pomodoroCountdown: string;
+  public pomodoroCountdown: string = "25:00";
   public currentTimeInterval: string = "00:00";
 
   constructor() {
+    this.clear();
     this.timeLoop();
   }
 
@@ -55,8 +56,8 @@ export class MyTimer {
     this.minutes = 0;
     this.hours = 0;
     this.clicks = [];
-    this.currentTime = '';
-    this.goal = '';
+    this.currentTime = '00:00';
+    this.goal = '-08:00';
     this.pomodoroTime = '';
     this.pomodoroState = 0;
     this.pomodoroCount = 0;

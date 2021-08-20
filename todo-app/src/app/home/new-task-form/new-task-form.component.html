@@ -1,0 +1,11 @@
+<div>
+
+  <input
+         type="text"
+         placeholder="Criar uma tarefa..."
+         [(ngModel)]="model.name"
+         (keyup.enter)="save()"/>
+
+  <button type="button" (click)="save()">salvar</button>
+  
+</div>
