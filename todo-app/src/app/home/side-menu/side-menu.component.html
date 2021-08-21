@@ -1,0 +1,12 @@
+<div class="sidenav" [class.open]="open">
+  <span class="closebtn" style="cursor:pointer" (click)="open = false;">×</span>
+  <div class="sidenav-content">
+    <a href="#">About</a>
+    <a href="#">Services</a>
+    <a href="#">Clients</a>
+    <a href="#">Contact</a>
+  </div>
+</div>
+<div (click)="clickout()">
+  <ng-content></ng-content>
+</div>

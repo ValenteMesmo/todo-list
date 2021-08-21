@@ -1,7 +1,11 @@
-<new-task-form></new-task-form>
-<task-list></task-list>
-<app-chronometer></app-chronometer>
-<div>{{service.processor.progress}}</div>
-<div>{{service.processor.currentGoal}}</div>
-<progress id="file" [value]="service.processor.progress" max="100"> 32% </progress>
+<side-menu [(open)]="openMenu">
+  <span style="font-size:30px;cursor:pointer" (click)="openMenu = true">☰ open</span>
 
+  <new-task-form></new-task-form>
+  <task-list></task-list>
+  <app-chronometer></app-chronometer>
+  <div>{{service.processor.progress}}</div>
+  <div>{{service.processor.currentGoal}}</div>
+  <progress id="file" [value]="service.processor.progress" max="100"> 32% </progress>
+
+</side-menu>
