@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { of } from "rxjs";
 import { delay, tap } from "rxjs/operators";
+import { AuthenticationService } from "../authentication/authentication.service";
 import { EventService } from "../_shared/services/event-service";
 import { NotificationService } from "../_shared/services/notification.service";
 
@@ -13,7 +14,8 @@ export class HomeComponent {
   //progress = 0.0;
 
   constructor(
-    protected readonly service: EventService
+    protected readonly service: EventService,
+    private readonly auth: AuthenticationService
   ) {
     //of(0.0).pipe(
     //  delay(1000)
@@ -27,4 +29,17 @@ export class HomeComponent {
     //).subscribe(f => { });
 
   }
+
+  save() {
+    this.auth.upload();
+  }
+
+  load() {
+    this.auth.download();
+  }
+
+  logout() {
+    this.auth.logout();
+  }
+  
 }

@@ -1,1 +1,5 @@
-<router-outlet></router-outlet>
+<router-outlet *ngIf="profile"></router-outlet>
+<div *ngIf="!profile">
+  <div *ngIf="loading">Loading</div>
+  <button *ngIf="!loading" (click)="login()">Login</button>
+</div>

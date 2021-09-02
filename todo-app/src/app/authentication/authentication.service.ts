@@ -40,7 +40,7 @@ export class AuthenticationService {
         filter((status: InteractionStatus) => status === InteractionStatus.None)
         , takeUntil(this._destroying$)
       )
-      .subscribe(() => {
+      .subscribe(() => {  
         this.setLoginDisplay(true);
       });
 
@@ -78,7 +78,13 @@ export class AuthenticationService {
 
   upload() {
     ///me/drive/root:/FolderA/FileB.txt:/content
-    this.http.put(`${GRAPH_ENDPOINT}/drive/root:/todoApp/testEvents.txt:/content`, 'teste 2')
+    this.http.put(`${GRAPH_ENDPOINT}/drive/root:/todoApp/testEvents.txt:/content`, JSON.stringify({ test: 1 }))
+      .subscribe(f => console.log(f), f => console.log(f));
+  }
+
+  download() {
+    ///me/drive/root:/FolderA/FileB.txt:/content
+    this.http.get(`${GRAPH_ENDPOINT}/drive/root:/todoApp/testEvents.txt:/content`)
       .subscribe(f => console.log(f), f => console.log(f));
   }
 }

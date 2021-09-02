@@ -8,18 +8,12 @@ import { AppComponent } from './app.component';
 import { MsalBroadcastService, MsalGuard, MsalInterceptor, MsalModule, MsalRedirectComponent, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG } from '@azure/msal-angular';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MSALGuardConfigFactory, MSALInstanceFactory, MSALInterceptorConfigFactory } from './authentication/azure-app.config';
-import { LoginButtonComponent } from './authentication/login-button/login-button.component';
 import { FormsModule } from '@angular/forms';
 import * as router from '@angular/router';
 
-const routes: Routes = [
+const routes: Routes = [  
   {
     path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
-  {
-    path: 'home',
     loadChildren: () => import('./home/home.module')
       .then(m => m.HomeModule)
   },
@@ -31,9 +25,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent
-    , LoginButtonComponent
-  ],
+  declarations: [AppComponent],
   entryComponents: [],
   imports: [
     BrowserModule
