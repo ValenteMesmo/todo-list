@@ -1,5 +1,11 @@
 <side-menu [(open)]="openMenu">
   <span style="font-size:30px;cursor:pointer" (click)="openMenu = true">☰ open</span>
+  <!--<span style="font-size:30px;cursor:pointer" (click)="openMenu = true">
+    <img
+         style="border-radius: 50%; width: 42px;"
+         *ngIf="auth.profile && auth.profile.picture"
+         [src]="auth.profile.picture" />
+  </span>-->
 
   <new-task-form></new-task-form>
   <task-list></task-list>

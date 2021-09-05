@@ -1,28 +1,22 @@
 import { Injectable } from "@angular/core";
 import { throttle } from "../decorators/throttle.decorator";
-import { StorageService } from "./storage.service";
+import { AppStateService } from "./app-state.service";
 
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
-  private _permissionGranted: boolean = false;
 
   get permissionGranted(): boolean {
-    return this._permissionGranted;
+    return this.state.notificationsEnabled;
   }
 
   set permissionGranted(value: boolean) {
     if (value)
       this.requestPermission();
-    else {
-      this._permissionGranted = false;
-      this.StorageService.saveNotification(false);      
-    }
+    else 
+      this.state.notificationsEnabled = false;    
   }
 
-  constructor(private readonly StorageService: StorageService) {
-    this._permissionGranted =
-      Notification.permission == "granted"
-      && this.StorageService.loadNotification();
+  constructor(private readonly state: AppStateService) {
   }
 
   @throttle()
@@ -51,14 +45,12 @@ export class NotificationService {
 
   public requestPermission() {
     if (Notification.permission == "granted") {
-      this._permissionGranted = true;
-      this.StorageService.saveNotification(true);      
+      this.state.notificationsEnabled = true;      
       return;
     }
 
     Notification.requestPermission().then(f => {
-      this._permissionGranted = f == "granted";
-      this.StorageService.saveNotification(this._permissionGranted);      
+      this.state.notificationsEnabled = f == "granted";
     });
   }
 }

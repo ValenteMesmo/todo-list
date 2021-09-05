@@ -1,4 +1,6 @@
+import { Injectable } from "@angular/core";
 import { BehaviorSubject, Subject } from "rxjs";
+import { AppStateService } from "./app-state.service";
 
 export interface TodoEvent {
   type: EventType;
@@ -32,14 +34,12 @@ export interface Task {
 }
 
 export class EventProcessor {
-  public onEventsChanged = new BehaviorSubject<TodoEvent[]>([]);
+  public onEventsChanged = new Subject();
   public timeAdded = new Subject<Date>();
   public timeRemoved = new Subject<Date>();
   public goal1Reached = new Subject();
   public goal2Reached = new Subject();
   public goal3Reached = new Subject();
-
-  private _events: TodoEvent[] = [];
 
   //state
   public times: Date[] = [];
@@ -49,7 +49,7 @@ export class EventProcessor {
   public currentGoal = 1;
   //state
 
-  constructor() { }
+  constructor(private readonly appState: AppStateService) { }
 
   public process(e: TodoEvent) {
     this.processSingleEvent(e, true);
@@ -85,17 +85,15 @@ export class EventProcessor {
     if (emitChanges == false)
       return;
 
-    this._events.push(e);
+    this.appState.addEvent(e);
 
-    this.onEventsChanged.next(this._events)
-
+    this.onEventsChanged.next();
   }
 
   public processAll(events: TodoEvent[]) {
     events.forEach(e => this.processSingleEvent(e, false));
-    this._events = events;
     setTimeout(() =>
-      this.onEventsChanged.next(this._events)
+      this.onEventsChanged.next()
       , 0);
   }
 

@@ -31,11 +31,11 @@ export class HomeComponent {
   }
 
   save() {
-    this.auth.upload();
+    //this.auth.upload();
   }
 
   load() {
-    this.auth.download();
+    //this.auth.download();
   }
 
   logout() {

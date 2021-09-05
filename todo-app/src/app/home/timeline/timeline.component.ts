@@ -29,7 +29,7 @@ export class TimelineComponent {
     protected readonly service: EventService
     , public alertController: AlertController) {
 
-    service.processor.onEventsChanged.subscribe(events => {
+    service.processor.onEventsChanged.subscribe(() => {
       console.log('eventos mudaram');
       //console.log(events);
       this.events = [];
