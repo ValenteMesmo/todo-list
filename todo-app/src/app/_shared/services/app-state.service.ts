@@ -11,12 +11,12 @@ class AppInfo {
 }
 
 @Injectable({ providedIn: 'root' })
-export class AppStateService {  
+export class AppStateService {
 
   private readonly STORE_KEY = 'todo.2.0.2';
   private readonly APP_INFO = `${this.STORE_KEY}-appinfo`;
   private DATE_EVENTS =
-    (date: Date) => `${this.STORE_KEY}-${date.toISOString().split('T')[0]}`;
+    (date: Date) => `${this.STORE_KEY}-${this.formatDate(date)}`;
 
   private currentDate = new Date();
 
@@ -87,4 +87,19 @@ export class AppStateService {
     return this.azure.load<TodoEvent[]>(
       this.DATE_EVENTS(date));
   }
+
+  private formatDate(date: Date): string {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+
 }
