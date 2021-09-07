@@ -37,9 +37,12 @@ export class AppStateService {
     this.save();
   }
 
+  //todo: separar o save appinfo do save event...
+  //salvar appInfo só quando ele mudar
   private _events: TodoEvent[] = [];
   public addEvent(event: TodoEvent) {
     this._events.push(event);
+    this._appInfo.lastDate =new Date();
     this.save();
   }
   public forEachEvent(handler: (event: TodoEvent) => void) {

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { Event } from "@angular/router";
+import { AuthenticationService } from "../../authentication/authentication.service";
 import { throttle } from "../../_shared/decorators/throttle.decorator";
 
 @Component({
@@ -9,25 +10,29 @@ import { throttle } from "../../_shared/decorators/throttle.decorator";
 })
 export class SideMenuComponent {
 
-  _open: boolean;
-  get open(): boolean {
+  private _open: boolean;
+  public get open(): boolean {
     return this._open;
   }
 
-  @Input() set open(value: boolean) {
+  @Input()
+  public set open(value: boolean) {
     this.updateValue(value);
   }
 
   @Output()
-  openChange = new EventEmitter<boolean>();
+  public openChange = new EventEmitter<boolean>();
 
   @throttle()
-  updateValue(value) {
+  protected updateValue(value) {
     this._open = value;
     this.openChange.emit(value);
   }
 
-  clickout() {
+  constructor(protected readonly auth: AuthenticationService) { }
+
+
+  protected clickout() {
     if (this.open)
       this.open = false;
   }

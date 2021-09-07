@@ -1,21 +1,16 @@
-<side-menu [(open)]="openMenu">
+<side-menu [(open)]="openMenu">  
   <span style="font-size:30px;cursor:pointer" (click)="openMenu = true">☰ open</span>
-  <!--<span style="font-size:30px;cursor:pointer" (click)="openMenu = true">
-    <img
-         style="border-radius: 50%; width: 42px;"
-         *ngIf="auth.profile && auth.profile.picture"
-         [src]="auth.profile.picture" />
-  </span>-->
+  
 
   <new-task-form></new-task-form>
   <task-list></task-list>
   <app-chronometer></app-chronometer>
-  <div>{{service.processor.progress}}</div>
-  <div>{{service.processor.currentGoal}}</div>
+  <!--<div>{{service.processor.progress}}</div>
+  <div>{{service.processor.currentGoal}}</div>-->
   <progress id="file" [value]="service.processor.progress" max="100"> 32% </progress>
-  <button (click)="save()">save</button>
-  <button (click)="load()">load</button>
-  <img *ngIf="auth.profile && auth.profile.picture" [src]="auth.profile.picture" />
+  <!--<button (click)="save()">save</button>
+  <button (click)="load()">load</button>-->
+  <!--<img *ngIf="auth.profile && auth.profile.picture" [src]="auth.profile.picture" />-->
   <button (click)="logout()">logout</button>
 
 </side-menu>
