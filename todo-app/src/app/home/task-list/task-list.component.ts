@@ -12,7 +12,7 @@ import { EventType, Task } from "../../_shared/services/event-processor";
 })
 export class TaskListComponent {
   constructor(
-    protected readonly service: EventService) {
+    public readonly service: EventService) {
   }
 
   @throttle()

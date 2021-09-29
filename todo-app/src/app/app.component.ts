@@ -14,9 +14,9 @@ export class AppComponent {
   public loading = true;
 
   constructor(
-    private auth: AuthenticationService
-    , private state: AppStateService
-    , private eventService: EventService
+    public auth: AuthenticationService
+    , public state: AppStateService
+    , public eventService: EventService
   ) { }
 
   ngOnInit(): void {

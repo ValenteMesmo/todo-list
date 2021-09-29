@@ -29,10 +29,10 @@ export class SideMenuComponent {
     this.openChange.emit(value);
   }
 
-  constructor(protected readonly auth: AuthenticationService) { }
+  constructor(public readonly auth: AuthenticationService) { }
 
 
-  protected clickout() {
+  public clickout() {
     if (this.open)
       this.open = false;
   }

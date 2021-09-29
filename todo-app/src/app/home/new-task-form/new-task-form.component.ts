@@ -17,7 +17,7 @@ export class NewTaskFormComponent {
   };
 
   constructor(
-    protected readonly service: EventService
+    public readonly service: EventService
   ) {
   }
 

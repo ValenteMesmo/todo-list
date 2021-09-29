@@ -9,7 +9,7 @@ import { EventService } from "../../_shared/services/event-service";
 })
 export class ChronometerComponent {
 
-  constructor(protected readonly service: EventService) {
+  constructor(public readonly service: EventService) {
 
   }
 

@@ -12,10 +12,11 @@ import { NotificationService } from "../_shared/services/notification.service";
 export class HomeComponent {
   notification = NotificationService;
   //progress = 0.0;
+  openMenu = false;
 
   constructor(
-    protected readonly service: EventService,
-    private readonly auth: AuthenticationService
+    public readonly service: EventService,
+    public readonly auth: AuthenticationService
   ) {
     //of(0.0).pipe(
     //  delay(1000)

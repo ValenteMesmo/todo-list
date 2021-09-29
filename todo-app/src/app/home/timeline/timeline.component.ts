@@ -26,7 +26,7 @@ export class TimelineComponent {
   events: TimelineEvent[];
 
   constructor(
-    protected readonly service: EventService
+    public readonly service: EventService
     , public alertController: AlertController) {
 
     service.processor.onEventsChanged.subscribe(() => {
