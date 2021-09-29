@@ -1,31 +1,31 @@
-/*
- * App Global CSS
- * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
- */
+$bcolor0: rgba(30,30,30);
+$bcolor1: rgba(45,45,48);
+$color-accent: rgba(0,120,204);
 
-/* Core CSS required for Ionic components to work properly */
-@import "~@ionic/angular/css/core.css";
+* {
+  font-size: 3vh;
+  font-family: monospace;
+}
 
-/* Basic CSS for apps built with Ionic */
-@import "~@ionic/angular/css/normalize.css";
-@import "~@ionic/angular/css/structure.css";
-@import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+html, body {
+  background-color: $bcolor0;
+  height: 100%;
+}
 
-/* Optional CSS utils that can be commented out */
-@import "~@ionic/angular/css/padding.css";
-@import "~@ionic/angular/css/float-elements.css";
-@import "~@ionic/angular/css/text-alignment.css";
-@import "~@ionic/angular/css/text-transformation.css";
-@import "~@ionic/angular/css/flex-utils.css";
+%shadow {
+  box-shadow: 0 1.2vh 2.1vh 0 rgba(0,0,0,0.3);
+}
 
-ion-icon {
-  pointer-events: none;
-  /*font-size: x-large;*/
+.card {
+  @extend %shadow;
+  padding: 1.2vh;
+  background-color: $bcolor1;
+}
+
+.accent-background {
+  background-color: $color-accent;
+}
+
+.accent-text {
+  color: $color-accent;
 }

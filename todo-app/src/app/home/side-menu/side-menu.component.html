@@ -1,12 +1,15 @@
 <div class="sidenav" [class.open]="open">
-  <span class="closebtn" style="cursor:pointer" (click)="open = false;">×</span>
-  <div class="sidenav-content">
-    <span style="font-size:30px;cursor:pointer" (click)="openMenu = true">
-    <img
-         style="border-radius: 50%; width: 42px;"
+  <div class="pure-u-4-5">
+    <img style="border-radius: 50%; width: 42px;"
          *ngIf="auth.profile && auth.profile.picture"
          [src]="auth.profile.picture" />
-  </span>
+  </div>
+
+  <div class="pure-u-1-5">
+    <span style="cursor: pointer; font-size: 6vh;" (click)="open = false;">×</span>
+  </div>
+
+  <div class="sidenav-content">
     <a href="#">About</a>
     <a href="#">Services</a>
     <a href="#">Clients</a>
