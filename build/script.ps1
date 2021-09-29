@@ -10,5 +10,5 @@ foreach ($f in $files){
 }
 
 npm i;
-ng build --configuration production --delete-output-path=false --output-hashing none --output-path ..\;
+ng build --configuration production --base-href /todo-list --deploy-url /todo-list/ --delete-output-path=false --output-hashing none --output-path ..\;
 #--delete-output-path=false
