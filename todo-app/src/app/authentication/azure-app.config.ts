@@ -13,7 +13,7 @@ export function MSALInstanceFactory(): IPublicClientApplication {
     auth: {
       clientId: '33f51e31-e999-4bc3-9c01-bf1eb7186b59',
       authority: 'https://login.microsoftonline.com/consumers',
-      redirectUri: 'http://localhost:4200/'
+      redirectUri: window.location.href//'http://localhost:4200/'
     },
     cache: {
       cacheLocation: BrowserCacheLocation.LocalStorage,
