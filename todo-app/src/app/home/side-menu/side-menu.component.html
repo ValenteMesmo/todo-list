@@ -1,0 +1,21 @@
+<div class="sidenav" [class.open]="open">
+  <div class="pure-u-4-5">
+    <img style="border-radius: 50%; width: 42px;"
+         *ngIf="auth.profile && auth.profile.picture"
+         [src]="auth.profile.picture" />
+  </div>
+
+  <div class="pure-u-1-5">
+    <span style="cursor: pointer; font-size: 6vh;" (click)="open = false;">×</span>
+  </div>
+
+  <div class="sidenav-content">
+    <a href="#">About</a>
+    <a href="#">Services</a>
+    <a href="#">Clients</a>
+    <a href="#">Contact</a>
+  </div>
+</div>
+<div (click)="clickout()" style="width:100%; height:100%;">
+  <ng-content></ng-content>
+</div>

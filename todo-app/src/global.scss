@@ -1,0 +1,31 @@
+$bcolor0: rgba(30,30,30);
+$bcolor1: rgba(45,45,48);
+$color-accent: rgba(0,120,204);
+
+* {
+  font-size: 3vh;
+  font-family: monospace;
+}
+
+html, body {
+  background-color: $bcolor0;
+  height: 100%;
+}
+
+%shadow {
+  box-shadow: 0 1.2vh 2.1vh 0 rgba(0,0,0,0.3);
+}
+
+.card {
+  @extend %shadow;
+  padding: 1.2vh;
+  background-color: $bcolor1;
+}
+
+.accent-background {
+  background-color: $color-accent;
+}
+
+.accent-text {
+  color: $color-accent;
+}

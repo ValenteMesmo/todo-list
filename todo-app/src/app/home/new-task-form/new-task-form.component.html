@@ -1,0 +1,13 @@
+<div class="card">
+
+  <input
+         type="text"
+         placeholder="Criar uma tarefa..."
+         [(ngModel)]="model.name"
+         (keyup.enter)="save()"/>
+
+  <input type="checkbox" [(ngModel)]="model.repeat" />
+
+  <button type="button" (click)="save()">salvar</button>
+  
+</div>
