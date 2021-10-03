@@ -1,5 +1,5 @@
 <div style="padding:3vh;">
-  <div *ngFor="let task of service.processor.tasks; let i = index; trackBy: task?.created">
+  <div *ngFor="let task of service.processor.tasks; let i = index; trackBy: getTaskId">
     <div class="pure-g">
       <button class="pure-u-2-24" (click)="complete(i)">V</button>
       <span class="pure-u-20-24">

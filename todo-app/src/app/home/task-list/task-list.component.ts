@@ -32,4 +32,8 @@ export class TaskListComponent {
       args: index
     });
   }
+
+  getTaskId(index: number, task: Task) {
+    return task.created;
+  }
 }
