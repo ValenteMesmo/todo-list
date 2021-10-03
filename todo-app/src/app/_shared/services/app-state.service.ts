@@ -27,6 +27,7 @@ export class AppStateService {
   }
   public set notificationsEnabled(value: boolean) {
     this._appInfo.notificationsEnabled = value;
+    this.save();
   }
 
   public get lastDate(): Date {

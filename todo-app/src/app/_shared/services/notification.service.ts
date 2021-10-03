@@ -10,10 +10,7 @@ export class NotificationService {
   }
 
   set permissionGranted(value: boolean) {
-    if (value)
-      this.requestPermission();
-    else 
-      this.state.notificationsEnabled = false;    
+    this.requestPermission(value);
   }
 
   constructor(private readonly state: AppStateService) {
@@ -35,7 +32,6 @@ export class NotificationService {
     });
 
     //window.navigator.vibrate(pattern)
-
     setTimeout(() => notification.close(), 1000 * 60 * 3);
 
     notification.onclick = () => {
@@ -43,9 +39,14 @@ export class NotificationService {
     };
   }
 
-  public requestPermission() {
+  public requestPermission(value: boolean) {
+    if (!value) {
+      this.state.notificationsEnabled = false;
+      return;
+    }
+
     if (Notification.permission == "granted") {
-      this.state.notificationsEnabled = true;      
+      this.state.notificationsEnabled = true;
       return;
     }
 
